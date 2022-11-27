@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>畫板 - 即時線上協作</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/css/bootstrap.css'
+        integrity='sha512-+QrNe4Kul4TNKwDK+EJM71C9z5I9I/iYLEIJPYTfmXouMSU8tkayWYnOsAKjDAaOOH21+MS747IPTYcD+2euuQ=='
+        crossorigin='anonymous' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.2/font/bootstrap-icons.css'
+        integrity='sha512-c0+vSv9tnGS4fzwTIBFPcdCZ0QwP+aTePvZeAJkYpbj67KvQ5+VrJjDh3lil48LILJxhICQf66dQ8t/BJyOo/g=='
+        crossorigin='anonymous' />
+
+    <style>
+        .edit-color-container {
+            border: 1px solid gainsboro;
+            height: 70px;
+            width: 70px;
+            text-align: center;
+
+
+        }
+
+        .tab-pane {
+
+            padding: 12px;
+        }
+
+        #styleSpan-1,
+        #styleSpan-2 {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            margin: 5px auto;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+
+        /*
+        body>div:last-child {
+            margin: 50px 0 0 20px;
+        }*/
+
+
+        .select-none {
+            user-select: none !important;
+        }
+    </style>
+</head>
+
+<body style="margin: 8px;">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+
+            <button class="nav-link " id="nav-0-tab" type="button" role="button" aria-selected="false"
+                style="background-color: #0099ff; color:#fff;" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+                onclick=" _Offcanvas.isShowing = true;">
+
+                檔案
+            </button>
+
+
+
+            <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button"
+                role="tab" aria-controls="nav-1" aria-selected="true" onclick="canvas.isDrawingMode = true">
+                畫筆
+
+            </button>
+
+
+            <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button"
+                role="tab" aria-controls="nav-2" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                圖形
+            </button>
+
+            <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button"
+                role="tab" aria-controls="nav-3" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                文字
+            </button>
+        </div>
+    </nav>
+
+    <div class="tab-content">
+        <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab" tabindex="0">
+            <div class="d-flex">
+                <div class="edit-color-container">
+                    <div id="styleSpan-1"
+                        style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                        onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
+                    <div style="cursor: pointer;" onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
+                    </div>
+                    <input id="color-picker-1" class="color-picker"
+                        data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF'}" type="hidden">
+                </div>
+                <span class="select-none">&nbsp;</span>
+                <div class="edit-color-container">
+                    <div id="styleSpan-2"
+                        style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                        onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
+                    <div style="cursor: pointer;" onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
+                    </div>
+                    <input id="color-picker-2" class="color-picker"
+                        data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF'}" type="hidden">
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
+            <div class="d-flex">
+                <button class="btn btn-primary" onclick="_fabric('triangle')"><i class="bi bi-triangle"></i></button>
+                <span class="select-none">&nbsp;</span>
+
+                <button class="btn btn-primary" onclick="_fabric('circle')"><i class="bi bi-circle"></i></button>
+                <span class="select-none">&nbsp;</span>
+
+                <button class="btn btn-primary" onclick="_fabric('square')"><i class="bi bi-square"></i></button>
+                <span class="select-none">&nbsp;</span>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
+
+
+        </div>
+    </div>
+
+
+
+    <center>
+        <canvas id="canvas" style="border: 1px solid #000 ;"></canvas>
+    </center>
+    <span class="select-none">&nbsp;&nbsp;<p>&nbsp;&nbsp;</p></span>
+    <div style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 99%;padding: 2px;">
+        <span id="sys-icon"></span>
+        <span id="sys-status"></span>&nbsp;&nbsp;
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.js"
+        integrity="sha512-q7T9VUu0gBgAGV3YkcvI0wjeBJONO5Cg/+688NkDC6qupjUvEG9ZmNK4GjZWvWuuT1VIjS0abwE1IKXVew8Ohw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
+        integrity='sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A=='
+        crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/js/bootstrap.js'
+        integrity='sha512-kOoVKvf8oEDRxKl9FLXaT5RpehiXUPGXI4p/n8uKNP8Tml0v31VnpAZNbpMVAOrb82GCKeEBNslNnbOIZ89ZeQ=='
+        crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.js'
+        integrity='sha512-UP6tOIJfUgQv7uNUL4IXb8HDO1PlEUVSOuPGUcX11obi7Eh24geCoL2X+8JxB4tA9BfdppntOzqrmVQUblSYYQ=='
+        crossorigin='anonymous'></script>
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+        $("#canvas").attr('width', window.innerWidth - 60)
+        $("#canvas").attr('height', window.innerHeight - 160)
+        const canvas = new fabric.Canvas('canvas', {
+            isDrawingMode: true
+        });
+
+
+
+
+        //{text,icon}
+        function SetStatus(params) {
+            var sys_icon = {
+                success: `<i class="bi bi-check-circle-fill text-success"></i>`,
+                info: `<i class="bi bi-info-circle-fill text-primary"></i>`,
+                error: `<i class="bi bi-x-circle-fill text-danger"></i>`,
+                warn: `<i class="bi bi-exclamation-triangle-fill" style="color:#f4871e"></i>`,
+                loading: `<i class="bi bi-arrow-repeat text-primary " id="loading-spin"></i>`
+            }
+            $("#sys-icon").html(eval("sys_icon." + params.icon));
+
+            $("#sys-status").text(params.text)
+
+
+        }
+
+
+        SetStatus({ text: "資料同步中", icon: "loading" })
+
+
+
+
+        var objId = 0
+        function _fabric(obj) {
+
+            if (obj == "circle") {
+
+                var shape = new fabric.Ellipse({
+
+                   id: "obj-"+objId,
+                    rx: 50, ry: 50,
+                    width: 100,
+                    height: 100,
+                    fill: $("#color-picker-1").attr("data-current-color")
+                })
+                canvas.add(shape)
+            } else
+                if (obj == "square") {
+
+                    var shape = new fabric.Rect({
+
+                        id:"obj-"+objId,
+                        width: 100,
+                        height: 100,
+                        fill: $("#color-picker-1").attr("data-current-color")
+                    })
+                    canvas.add(shape)
+                }
+                else if (obj == "triangle") {
+                    var shape = new fabric.Triangle({
+                        id: "obj-"+objId,
+                        width: 100,
+                        height: 100,
+                        fill: $("#color-picker-1").attr("data-current-color")
+                    })
+                    canvas.add(shape)
+                }
+            objId++
+            socket.emit("CanvasUpdate", JSON.stringify(canvas))
+        }
+
+        window.onkeydown = function (e) {
+            if (e.keyCode == 46) {
+
+                var selected = canvas.getActiveObjects(),
+                    selGroup = new fabric.ActiveSelection(selected, {
+                        canvas: canvas
+                    });
+                if (selGroup) {
+                    if (confirm('Deleted selected image(s)?')) {
+                        selGroup.forEachObject(function (obj) {
+                            canvas.remove(obj);
+
+                        });
+
+                        socket.emit("CanvasUpdate", JSON.stringify(canvas))
+                        /*PopupAlert({
+                            title:"刪除選取項目",
+                            body:`選取的項目會從畫布上移除，但仍會保留在資料區中`,
+                            enterCallBack:`
+                            var selected = _Canvas.getActiveObjects(),
+                            selGroup = new fabric.ActiveSelection(selected, {
+                                canvas: _Canvas
+                            });
+                            selGroup.forEachObject(function (obj) {
+                                _Canvas.remove(obj);
+                            });
+                            `,
+                            escCallBack:"dismiss"
+                        })*/
+                    }
+                }
+            } else {
+
+            }
+            // Use discardActiveObject to remove the selection border
+            canvas.discardActiveObject().renderAll();
+        }
+
+        socket.on("connect", () => {
+            console.log(socket.id);
+            //    SetStatus({text:"連線成功",icon:"success"})
+        });
+
+        socket.on("CanvasUpdate", (e) => {
+            
+            canvas.loadFromJSON(e)
+            canvas.renderAll()
+        });
+        socket.on("disconnect", () => {
+            console.log(socket.id);
+            SetStatus({ text: "連線失敗", icon: "error" })
+        });
+        
+        
+        canvas.on('mouse:up', e => {
+         
+            
+
+            socket.emit("CanvasUpdate", JSON.stringify(canvas))
+        })
+        canvas.on('selection:created', e => {
+         
+            
+
+         socket.emit("CanvasUpdate", JSON.stringify(canvas))
+     })
+    </script>
+</body>
+
+</html>
