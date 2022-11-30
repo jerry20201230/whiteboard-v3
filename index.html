@@ -120,7 +120,8 @@
             </div>
         </div>
         <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
-
+            <button class="btn btn-primary" onclick="_fabric('itext')"><i class="bi bi-textarea-t"></i></button>
+            <span class="select-none">&nbsp;</span>
 
         </div>
     </div>
@@ -137,6 +138,35 @@
 
     </div>
 
+
+
+    <div class="modal fade " id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="ModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    id="modal-close-btn"></button>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-esc-button">
+                    取消
+                </button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal" id="modal-enter-button">
+                    確定
+                </button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.js"
         integrity="sha512-q7T9VUu0gBgAGV3YkcvI0wjeBJONO5Cg/+688NkDC6qupjUvEG9ZmNK4GjZWvWuuT1VIjS0abwE1IKXVew8Ohw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -151,7 +181,7 @@
         crossorigin='anonymous'></script>
 
 
-    <script src="/socket.io/socket.io.js"></script>
+
     <script>
         const socket = io();
         $("#canvas").attr('width', window.innerWidth - 60)
@@ -160,6 +190,40 @@
             isDrawingMode: true
         });
 
+        //date -> formated str (y/m/d)
+        //time -> formated str (h:m:s)
+        //pack -> {year,month,date,day,hour,minute,second}
+        function getTime(type){
+            var DATE = new Date(),
+                year = DATE.getFullYear(),
+                mont = DATE.getMonth()+1,
+                date = DATE.getDate(),
+                day = DATE.getDay(),
+                //--------------------//
+                hour = DATE.getHours(),
+                mins = DATE.getMinutes(),
+                secs = DATE.getSeconds();
+
+            if(type == "date"){
+                return `${year} / ${mont} / ${date}`
+            }else 
+            if(type == "time"){
+                return `${hour} : ${mins} : ${secs}`
+            }else
+            if(type == "pack"){
+                let par = {
+                    "year":year,
+                    "month":mont,
+                    "date":date,
+                    "day":day,
+                    "hour":hour,
+                    "minute":mins,
+                    "second":secs
+                }
+
+                return par
+            }
+        }
 
 
 
@@ -176,23 +240,119 @@
 
             $("#sys-status").text(params.text)
 
+            if (params.text == "連線失敗") {
+                PopupAlert({
+
+                    title:"連線到伺服器時發生錯誤",
+                    body:`<h1 class="text-primary">: (</h1>
+                <span class="text-secondary">目前無法連接至伺服器<br>無法同步資料</span>
+                <p></p>
+                <div class="accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"  aria-expanded="false">
+                        可能原因
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                        <ol>
+                            <li>沒有網路連線或連線品質不佳</li>    
+                            <li>伺服器發生故障</li>
+                            
+                        </ol>
+                        </div>
+                    </div>
+                    </div>
+                </div>`,
+                    escCallBack:"x",
+                    enterCallBack:"dismiss"
+                })
+            }
+
+
+        }
+
+       
+        //{ img,         imgclass,     title,  html }
+        //  ^ex:bi-text  ^ex:text-success
+        var BS_Toast = {
+            toast_id: 0,
+            
+            show: function (data) {
+                let hour = getTime("pack").hour,
+                    mins = getTime("pack").minute;
+                $("#toast").append(` 
+            <div id='BS-Toast-${BS_Toast.toast_id}' class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header" >
+                <i class='bi ${data.img} ${data.imgclass}'></i>&nbsp;
+                <strong class="me-auto">${data.title}</strong>
+                <small>${hour}:${mins}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+             </div>
+            <div class="toast-body">${data.html}</div>
+            </div>`)
+
+                let Thistoast = new bootstrap.Toast(document.getElementById(`BS-Toast-${BS_Toast.toast_id}`))
+
+                Thistoast.show()
+
+                BS_Toast.toast_id ++
+            }
+        }
+       
+        //{title,body,escCallBack,enterCallBack}
+        function PopupAlert(par) {
+            console.log(par)
+            let _Modal = new bootstrap.Modal(document.getElementById('Modal'));
+            $('.modal-title').html('');
+            $('.modal-body').html('');
+            $('#modal-esc-btn').removeAttr('onclick');
+            $('#modal-enter-btn').removeAttr('onclick');
+            $('#modal-esc-btn').removeAttr('disabled');
+            $('#modal-enter-btn').removeAttr('disabled');
+            $('#modal-enter-btn').show();
+            $('#modal-esc-btn').show();
+            $(".modal-backdrop").remove();
+            $("#modal-close-btn").show();
+
+            //------------------------------------------------//
+
+            $('.modal-title').html(par.title);
+            $('.modal-body').html(par.body);
+
+            if (par.escCallBack == 'dismiss') {/**/ }
+            else if (par.escCallBack == 'x') { $('#modal-esc-button').hide(); }
+            else { $('#modal-esc-button').attr('onclick', par.escCallBack); }
+
+            if (par.enterCallBack == 'dismiss') {/**/ }
+            else if (par.enterCallBack == 'x') { $('#modal-enter-button').hide(); }
+            else { $('#modal-enter-button').attr('onclick', par.enterCallBack); }
+
+
+
+            if (par.closeButtonStatue == undefined || par.closeButtonStatue == true) {
+                $("#modal-close-btn").show()
+
+            } else {
+
+                $("#modal-close-btn").hide()
+            }
+
+
+            _Modal.toggle();
+
 
         }
 
 
-        SetStatus({ text: "資料同步中", icon: "loading" })
-
-
-
-
-        var objId = 0
         function _fabric(obj) {
 
             if (obj == "circle") {
 
                 var shape = new fabric.Ellipse({
 
-                   id: "obj-"+objId,
+             
                     rx: 50, ry: 50,
                     width: 100,
                     height: 100,
@@ -204,7 +364,7 @@
 
                     var shape = new fabric.Rect({
 
-                        id:"obj-"+objId,
+        
                         width: 100,
                         height: 100,
                         fill: $("#color-picker-1").attr("data-current-color")
@@ -213,18 +373,31 @@
                 }
                 else if (obj == "triangle") {
                     var shape = new fabric.Triangle({
-                        id: "obj-"+objId,
+                     
                         width: 100,
                         height: 100,
                         fill: $("#color-picker-1").attr("data-current-color")
                     })
+
+                    canvas.add(shape)
+                }
+                else if (obj == "itext") {
+                    var shape = new fabric.IText("按兩下以編輯文字", {
+
+
+                        left: 0,
+                        top: 0,
+                        fill: $("#color-picker-1").attr("data-current-color")
+                    })
+
                     canvas.add(shape)
                 }
             objId++
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
+            canvas.renderAll()
         }
 
-        window.onkeydown = function (e) {
+        /*window.onkeydown = function (e) {
             if (e.keyCode == 46) {
 
                 var selected = canvas.getActiveObjects(),
@@ -238,7 +411,7 @@
 
                         });
 
-                        socket.emit("CanvasUpdate", JSON.stringify(canvas))
+                       // socket.emit("CanvasUpdate", JSON.stringify(canvas))
                         /*PopupAlert({
                             title:"刪除選取項目",
                             body:`選取的項目會從畫布上移除，但仍會保留在資料區中`,
@@ -253,22 +426,22 @@
                             `,
                             escCallBack:"dismiss"
                         })*/
-                    }
-                }
-            } else {
+        /*      }
+          }
+      } else {
 
-            }
-            // Use discardActiveObject to remove the selection border
-            canvas.discardActiveObject().renderAll();
-        }
+      }
+      // Use discardActiveObject to remove the selection border
+      canvas.discardActiveObject().renderAll();
+  }*/
 
         socket.on("connect", () => {
             console.log(socket.id);
-            //    SetStatus({text:"連線成功",icon:"success"})
+            SetStatus({ text: "連線成功", icon: "success" })
         });
 
         socket.on("CanvasUpdate", (e) => {
-            
+
             canvas.loadFromJSON(e)
             canvas.renderAll()
         });
@@ -276,20 +449,16 @@
             console.log(socket.id);
             SetStatus({ text: "連線失敗", icon: "error" })
         });
-        
-        
-        canvas.on('mouse:up', e => {
-         
-            
 
+
+        canvas.on('object:modified', e => {
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
         })
-        canvas.on('selection:created', e => {
-         
-            
 
-         socket.emit("CanvasUpdate", JSON.stringify(canvas))
-     })
+        canvas.on('path:created', e => {
+            socket.emit("CanvasUpdate", JSON.stringify(canvas))
+        })
+
     </script>
 </body>
 
