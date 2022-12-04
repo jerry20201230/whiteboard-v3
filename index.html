@@ -47,17 +47,47 @@
         .select-none {
             user-select: none !important;
         }
+
+        .center {
+            text-align: center !important;
+        }
+
+        .size-1em {
+            font-size: 1em !important;
+            font-weight: normal !important;
+
+        }
+        .buttom{
+            position: fixed;
+            bottom:0;
+        }
     </style>
 </head>
 
 <body style="margin: 8px;">
+
+    <noscript>
+        <div class="alert alert-danger" role="alert">
+            本程式需要JavaScript才能正確執行，請先開啟JavaScript!
+        </div>
+        <style>
+            nav,
+            button,
+            input,
+            canvas,
+            span,
+            #ui-bottom,
+            .tab-content {
+                display: none;
+            }
+        </style>
+    </noscript>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
             <button class="nav-link " id="nav-0-tab" type="button" role="button" aria-selected="false"
-                style="background-color: #0099ff; color:#fff;" data-bs-toggle="offcanvas"
-                data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
-                onclick=" _Offcanvas.isShowing = true;">
+                style="background-color: #0099ff; color:#fff;" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
+                aria-controls="offcanvas" onclick=" _Offcanvas.isShowing = true;">
 
                 檔案
             </button>
@@ -109,20 +139,53 @@
         </div>
         <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
             <div class="d-flex">
-                <button class="btn btn-primary" onclick="_fabric('triangle')"><i class="bi bi-triangle"></i></button>
-                <span class="select-none">&nbsp;</span>
+                <div class="d-flex p-1">
+                    <div class="center">
+                        <span style="font-size:1.25em;">形狀</span>
+                        <div class="d-flex">
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="三角形"
+                                onclick="_fabric('triangle')"><i class="bi bi-triangle"></i></button>
+                            <span class="select-none">&thinsp;</span>
 
-                <button class="btn btn-primary" onclick="_fabric('circle')"><i class="bi bi-circle"></i></button>
-                <span class="select-none">&nbsp;</span>
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="圓形"
+                                onclick="_fabric('circle')"><i class="bi bi-circle"></i></button>
+                            <span class="select-none">&thinsp;</span>
 
-                <button class="btn btn-primary" onclick="_fabric('square')"><i class="bi bi-square"></i></button>
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="方形"
+                                onclick="_fabric('square')"><i class="bi bi-square"></i></button>
+                            <span class="select-none">&thinsp;</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="select-none">&nbsp;</span>
+                <div class="vr"></div>
                 <span class="select-none">&nbsp;</span>
             </div>
         </div>
         <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
             <button class="btn btn-primary" onclick="_fabric('itext')"><i class="bi bi-textarea-t"></i></button>
             <span class="select-none">&nbsp;</span>
+            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+        </div>
 
+        <div class="tab-pane fade" id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab" tabindex="0">
+
+            <div class="d-flex">
+                <div class="d-flex p-1">
+                    <div class="center">
+                        <span style="font-size:1.25em;">群組</span>
+                        <div class="d-flex">
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="組成群組">
+                                <i class="bi bi-plus-circle"></i>
+                            </button>
+                            <span class="select-none">&thinsp;</span>
+                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="解散群組">
+                                <i class="bi bi-dash-circle"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -141,30 +204,161 @@
 
 
     <div class="modal fade " id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-    aria-labelledby="ModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="ModalLabel"></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    id="modal-close-btn"></button>
-            </div>
-            <div class="modal-body">
+        aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="modal-close-btn"></button>
+                </div>
+                <div class="modal-body">
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-esc-button">
-                    取消
-                </button>
-                <button type="button" class="btn btn-warning" data-bs-dismiss="modal" id="modal-enter-button">
-                    確定
-                </button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-esc-button">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" id="modal-enter-button">
+                        確定
+                    </button>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
+    <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" style="width: 100%;"
+        tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel">
+        <div class="offcanvas-header">
+            <h1 class="offcanvas-title" id="offcanvasLabel">
+                <button class="btn btn-light btn-lg" data-bs-dismiss="offcanvas">
+                    <h1 class="m-0"><i class="w-75 h-75 bi bi-arrow-left-circle "></i></h1>
+                </button>
+            </h1>
+
+        </div>
+        <div class="offcanvas-body d-flex">
+            <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home"
+                    aria-selected="true">
+                    <h2>
+                        <center>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                class="bi bi-file-earmark nav-svg" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+                            </svg>
+                        </center>
+
+                        <b>常用</b>
+                    </h2>
+                </button>
+                <button class="nav-link" id="v-pills-profile-tab" data-bs-toggle="pill"
+                    data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
+                    aria-selected="false">
+                    <h2>
+                        <center>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50 " fill="currentColor"
+                                class="bi bi-gear nav-svg " viewBox="0 0 16 16">
+                                <path
+                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                                <path
+                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                            </svg>
+
+                        </center>
+                        <b>設定</b>
+                    </h2>
+                </button>
+
+            </div>
+            <div class="tab-content" id="v-pills-tabContent">
+                <div class="tab-pane fade show active" id="v-pills-home" role="tabpanel"
+                    aria-labelledby="v-pills-home-tab">
+                    <h3>檔案</h3>
+                    <div id="file-list">
+
+                        <div onclick="
+                            NewProject()
+                            _Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style="
+            display: inline-block; text-align: center; border-radius: 5px; 
+            border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
+            margin: 2px; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                class="bi bi-plus-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                                <path
+                                    d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
+                            </svg>
+                            <p></p>
+                            <h5>新增</h5>
+                            <small>(沒有快速鍵)</small>
+
+                        </div>
+
+                        <div onclick="upload();_Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style=" display: inline-block; text-align: center; 
+                            border-radius: 5px; border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
+                            margin: 2px; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                class="bi bi-folder2-open" viewBox="0 0 16 16">
+                                <path
+                                    d="M1 3.5A1.5 1.5 0 0 1 2.5 2h2.764c.958 0 1.76.56 2.311 1.184C7.985 3.648 8.48 4 9 4h4.5A1.5 1.5 0 0 1 15 5.5v.64c.57.265.94.876.856 1.546l-.64 5.124A2.5 2.5 0 0 1 12.733 15H3.266a2.5 2.5 0 0 1-2.481-2.19l-.64-5.124A1.5 1.5 0 0 1 1 6.14V3.5zM2 6h12v-.5a.5.5 0 0 0-.5-.5H9c-.964 0-1.71-.629-2.174-1.154C6.374 3.334 5.82 3 5.264 3H2.5a.5.5 0 0 0-.5.5V6zm-.367 1a.5.5 0 0 0-.496.562l.64 5.124A1.5 1.5 0 0 0 3.266 14h9.468a1.5 1.5 0 0 0 1.489-1.314l.64-5.124A.5.5 0 0 0 14.367 7H1.633z" />
+                            </svg>
+                            <p></p>
+                            <h5>開啟</h5>
+                            <small>(Ctrl + O)</small>
+
+                        </div>
+
+                        <div onclick="download();_Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style="
+            display: inline-block; text-align: center; border-radius: 5px; 
+            border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
+            margin: 2px; cursor: pointer;">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
+                                class="bi bi-file-earmark-post" viewBox="0 0 16 16">
+                                <path
+                                    d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+                                <path
+                                    d="M4 6.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-7a.5.5 0 0 1-.5-.5v-7zm0-3a.5.5 0 0 1 .5-.5H7a.5.5 0 0 1 0 1H4.5a.5.5 0 0 1-.5-.5z" />
+                            </svg>
+                            <p></p>
+                            <h5>儲存</h5>
+                            <small>(Ctrl + S)</small>
+
+
+                        </div>
+                        <br>
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                    <h3>設定</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">訊息串</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body" id="chat-body">
+            <div id="chat-msgs">
+
+            </div>
+            <div id="chat-tool" class="buttom pb-2 d-flex bg-light">
+
+                <input type="text" style="border-radius: 5em; flex-grow: 1;" class="form-control" id="chat-text-input" placeholder="輸入新訊息...">
+                <span class="select-none">&thinsp;</span>
+                <button class="btn btn-primary" id="chat-msg-send-btn"><i class="bi bi-send"></i></button>
+            </div>
+        </div>
+    </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.js"
@@ -173,9 +367,16 @@
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
         integrity='sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A=='
         crossorigin='anonymous'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/js/bootstrap.js'
-        integrity='sha512-kOoVKvf8oEDRxKl9FLXaT5RpehiXUPGXI4p/n8uKNP8Tml0v31VnpAZNbpMVAOrb82GCKeEBNslNnbOIZ89ZeQ=='
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.bundle.js'
+        integrity='sha512-gMrnU9iM+azBQtrSC8kTJy6+g+hjaIHnElQmb41QeHNTGYjbbtm0BptpIMgXYpS6iyWq9bPkxrcqgK8aqRsjAg=='
         crossorigin='anonymous'></script>
+    <script>
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+        $("#chat-tool").css("width",$("#chat-body").width())
+    </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.js'
         integrity='sha512-UP6tOIJfUgQv7uNUL4IXb8HDO1PlEUVSOuPGUcX11obi7Eh24geCoL2X+8JxB4tA9BfdppntOzqrmVQUblSYYQ=='
         crossorigin='anonymous'></script>
@@ -193,10 +394,10 @@
         //date -> formated str (y/m/d)
         //time -> formated str (h:m:s)
         //pack -> {year,month,date,day,hour,minute,second}
-        function getTime(type){
+        function getTime(type) {
             var DATE = new Date(),
                 year = DATE.getFullYear(),
-                mont = DATE.getMonth()+1,
+                mont = DATE.getMonth() + 1,
                 date = DATE.getDate(),
                 day = DATE.getDay(),
                 //--------------------//
@@ -204,25 +405,25 @@
                 mins = DATE.getMinutes(),
                 secs = DATE.getSeconds();
 
-            if(type == "date"){
+            if (type == "date") {
                 return `${year} / ${mont} / ${date}`
-            }else 
-            if(type == "time"){
-                return `${hour} : ${mins} : ${secs}`
-            }else
-            if(type == "pack"){
-                let par = {
-                    "year":year,
-                    "month":mont,
-                    "date":date,
-                    "day":day,
-                    "hour":hour,
-                    "minute":mins,
-                    "second":secs
-                }
+            } else
+                if (type == "time") {
+                    return `${hour} : ${mins} : ${secs}`
+                } else
+                    if (type == "pack") {
+                        let par = {
+                            "year": year,
+                            "month": mont,
+                            "date": date,
+                            "day": day,
+                            "hour": hour,
+                            "minute": mins,
+                            "second": secs
+                        }
 
-                return par
-            }
+                        return par
+                    }
         }
 
 
@@ -240,45 +441,17 @@
 
             $("#sys-status").text(params.text)
 
-            if (params.text == "連線失敗") {
-                PopupAlert({
 
-                    title:"連線到伺服器時發生錯誤",
-                    body:`<h1 class="text-primary">: (</h1>
-                <span class="text-secondary">目前無法連接至伺服器<br>無法同步資料</span>
-                <p></p>
-                <div class="accordion">
-                <div class="accordion-item">
-                    <h2 class="accordion-header">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"  aria-expanded="false">
-                        可能原因
-                        </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample">
-                        <div class="accordion-body">
-                        <ol>
-                            <li>沒有網路連線或連線品質不佳</li>    
-                            <li>伺服器發生故障</li>
-                            
-                        </ol>
-                        </div>
-                    </div>
-                    </div>
-                </div>`,
-                    escCallBack:"x",
-                    enterCallBack:"dismiss"
-                })
-            }
 
 
         }
 
-       
+
         //{ img,         imgclass,     title,  html }
         //  ^ex:bi-text  ^ex:text-success
         var BS_Toast = {
             toast_id: 0,
-            
+
             show: function (data) {
                 let hour = getTime("pack").hour,
                     mins = getTime("pack").minute;
@@ -297,10 +470,10 @@
 
                 Thistoast.show()
 
-                BS_Toast.toast_id ++
+                BS_Toast.toast_id++
             }
         }
-       
+
         //{title,body,escCallBack,enterCallBack}
         function PopupAlert(par) {
             console.log(par)
@@ -352,7 +525,7 @@
 
                 var shape = new fabric.Ellipse({
 
-             
+
                     rx: 50, ry: 50,
                     width: 100,
                     height: 100,
@@ -364,7 +537,7 @@
 
                     var shape = new fabric.Rect({
 
-        
+
                         width: 100,
                         height: 100,
                         fill: $("#color-picker-1").attr("data-current-color")
@@ -373,7 +546,7 @@
                 }
                 else if (obj == "triangle") {
                     var shape = new fabric.Triangle({
-                     
+
                         width: 100,
                         height: 100,
                         fill: $("#color-picker-1").attr("data-current-color")
@@ -392,14 +565,14 @@
 
                     canvas.add(shape)
                 }
-            objId++
+
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
             canvas.renderAll()
         }
 
         /*window.onkeydown = function (e) {
             if (e.keyCode == 46) {
-
+ 
                 var selected = canvas.getActiveObjects(),
                     selGroup = new fabric.ActiveSelection(selected, {
                         canvas: canvas
@@ -408,9 +581,9 @@
                     if (confirm('Deleted selected image(s)?')) {
                         selGroup.forEachObject(function (obj) {
                             canvas.remove(obj);
-
+ 
                         });
-
+ 
                        // socket.emit("CanvasUpdate", JSON.stringify(canvas))
                         /*PopupAlert({
                             title:"刪除選取項目",
@@ -429,11 +602,23 @@
         /*      }
           }
       } else {
-
+ 
       }
       // Use discardActiveObject to remove the selection border
       canvas.discardActiveObject().renderAll();
   }*/
+
+  var msgid = 0
+        $("#chat-msg-send-btn").on("click",function(e){
+              msgid++
+            $("#chat-msgs").append(`
+            <div id=chat-msgId-${msgid}></div>
+            `)
+            $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val())
+            socket.emit('ChatMsg',$('#chat-text-input').val())
+            $('#chat-text-input').val("")
+
+        })
 
         socket.on("connect", () => {
             console.log(socket.id);
@@ -445,9 +630,26 @@
             canvas.loadFromJSON(e)
             canvas.renderAll()
         });
+
+        socket.on("ChatMsg",(e)=>{
+             msgid++
+            $("#chat-msgs").append(`
+            <div id=chat-msgId-${msgid}></div>
+            `)
+            $(`#chat-msgId-${msgid}`).text(e)
+           
+        })
         socket.on("disconnect", () => {
             console.log(socket.id);
             SetStatus({ text: "連線失敗", icon: "error" })
+            PopupAlert({
+
+                title: "連線到伺服器時發生錯誤",
+                body: `<h1 class="text-primary">: (</h1><span class="text-secondary">目前無法連接至伺服器<br>無法同步資料</span><p></p><div class="accordion"><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"  aria-expanded="false">可能原因</button></h2><div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample"><div class="accordion-body"><ol><li>沒有網路連線或連線品質不佳</li><li>伺服器發生故障</li></ol></div></div></div></div>`,
+                escCallBack: "x",
+                enterCallBack: "dismiss"
+            })
+
         });
 
 
@@ -459,6 +661,19 @@
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
         })
 
+        canvas.on({
+            'selection:created': HandleElement
+        });
+
+        function HandleElement(obj) {
+            if ($("#nav-4-tab").length == 0) {
+                $("#nav-tab").append(`            
+            <button class="nav-link" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button"
+                role="tab" aria-controls="nav-4" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                物件
+            </button>`)
+            }
+        }
     </script>
 </body>
 

@@ -27,6 +27,10 @@ io.on('connection', (socket) => {
      
       socket.broadcast.emit("CanvasUpdate",e)
     })
+    socket.on("ChatMsg",(e)=>{
+      socket.broadcast.emit("ChatMsg",e);
+      console.log(e)
+    })
   });
 server.listen(3000, () => {
   console.log('listening on *:3000');
