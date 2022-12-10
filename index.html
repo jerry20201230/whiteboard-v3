@@ -57,9 +57,43 @@
             font-weight: normal !important;
 
         }
-        .buttom{
+
+        .buttom {
             position: fixed;
-            bottom:0;
+            bottom: 0;
+        }
+
+        .chat-msg-others {
+
+            margin-top: 2px;
+            min-width: 2em;
+            background: var(--bs-info);
+            color: var(--bs-light);
+            border-radius: 1em;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            text-align: center;
+            width: fit-content;
+            float: left;
+            clear: both;
+        }
+
+        .chat-msg-myself {
+            margin-top: 2px;
+            min-width: 2em;
+            background: var(--bs-link-color);
+            color: var(--bs-light);
+            border-radius: 1em;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 10px;
+            padding-right: 10px;
+            text-align: center;
+            width: fit-content;
+            float: right;
+            clear: both;
         }
     </style>
 </head>
@@ -109,6 +143,10 @@
             <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button"
                 role="tab" aria-controls="nav-3" aria-selected="false" onclick="canvas.isDrawingMode = false">
                 文字
+            </button>
+            <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button"
+                role="tab" aria-controls="nav-5" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                共用
             </button>
         </div>
     </nav>
@@ -165,7 +203,7 @@
         <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
             <button class="btn btn-primary" onclick="_fabric('itext')"><i class="bi bi-textarea-t"></i></button>
             <span class="select-none">&nbsp;</span>
-            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
         </div>
 
         <div class="tab-pane fade" id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab" tabindex="0">
@@ -182,6 +220,40 @@
                             <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="解散群組">
                                 <i class="bi bi-dash-circle"></i>
                             </button>
+                        </div>
+                    </div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="vr"></div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="center">
+                        <span style="font-size:1.25em;">刪除</span>
+                        <div class="d-flex">
+                            <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab" tabindex="0">
+
+            <div class="d-flex">
+                <div class="d-flex p-1">
+                    <div class="center">
+                        <span style="font-size:1.25em;">共用文件</span>
+                        <div class="d-flex">
+                            <button class="btn btn-primary"><i class="bi bi-lock"></i> 未共用</button>
+                        </div>
+                    </div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="vr"></div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="center">
+                        <span style="font-size:1.25em;">即時討論</span>
+                        <div class="d-flex center">
+                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">開啟</button>
+
                         </div>
                     </div>
                 </div>
@@ -337,6 +409,7 @@
                 <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
                     <h3>設定</h3>
                 </div>
+
             </div>
         </div>
     </div>
@@ -344,16 +417,18 @@
 
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
         <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasRightLabel">訊息串</h5>
+            <h5 class="offcanvas-title" id="offcanvasRightLabel">討論區</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
         <div class="offcanvas-body" id="chat-body">
-            <div id="chat-msgs">
+            <div id="chat-msgBox"></div>
+            <div id="chat-msgs" class="mb-5">
 
             </div>
             <div id="chat-tool" class="buttom pb-2 d-flex bg-light">
 
-                <input type="text" style="border-radius: 5em; flex-grow: 1;" class="form-control" id="chat-text-input" placeholder="輸入新訊息...">
+                <input type="text" style="border-radius: 5em; flex-grow: 1;" class="form-control" id="chat-text-input"
+                    placeholder="輸入新訊息...">
                 <span class="select-none">&thinsp;</span>
                 <button class="btn btn-primary" id="chat-msg-send-btn"><i class="bi bi-send"></i></button>
             </div>
@@ -375,7 +450,7 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
-        $("#chat-tool").css("width",$("#chat-body").width())
+        $("#chat-tool").css("width", $("#chat-body").width())
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.js'
         integrity='sha512-UP6tOIJfUgQv7uNUL4IXb8HDO1PlEUVSOuPGUcX11obi7Eh24geCoL2X+8JxB4tA9BfdppntOzqrmVQUblSYYQ=='
@@ -607,17 +682,32 @@
       // Use discardActiveObject to remove the selection border
       canvas.discardActiveObject().renderAll();
   }*/
+        var msgid = 0
+        window.onkeydown = function (e) {
+            if (e.keyCode == 13 && (document.activeElement == document.getElementById("chat-text-input")) && ($('#chat-text-input').val() !== "")) {
+                msgid++
+                $("#chat-msgs").append(`
+            <div id=chat-msgId-${msgid}></div>
+            `)
+                $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val()).attr("class","chat-msg-myself")
+                socket.emit('ChatMsg', $('#chat-text-input').val())
+                $('#chat-text-input').val("")
+                $("#chat-msgs").scrollTop($("#chat-msgs").height());
+            }
+        }
 
-  var msgid = 0
-        $("#chat-msg-send-btn").on("click",function(e){
-              msgid++
+        $("#chat-msg-send-btn").on("click", function (e) {
+            if($('#chat-text-input').val() !== ""){
+            msgid++
             $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
             `)
-            $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val())
-            socket.emit('ChatMsg',$('#chat-text-input').val())
+            $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val()).attr("class","chat-msg-myself")
+            socket.emit('ChatMsg', $('#chat-text-input').val())
             $('#chat-text-input').val("")
 
+            $("#chat-msgs").scrollTop($("#chat-msgs").parent().height());
+            }
         })
 
         socket.on("connect", () => {
@@ -631,17 +721,23 @@
             canvas.renderAll()
         });
 
-        socket.on("ChatMsg",(e)=>{
-             msgid++
+        socket.on("ChatMsg", (e) => {
+            msgid++
             $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
             `)
-            $(`#chat-msgId-${msgid}`).text(e)
-           
+            $(`#chat-msgId-${msgid}`).text(e).attr("class","chat-msg-others")
+            $("#chat-msgs").scrollTop($("#chat-msgs").parent().height());
+
         })
         socket.on("disconnect", () => {
             console.log(socket.id);
             SetStatus({ text: "連線失敗", icon: "error" })
+            $("#chat-msgBox").html(`
+            <div class="alert alert-danger">
+            無法連線到討論區
+            </div>
+            `)
             PopupAlert({
 
                 title: "連線到伺服器時發生錯誤",

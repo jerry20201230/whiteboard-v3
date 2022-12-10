@@ -12,6 +12,9 @@ app.get('/', (req, res) => {
 app.get('/lib',(req,res)=>{
     res.sendFile(__dirname+__filename)
 })
+app.get('/lib/health',(req,res)=>{
+    res.sendStatus(200).send("health from WhiteBoard v3")
+})
 app.get('*',(req,res)=>{
     res.status(404).sendFile(__dirname+'/lib/404.html')
 })
