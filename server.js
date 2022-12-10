@@ -9,7 +9,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/lib',(req,res)=>{
+app.get("/lib",(req,res)=>{
     res.sendFile(__dirname+__filename)
 })
 app.get('/lib/health',(req,res)=>{

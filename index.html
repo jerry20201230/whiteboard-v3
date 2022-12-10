@@ -242,7 +242,8 @@
                     <div class="center">
                         <span style="font-size:1.25em;">共用文件</span>
                         <div class="d-flex">
-                            <button class="btn btn-primary"><i class="bi bi-lock"></i> 未共用</button>
+                            <button class="btn btn-primary" onclick="_data('share')"><i class="bi bi-lock"></i>
+                                未共用</button>
                         </div>
                     </div>
                     <span class="select-none">&nbsp;</span>
@@ -252,7 +253,8 @@
                         <span style="font-size:1.25em;">即時討論</span>
                         <div class="d-flex center">
                             <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">開啟</button>
+                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                                onclick="$('#chat-text-input').focus()">開啟</button>
 
                         </div>
                     </div>
@@ -420,9 +422,9 @@
             <h5 class="offcanvas-title" id="offcanvasRightLabel">討論區</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
-        <div class="offcanvas-body" id="chat-body">
-            <div id="chat-msgBox"></div>
-            <div id="chat-msgs" class="mb-5">
+        <div class="offcanvas-body" id="chat-body" style="padding-top: 0;">
+            <div id="chat-msgBox" style="position: sticky;top:0;background:var(--bs-light);"></div>
+            <div id="chat-msgs" class="mb-5" style="overflow: auto;">
 
             </div>
             <div id="chat-tool" class="buttom pb-2 d-flex bg-light">
@@ -436,6 +438,7 @@
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.js"
         integrity="sha512-q7T9VUu0gBgAGV3YkcvI0wjeBJONO5Cg/+688NkDC6qupjUvEG9ZmNK4GjZWvWuuT1VIjS0abwE1IKXVew8Ohw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -689,26 +692,31 @@
                 $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
             `)
-                $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val()).attr("class","chat-msg-myself")
+                $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val()).attr("class", "chat-msg-myself")
                 socket.emit('ChatMsg', $('#chat-text-input').val())
                 $('#chat-text-input').val("")
-                $("#chat-msgs").scrollTop($("#chat-msgs").height());
+                $("#chat-body").scrollTop($("#chat-msgs").height());
             }
         }
 
         $("#chat-msg-send-btn").on("click", function (e) {
-            if($('#chat-text-input').val() !== ""){
-            msgid++
-            $("#chat-msgs").append(`
+            if ($('#chat-text-input').val() !== "") {
+                msgid++
+                $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
             `)
-            $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val()).attr("class","chat-msg-myself")
-            socket.emit('ChatMsg', $('#chat-text-input').val())
-            $('#chat-text-input').val("")
+                $(`#chat-msgId-${msgid}`).text($('#chat-text-input').val()).attr("class", "chat-msg-myself")
+                socket.emit('ChatMsg', $('#chat-text-input').val())
+                $('#chat-text-input').val("")
 
-            $("#chat-msgs").scrollTop($("#chat-msgs").parent().height());
+                $("#chat-body").scrollTop($("#chat-msgs").height());
             }
         })
+
+        document.getElementById("offcanvasRight").addEventListener("shown.bs.offcanvas", e => {
+            $('#chat-text-input').focus()
+        })
+
 
         socket.on("connect", () => {
             console.log(socket.id);
@@ -726,8 +734,8 @@
             $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
             `)
-            $(`#chat-msgId-${msgid}`).text(e).attr("class","chat-msg-others")
-            $("#chat-msgs").scrollTop($("#chat-msgs").parent().height());
+            $(`#chat-msgId-${msgid}`).text(e).attr("class", "chat-msg-others")
+            $("#chat-body").scrollTop($("#chat-msgs").height());
 
         })
         socket.on("disconnect", () => {
@@ -770,6 +778,46 @@
             </button>`)
             }
         }
+
+
+        function _data(type, par) {
+            if (type == "save") {
+
+            }
+            else if (type == "upload") {
+
+            }
+            else if (type == "new") {
+
+            }
+            else if (type == "share") {
+
+                if (par !== 'callback') {
+                    PopupAlert({
+                        title: "共用",
+                        body: `
+                        <input class="form-control" placeholder="輸入使用者暱稱或ID...">
+                        <hr>
+                        <div>
+                            管理存取權
+                            <div class="alert alert-danger" >
+                                <i class="bi bi-link" style="font-weight: 500;"></i> 所有知道連結的使用者
+                            </div>
+                             
+                            <div class="alert alert-primary" >
+                                <i class="bi bi-person-circle"></i> 所有已經登入的使用者
+                            </div>
+                        </div>`,
+                        escCallBack: "dismiss",
+                        enterCallBack: "_data('share','callback')"
+                    })
+                }else{
+
+                }
+            }
+        }
+
+
     </script>
 </body>
 
