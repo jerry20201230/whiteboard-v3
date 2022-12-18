@@ -158,33 +158,36 @@
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab" tabindex="0">
-                <div class="d-flex">
-                    <div class="edit-color-container">
-                        <div id="styleSpan-1"
-                            style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
-                            onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
-                        <div style="cursor: pointer;"
-                            onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
+                <div id="color-pickers-container-1">
+                    <div class="d-flex" style="width: fit-content;" id="color-pickers-container">
+                        <div class="edit-color-container">
+                            <div id="styleSpan-1"
+                                style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                                onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
+                            <div style="cursor: pointer;"
+                                onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
+                            </div>
+                            <input id="color-picker-1" class="color-picker"
+                                data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF'}" type="hidden">
                         </div>
-                        <input id="color-picker-1" class="color-picker"
-                            data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF'}" type="hidden">
-                    </div>
-                    <span class="select-none">&nbsp;</span>
-                    <div class="edit-color-container">
-                        <div id="styleSpan-2"
-                            style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
-                            onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
-                        <div style="cursor: pointer;"
-                            onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
+                        <span class="select-none">&nbsp;</span>
+                        <div class="edit-color-container">
+                            <div id="styleSpan-2"
+                                style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                                onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
+                            <div style="cursor: pointer;"
+                                onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
+                            </div>
+                            <input id="color-picker-2" class="color-picker"
+                                data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF'}" type="hidden">
                         </div>
-                        <input id="color-picker-2" class="color-picker"
-                            data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF'}" type="hidden">
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
                 <div class="d-flex">
                     <div class="d-flex p-1">
+                        <div id="color-pickers-container-2"></div>
                         <div class="center">
                             <span style="font-size:1.25em;">形狀</span>
                             <div class="d-flex">
@@ -618,15 +621,14 @@
 
 
 
-        window.setup = function(par){
+        window.setup = function (par) {
 
-            if(
-              (localStorage.getItem("logined") == "false" || localStorage.getItem("logined") == undefined || localStorage.getItem("logined") == null)
-              &&
-              (localStorage.getItem("login_taken") == undefined||localStorage.getItem("login_taken") == null))
-              {
+            if (
+                (localStorage.getItem("logined") == "false" || localStorage.getItem("logined") == undefined || localStorage.getItem("logined") == null)
+                &&
+                (localStorage.getItem("login_taken") == undefined || localStorage.getItem("login_taken") == null)) {
 
-             location = "/login"
+                location = "/login"
             }
         }
 
@@ -914,17 +916,17 @@
                         `)
                             }
                         }
-                    } 
+                    }
                     else if (par == "update") {
 
-                        
+
                     }
                     else if (par == "submit") {
 
-                    
+
                     }
 
-                }
+            }
         }
 
 

@@ -119,6 +119,7 @@
                 <span class="badge bg-danger" id="login_user_password_alert" style="display: none;"></span>
 
             </div>
+            <div class="alert alert-danger" id="login_error_alert" style="display: none;"></div>
             <p class="d-flex">
                
                 <button class="btn btn-primary" id="login_btn">登入</button> 
@@ -188,10 +189,6 @@
 
 
 
-
-
-
-
         $("#user_account").on("blur", function (e) {
             if ($("#user_account").val() == "") {
                 $("#login_user_account_alert").html("*請填寫此欄位*").show();
@@ -210,11 +207,13 @@
                 $("#user_password").attr("disabled",true);
                 socket.emit("loginData",{'un': '@'+$("#user_account").val(),'up':$("#user_password").val()})
                 status = "logining"
+                $("#login_error_alert").text("").hide()  
             }
         })
         $("#user_account").on("focus", function (e) {
             $("#login_user_account_alert").hide()
             $("#user_account").removeClass("is-invalid")
+            $("#login_error_alert").text("").hide()         
         })
         $("body").on("keydown", function (event) {
             if (event.which == 13 && status == "login") {
@@ -236,11 +235,17 @@
             if(e.status == 'success'){
 
                 localStorage.setItem("logined","true")
+                $("#login_error_alert").text("").hide()
                 localStorage.setItem("login_taken",e.tk)
                 localStorage.setItem("login_un",e.un)
                 location = "/"
             }else{
 
+                $("#login_error_alert").text("帳號或密碼錯誤").show()
+                $("#login_btn").removeAttr("disabled").html("登入")
+        
+        $("#user_account").removeAttr("disabled")
+        $("#user_password").removeAttr("disabled");
             }
         })
 

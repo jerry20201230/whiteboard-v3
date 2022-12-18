@@ -5,6 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 8080;
+const mysql = require('mysql');
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -90,6 +91,25 @@ io.on('connection', (socket) => {
 
   })
 });
+
+
+
+
+var con = mysql.createConnection({
+  host: "containers-us-west-175.railway.app",
+  user: "root",
+  password: "CXkOEhzSn0nV5bN0sacO",
+  port:7762,
+  database:"railway"
+});
+
+con.connect(function(err) {
+ console.log(err)
+  console.log("Connected!");
+});
+
+
+
 server.listen(port, () => {
   console.log(`running on ${__dirname}:${port}`);
 });
