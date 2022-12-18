@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>畫板 - 登入</title>
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/css/bootstrap.css'
+        integrity='sha512-tBwPRcI1t+0jTsIMtf//+V1f0xAWHh7pvPE82A2n5FcBrzl6b0LRE6XnxUTRHti59y4Js7z4Wb/zal2HBsVVOQ=='
+        crossorigin='anonymous' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.css'
+        integrity='sha512-CaTMQoJ49k4vw9XO0VpTBpmMz8XpCWP5JhGmBvuBqCOaOHWENWO1CrVl09u4yp8yBVSID6smD4+gpzDJVQOPwQ=='
+        crossorigin='anonymous' />
+
+
+    <style>
+        .login-dialog,
+        .full-screen-dialog {
+            background-color: rgb(239, 239, 239);
+            border-radius: 5px;
+            border: 1px solid rgb(104, 104, 104);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+
+            transform: translate(-50%, -50%);
+            padding: 15px;
+            box-shadow: rgb(137, 137, 137) 0px 5px 10px 0px;
+            transition: box-shadow 1s;
+
+        }
+
+        .login-dialog:hover,
+        .full-screen-dialog:hover {
+            transition: box-shadow 1s;
+            box-shadow: none;
+        }
+
+        .form-check {
+            padding: 0;
+        }
+
+        #login-dialog-hide {
+            display: none !important;
+        }
+
+        #login-dialog-show {
+            display: block;
+        }
+
+        .center {
+            text-align: center !important;
+        }
+        .select-none{
+            user-select: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div id="singup-container">
+        <div class="login-dialog" hidden>
+            <h1>歡迎!</h1>
+            <p>歡迎使用 CHAT v2<br>
+                填妥下方資料以加入聊天</p>
+
+            <p>
+            <div class="form-check mb-3">
+                <label for="signup_nickname">暱稱</label><input id="signup_nickname" type="text" class="form-control"
+                    placeholder="暱稱">
+                <div class="invalid-feedback" id="signup_nickname_alert" style="display: none;"></div>
+            </div>
+
+
+            <!--<p>你的ID:
+                <span class="user-id" style="display: inline;">&nbsp;正在取得
+                    <span class="spinner-border text-primary" style="width: 1em;height: 1em; display: inline-block;"
+                        role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </span>
+                </span>
+            </p>-->
+
+
+            <p class="d-flex">
+                <button class="btn btn-primary" id="signup_btn">繼續</button>
+
+
+            </p>
+        </div>
+    </div>
+
+
+    <div id="login-container">
+
+        <div id="login-dialog" class="login-dialog">
+            <h1>登入</h1>
+            <p>登入以使用 Whiteboard的所有功能<br>
+                如果沒有帳號，請先註冊</p>
+            <p>
+            <div class="form-check mb-3">
+                <label for="user_account">使用者帳號:</label>
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
+                    id="user_account">
+                </div>
+
+                <div class="invalid-feedback" id="login_user_account_alert" style="display: none;"></div>
+            </div>
+            <div class="form-check mb-3">
+                <label for="user_password">使用者密碼:</label><input type="password" class="form-control" placeholder="使用者密碼"
+                    id="user_password">
+                <span class="badge bg-danger" id="login_user_password_alert" style="display: none;"></span>
+
+            </div>
+            <p class="d-flex">
+               
+                <button class="btn btn-primary" id="login_btn">登入</button> 
+                <span class="select-none">&nbsp;</span>  
+                <button class="btn btn-secondary" id="">註冊</button>
+                <span class="select-none">&nbsp;</span>  
+                <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
+              
+            </p>
+        </div>
+
+
+
+
+        <div id="trying-login-dialog" class="login-dialog center" style="display: none;">
+            <h1>正在登入</h1>
+            <p>
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            </p>
+            <p>請稍等<br>
+                這可能需要一點時間 </p>
+        </div>
+
+        <div id="login-error-dialog" class="login-dialog center" style="display: none;">
+            <h1>登入失敗</h1>
+            <p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor"
+                    class="text-danger bi bi-x-circle" viewBox="0 0 16 16">
+                    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                    <path
+                        d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z" />
+                </svg>
+            </p>
+            <p>原因如下:<br>
+                伺服器忙碌中 </p>
+        </div>
+
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
+        integrity='sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A=='
+        crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/js/bootstrap.js'
+        integrity='sha512-sVtqu//5Nt9ezFxWXCLcYjITUpvE2uin3m6zeClCHkHfWOshi732EGhrim4qL7kawS5ipwU/rmQo7ZirKzDvfQ=='
+        crossorigin='anonymous'></script>
+
+    <script>
+        var status = "signup";
+
+        var socket = io();
+
+        $("#signup_btn").on("click", function (e) {
+           
+            if ($("#signup_nickname").val() == "") {
+                $("#signup_nickname_alert").html("*請填寫此欄位*").show();
+                $("#signup_nickname").addClass("is-invalid")
+            } else {
+
+                socket.emit("signup", { 'nickname': $("#signup_nickname").val(), 'id': socket.id })
+            }
+        })
+
+
+
+
+
+
+
+
+
+        $("#user_account").on("blur", function (e) {
+            if ($("#user_account").val() == "") {
+                $("#login_user_account_alert").html("*請填寫此欄位*").show();
+                $("#user_account").addClass("is-invalid")
+            }
+        })
+        $("#login_btn").on("click", function (e) {
+            if ($("#user_account").val() == "") {
+                $("#login_user_account_alert").html("*請填寫此欄位*").show();
+                $("#user_account").addClass("is-invalid")
+            } else {
+            
+                $("#login_btn").attr("disabled",true).html("登入中 "+`<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+        
+                $("#user_account").attr("disabled",true)
+                $("#user_password").attr("disabled",true);
+                socket.emit("loginData",{'un': '@'+$("#user_account").val(),'up':$("#user_password").val()})
+                status = "logining"
+            }
+        })
+        $("#user_account").on("focus", function (e) {
+            $("#login_user_account_alert").hide()
+            $("#user_account").removeClass("is-invalid")
+        })
+        $("body").on("keydown", function (event) {
+            if (event.which == 13 && status == "login") {
+                if ($("#user_account").val() == "") {
+                    $("#login_user_account_alert").html("*請填寫此欄位*").show();
+                    $("#user_account").addClass("is-invalid")
+                } else {
+                    $('#login-dialog').hide();
+                    $('#trying-login-dialog').show();
+                    status = "logining"
+                }
+            }
+
+        });
+
+
+
+        socket.on("loginStatus",e=>{
+            if(e.status == 'success'){
+
+                localStorage.setItem("logined","true")
+                localStorage.setItem("login_taken",e.tk)
+                localStorage.setItem("login_un",e.un)
+                location = "/"
+            }else{
+
+            }
+        })
+
+    </script>
+
+</body>
+
+</html>

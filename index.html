@@ -95,181 +95,192 @@
             float: right;
             clear: both;
         }
+
+        #app {
+            margin: 8px
+        }
     </style>
 </head>
 
-<body style="margin: 8px;">
-
-    <noscript>
-        <div class="alert alert-danger" role="alert">
-            本程式需要JavaScript才能正確執行，請先開啟JavaScript!
-        </div>
-        <style>
-            nav,
-            button,
-            input,
-            canvas,
-            span,
-            #ui-bottom,
-            .tab-content {
-                display: none;
-            }
-        </style>
-    </noscript>
-    <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-
-            <button class="nav-link " id="nav-0-tab" type="button" role="button" aria-selected="false"
-                style="background-color: #0099ff; color:#fff;" data-bs-toggle="offcanvas" data-bs-target="#offcanvas"
-                aria-controls="offcanvas" onclick=" _Offcanvas.isShowing = true;">
-
-                檔案
-            </button>
-
-
-
-            <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1" type="button"
-                role="tab" aria-controls="nav-1" aria-selected="true" onclick="canvas.isDrawingMode = true">
-                畫筆
-
-            </button>
-
-
-            <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button"
-                role="tab" aria-controls="nav-2" aria-selected="false" onclick="canvas.isDrawingMode = false">
-                圖形
-            </button>
-
-            <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button"
-                role="tab" aria-controls="nav-3" aria-selected="false" onclick="canvas.isDrawingMode = false">
-                文字
-            </button>
-            <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button"
-                role="tab" aria-controls="nav-5" aria-selected="false" onclick="canvas.isDrawingMode = false">
-                共用
-            </button>
-        </div>
-    </nav>
-
-    <div class="tab-content">
-        <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab" tabindex="0">
-            <div class="d-flex">
-                <div class="edit-color-container">
-                    <div id="styleSpan-1"
-                        style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
-                        onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
-                    <div style="cursor: pointer;" onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
-                    </div>
-                    <input id="color-picker-1" class="color-picker"
-                        data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF'}" type="hidden">
-                </div>
-                <span class="select-none">&nbsp;</span>
-                <div class="edit-color-container">
-                    <div id="styleSpan-2"
-                        style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
-                        onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
-                    <div style="cursor: pointer;" onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
-                    </div>
-                    <input id="color-picker-2" class="color-picker"
-                        data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF'}" type="hidden">
-                </div>
+<body onload="window.setup()">
+    <div id="app">
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                本程式需要JavaScript才能正確執行，請先開啟JavaScript!
             </div>
-        </div>
-        <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
-            <div class="d-flex">
-                <div class="d-flex p-1">
-                    <div class="center">
-                        <span style="font-size:1.25em;">形狀</span>
-                        <div class="d-flex">
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="三角形"
-                                onclick="_fabric('triangle')"><i class="bi bi-triangle"></i></button>
-                            <span class="select-none">&thinsp;</span>
+            <style>
+                nav,
+                button,
+                input,
+                canvas,
+                span,
+                #ui-bottom,
+                .tab-content {
+                    display: none;
+                }
+            </style>
+        </noscript>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="圓形"
-                                onclick="_fabric('circle')"><i class="bi bi-circle"></i></button>
-                            <span class="select-none">&thinsp;</span>
+                <button class="nav-link " id="nav-0-tab" type="button" role="button" aria-selected="false"
+                    style="background-color: #0099ff; color:#fff;" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvas" aria-controls="offcanvas" onclick=" _Offcanvas.isShowing = true;">
 
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="方形"
-                                onclick="_fabric('square')"><i class="bi bi-square"></i></button>
-                            <span class="select-none">&thinsp;</span>
+                    檔案
+                </button>
+
+
+
+                <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1"
+                    type="button" role="tab" aria-controls="nav-1" aria-selected="true"
+                    onclick="canvas.isDrawingMode = true">
+                    畫筆
+
+                </button>
+
+
+                <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button"
+                    role="tab" aria-controls="nav-2" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                    圖形
+                </button>
+
+                <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button"
+                    role="tab" aria-controls="nav-3" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                    文字
+                </button>
+                <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button"
+                    role="tab" aria-controls="nav-5" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                    共用
+                </button>
+            </div>
+        </nav>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab" tabindex="0">
+                <div class="d-flex">
+                    <div class="edit-color-container">
+                        <div id="styleSpan-1"
+                            style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                            onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
+                        <div style="cursor: pointer;"
+                            onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
                         </div>
+                        <input id="color-picker-1" class="color-picker"
+                            data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF'}" type="hidden">
+                    </div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="edit-color-container">
+                        <div id="styleSpan-2"
+                            style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                            onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
+                        <div style="cursor: pointer;"
+                            onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
+                        </div>
+                        <input id="color-picker-2" class="color-picker"
+                            data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF'}" type="hidden">
                     </div>
                 </div>
-                <span class="select-none">&nbsp;</span>
-                <div class="vr"></div>
-                <span class="select-none">&nbsp;</span>
             </div>
-        </div>
-        <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
-            <button class="btn btn-primary" onclick="_fabric('itext')"><i class="bi bi-textarea-t"></i></button>
-            <span class="select-none">&nbsp;</span>
+            <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
+                <div class="d-flex">
+                    <div class="d-flex p-1">
+                        <div class="center">
+                            <span style="font-size:1.25em;">形狀</span>
+                            <div class="d-flex">
+                                <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="三角形"
+                                    onclick="_fabric('triangle')"><i class="bi bi-triangle"></i></button>
+                                <span class="select-none">&thinsp;</span>
 
-        </div>
+                                <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="圓形"
+                                    onclick="_fabric('circle')"><i class="bi bi-circle"></i></button>
+                                <span class="select-none">&thinsp;</span>
 
-        <div class="tab-pane fade" id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab" tabindex="0">
-
-            <div class="d-flex">
-                <div class="d-flex p-1">
-                    <div class="center">
-                        <span style="font-size:1.25em;">群組</span>
-                        <div class="d-flex">
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="組成群組">
-                                <i class="bi bi-plus-circle"></i>
-                            </button>
-                            <span class="select-none">&thinsp;</span>
-                            <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="解散群組">
-                                <i class="bi bi-dash-circle"></i>
-                            </button>
+                                <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="方形"
+                                    onclick="_fabric('square')"><i class="bi bi-square"></i></button>
+                                <span class="select-none">&thinsp;</span>
+                            </div>
                         </div>
                     </div>
                     <span class="select-none">&nbsp;</span>
                     <div class="vr"></div>
                     <span class="select-none">&nbsp;</span>
-                    <div class="center">
-                        <span style="font-size:1.25em;">刪除</span>
-                        <div class="d-flex">
-                            <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
+                <button class="btn btn-primary" onclick="_fabric('itext')"><i class="bi bi-textarea-t"></i></button>
+                <span class="select-none">&nbsp;</span>
 
+            </div>
+
+            <div class="tab-pane fade" id="nav-4" role="tabpanel" aria-labelledby="nav-4-tab" tabindex="0">
+
+                <div class="d-flex">
+                    <div class="d-flex p-1">
+                        <div class="center">
+                            <span style="font-size:1.25em;">群組</span>
+                            <div class="d-flex">
+                                <button class="btn btn-primary" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                                    data-bs-title="組成群組" data-bs-content="將所選取的物件組成群組">
+                                    <i class="bi bi-plus-circle"></i>
+                                </button>
+                                <span class="select-none">&thinsp;</span>
+                                <button class="btn btn-primary" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                                    data-bs-title="解散群組">
+                                    <i class="bi bi-dash-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="vr"></div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="center">
+                            <span style="font-size:1.25em;">刪除</span>
+                            <div class="d-flex">
+                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab" tabindex="0">
+
+                <div class="d-flex">
+                    <div class="d-flex p-1">
+                        <div class="center">
+                            <span style="font-size:1.25em;">共用文件</span>
+                            <div class="d-flex">
+                                <button class="btn btn-primary" onclick="_data('share')"><i class="bi bi-lock"></i>
+                                    未共用</button>
+                            </div>
+                        </div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="vr"></div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="center">
+                            <span style="font-size:1.25em;">即時討論</span>
+                            <div class="d-flex center">
+                                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                                    data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+                                    onclick="$('#chat-text-input').focus()">開啟</button>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab" tabindex="0">
 
-            <div class="d-flex">
-                <div class="d-flex p-1">
-                    <div class="center">
-                        <span style="font-size:1.25em;">共用文件</span>
-                        <div class="d-flex">
-                            <button class="btn btn-primary" onclick="_data('share')"><i class="bi bi-lock"></i>
-                                未共用</button>
-                        </div>
-                    </div>
-                    <span class="select-none">&nbsp;</span>
-                    <div class="vr"></div>
-                    <span class="select-none">&nbsp;</span>
-                    <div class="center">
-                        <span style="font-size:1.25em;">即時討論</span>
-                        <div class="d-flex center">
-                            <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-                                onclick="$('#chat-text-input').focus()">開啟</button>
 
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+        <center>
+            <canvas id="canvas" style="border: 1px solid #000 ;"></canvas>
+        </center>
     </div>
-
-
-
-    <center>
-        <canvas id="canvas" style="border: 1px solid #000 ;"></canvas>
-    </center>
     <span class="select-none">&nbsp;&nbsp;<p>&nbsp;&nbsp;</p></span>
-    <div style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 99%;padding: 2px;">
+    <div
+        style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 100%;padding: 2px;padding-left: 5px;">
         <span id="sys-icon"></span>
         <span id="sys-status"></span>&nbsp;&nbsp;
 
@@ -356,7 +367,7 @@
                     <div id="file-list">
 
                         <div onclick="
-                            NewProject()
+                           _data('new')
                             _Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style="
             display: inline-block; text-align: center; border-radius: 5px; 
             border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
@@ -432,7 +443,8 @@
                 <input type="text" style="border-radius: 5em; flex-grow: 1;" class="form-control" id="chat-text-input"
                     placeholder="輸入新訊息...">
                 <span class="select-none">&thinsp;</span>
-                <button class="btn btn-primary" id="chat-msg-send-btn"><i class="bi bi-send"></i></button>
+                <button class="btn btn-primary" id="chat-msg-send-btn" data-bs-toggle="tooltip" data-bs-title="送出訊息"><i
+                        class="bi bi-send"></i></button>
             </div>
         </div>
     </div>
@@ -453,6 +465,12 @@
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
         })
+        var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+        var popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+        var toastElList = document.querySelectorAll('.toast')
+        var toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
+
         $("#chat-tool").css("width", $("#chat-body").width())
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.js'
@@ -572,11 +590,11 @@
             $('.modal-title').html(par.title);
             $('.modal-body').html(par.body);
 
-            if (par.escCallBack == 'dismiss') {/**/ }
+            if (par.escCallBack == 'dismiss') { $('#modal-esc-btn').show(); }
             else if (par.escCallBack == 'x') { $('#modal-esc-button').hide(); }
             else { $('#modal-esc-button').attr('onclick', par.escCallBack); }
 
-            if (par.enterCallBack == 'dismiss') {/**/ }
+            if (par.enterCallBack == 'dismiss') { $('#modal-enter-btn').show(); }
             else if (par.enterCallBack == 'x') { $('#modal-enter-button').hide(); }
             else { $('#modal-enter-button').attr('onclick', par.enterCallBack); }
 
@@ -595,6 +613,24 @@
 
 
         }
+
+
+
+
+
+        window.setup = function(par){
+
+            if(
+              (localStorage.getItem("logined") == "false" || localStorage.getItem("logined") == undefined || localStorage.getItem("logined") == null)
+              &&
+              (localStorage.getItem("login_taken") == undefined||localStorage.getItem("login_taken") == null))
+              {
+
+             location = "/login"
+            }
+        }
+
+
 
 
         function _fabric(obj) {
@@ -687,7 +723,7 @@
   }*/
         var msgid = 0
         window.onkeydown = function (e) {
-            if (e.keyCode == 13 && (document.activeElement == document.getElementById("chat-text-input")) && ($('#chat-text-input').val() !== "")) {
+            if (e.keyCode == 13 && (document.activeElement == document.getElementById("chat-text-input")) && (!IfStrIsBlank($('#chat-text-input').val()))) {
                 msgid++
                 $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
@@ -700,7 +736,7 @@
         }
 
         $("#chat-msg-send-btn").on("click", function (e) {
-            if ($('#chat-text-input').val() !== "") {
+            if (!IfStrIsBlank($('#chat-text-input').val())) {
                 msgid++
                 $("#chat-msgs").append(`
             <div id=chat-msgId-${msgid}></div>
@@ -738,6 +774,10 @@
             $("#chat-body").scrollTop($("#chat-msgs").height());
 
         })
+        socket.on("data_update", (e) => {
+
+            msgid = e.chat_id
+        })
         socket.on("disconnect", () => {
             console.log(socket.id);
             SetStatus({ text: "連線失敗", icon: "error" })
@@ -761,6 +801,9 @@
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
         })
 
+        canvas.on('before:transform', e => {
+            socket.emit("CanvasUpdate", JSON.stringify(canvas))
+        })
         canvas.on('path:created', e => {
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
         })
@@ -780,7 +823,7 @@
         }
 
 
-        function _data(type, par) {
+        function _data(type, par, data) {
             if (type == "save") {
 
             }
@@ -792,31 +835,113 @@
             }
             else if (type == "share") {
 
-                if (par !== 'callback') {
+                if (par == undefined) {
                     PopupAlert({
                         title: "共用",
                         body: `
-                        <input class="form-control" placeholder="輸入使用者暱稱或ID...">
+                        <div class="d-flex">
+                            <div class="input-group" style="width:fit-content !important;flex-grow:1;">
+                                <span class="input-group-text">@</span>
+                                <input class="form-control" placeholder="使用者ID..." id="share-uid-input" oninput='$("#share-invalid-feedback").hide();$("#share-uid-input").removeClass("is-invalid")'>
+                            </div>
+                            
+                            <span class="select-none">&nbsp;</span>
+                            <select class="form-select" style="width:fit-content !important;" id="share-type-select">
+                                <option value="editor">編輯者</option>
+                                <option value="viewer">檢視者</option>
+                                <option value="disable">禁止存取</option>
+                            </select>
+                            <span class="select-none">&nbsp;</span>
+                            <button class="btn btn-primary" onclick="_data('share','check')">新增</button>
+
+
+                        </div>
+                        <div class="invalid-feedback" id="share-invalid-feedback"></div>
                         <hr>
-                        <div>
-                            管理存取權
-                            <div class="alert alert-danger" >
-                                <i class="bi bi-link" style="font-weight: 500;"></i> 所有知道連結的使用者
+                        <h6>管理存取權</h6>
+                        <span>點選下方項目，即可在上方更改權限</span>
+                        <div style="overflow-y:scroll" id="share-info">
+                            
+
+                            <div class="alert alert-primary" data-user-id="@all_know_link_user" data-share="viewer" onclick="_data('share','update')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16"><path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/><path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/></svg>
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>所有知道連結的使用者&nbsp;&nbsp;[檢視者]
                             </div>
                              
-                            <div class="alert alert-primary" >
-                                <i class="bi bi-person-circle"></i> 所有已經登入的使用者
+                            <div class="alert alert-primary" data-user-id="@all_logined_user" data-share="viewer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>所有已經登入的使用者&nbsp;&nbsp;[檢視者]
                             </div>
                         </div>`,
                         escCallBack: "dismiss",
-                        enterCallBack: "_data('share','callback')"
+                        enterCallBack: "_data('share','submit')"
                     })
-                }else{
+                } else
+
+                    if (par == "check") {
+
+                        if (IfStrIsBlank($("#share-uid-input").val())) {
+
+                            $("#share-invalid-feedback").text("請檢查輸入內容").show();
+                            $("#share-uid-input").addClass("is-invalid")
+
+                        } else {
+
+                            $("#share-invalid-feedback").hide()
+                            if ($("#share-type-select").val() == "editor") {
+                                $("#share-info").append(`
+                        
+                        <div class="alert alert-success" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>${$("#share-uid-input").val()}
+                        </div>
+                        `)
+                            } else if ($("#share-type-select").val() == "viewer") {
+                                $("#share-info").append(`
+                        
+                        <div class="alert alert-primary" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>${$("#share-uid-input").val()}
+                        </div>
+                        `)
+                            } else {
+                                $("#share-info").append(`
+                        
+                        <div class="alert alert-danger" >
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>${$("#share-uid-input").val()}
+                        </div>
+                        `)
+                            }
+                        }
+                    } 
+                    else if (par == "update") {
+
+                        
+                    }
+                    else if (par == "submit") {
+
+                    
+                    }
 
                 }
-            }
         }
 
+
+        function IfStrIsBlank(str) {
+            let _arr = str.split(" "),
+                _s;
+            for (i = 0; i < _arr.length; i++) {
+
+                if (_arr[i] !== " " && _arr[i] !== "") {
+
+
+                    return false
+                }
+            }
+
+            return true
+        }
 
     </script>
 </body>
