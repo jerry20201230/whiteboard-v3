@@ -53,14 +53,15 @@
         .center {
             text-align: center !important;
         }
-        .select-none{
+
+        .select-none {
             user-select: none;
         }
     </style>
 
 </head>
 
-<body>
+<body onload="window.setup()">
 
 
     <div id="singup-container">
@@ -105,10 +106,10 @@
             <p>
             <div class="form-check mb-3">
                 <label for="user_account">使用者帳號:</label>
-                
+
                 <div class="input-group mb-3">
                     <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
-                    id="user_account">
+                        id="user_account">
                 </div>
 
                 <div class="invalid-feedback" id="login_user_account_alert" style="display: none;"></div>
@@ -121,13 +122,13 @@
             </div>
             <div class="alert alert-danger" id="login_error_alert" style="display: none;"></div>
             <p class="d-flex">
-               
-                <button class="btn btn-primary" id="login_btn">登入</button> 
-                <span class="select-none">&nbsp;</span>  
+
+                <button class="btn btn-primary" id="login_btn">登入</button>
+                <span class="select-none">&nbsp;</span>
                 <button class="btn btn-secondary" id="">註冊</button>
-                <span class="select-none">&nbsp;</span>  
+                <span class="select-none">&nbsp;</span>
                 <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
-              
+
             </p>
         </div>
 
@@ -161,6 +162,35 @@
 
     </div>
 
+
+
+
+
+    <div class="modal fade " id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="modal-close-btn"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-esc-button">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" id="modal-enter-button">
+                        確定
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="/socket.io/socket.io.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
         integrity='sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A=='
@@ -174,8 +204,24 @@
 
         var socket = io();
 
+
+
+        window.setup = function (par) {
+
+            if (
+                (localStorage.getItem("logined") == "true" )
+                &&
+                (localStorage.getItem("login_taken") !== undefined && localStorage.getItem("login_taken") !== null)) {
+
+                location = "/"
+            }
+        }
+
+
+
+
         $("#signup_btn").on("click", function (e) {
-           
+
             if ($("#signup_nickname").val() == "") {
                 $("#signup_nickname_alert").html("*請填寫此欄位*").show();
                 $("#signup_nickname").addClass("is-invalid")
@@ -200,20 +246,20 @@
                 $("#login_user_account_alert").html("*請填寫此欄位*").show();
                 $("#user_account").addClass("is-invalid")
             } else {
-            
-                $("#login_btn").attr("disabled",true).html("登入中 "+`<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
-        
-                $("#user_account").attr("disabled",true)
-                $("#user_password").attr("disabled",true);
-                socket.emit("loginData",{'un': '@'+$("#user_account").val(),'up':$("#user_password").val()})
+
+                $("#login_btn").attr("disabled", true).html("登入中 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+
+                $("#user_account").attr("disabled", true)
+                $("#user_password").attr("disabled", true);
+                socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
                 status = "logining"
-                $("#login_error_alert").text("").hide()  
+                $("#login_error_alert").text("").hide()
             }
         })
         $("#user_account").on("focus", function (e) {
             $("#login_user_account_alert").hide()
             $("#user_account").removeClass("is-invalid")
-            $("#login_error_alert").text("").hide()         
+            $("#login_error_alert").text("").hide()
         })
         $("body").on("keydown", function (event) {
             if (event.which == 13 && status == "login") {
@@ -231,21 +277,23 @@
 
 
 
-        socket.on("loginStatus",e=>{
-            if(e.status == 'success'){
+        socket.on("loginStatus", e => {
+            if (e.status == 'success') {
 
-                localStorage.setItem("logined","true")
+                localStorage.setItem("logined", "true")
                 $("#login_error_alert").text("").hide()
-                localStorage.setItem("login_taken",e.tk)
-                localStorage.setItem("login_un",e.un)
+                localStorage.setItem("login_taken", e.tk)
+                localStorage.setItem("login_un", e.un)
                 location = "/"
-            }else{
+            } else {
 
                 $("#login_error_alert").text("帳號或密碼錯誤").show()
+                
+
+                $("#user_account").removeAttr("disabled")
+                $("#user_password").removeAttr("disabled");
+                
                 $("#login_btn").removeAttr("disabled").html("登入")
-        
-        $("#user_account").removeAttr("disabled")
-        $("#user_password").removeAttr("disabled");
             }
         })
 

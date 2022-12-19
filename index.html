@@ -134,19 +134,21 @@
 
                 <button class="nav-link active" id="nav-1-tab" data-bs-toggle="tab" data-bs-target="#nav-1"
                     type="button" role="tab" aria-controls="nav-1" aria-selected="true"
-                    onclick="canvas.isDrawingMode = true">
+                    onclick="canvas.isDrawingMode = true;$('#color-pickers-container').appendTo($('#color-pickers-container-1'))">
                     畫筆
 
                 </button>
 
 
                 <button class="nav-link" id="nav-2-tab" data-bs-toggle="tab" data-bs-target="#nav-2" type="button"
-                    role="tab" aria-controls="nav-2" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                    role="tab" aria-controls="nav-2" aria-selected="false"
+                    onclick="canvas.isDrawingMode = false;$('#color-pickers-container').appendTo($('#color-pickers-container-2'))">
                     圖形
                 </button>
 
                 <button class="nav-link" id="nav-3-tab" data-bs-toggle="tab" data-bs-target="#nav-3" type="button"
-                    role="tab" aria-controls="nav-3" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                    role="tab" aria-controls="nav-3" aria-selected="false"
+                    onclick="canvas.isDrawingMode = false;$('#color-pickers-container').appendTo($('#color-pickers-container-3'))">
                     文字
                 </button>
                 <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button"
@@ -168,7 +170,8 @@
                                 onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
                             </div>
                             <input id="color-picker-1" class="color-picker"
-                                data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF'}" type="hidden">
+                                data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF',closeButton:true,closeText:'關閉'}"
+                                type="hidden">
                         </div>
                         <span class="select-none">&nbsp;</span>
                         <div class="edit-color-container">
@@ -179,15 +182,20 @@
                                 onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
                             </div>
                             <input id="color-picker-2" class="color-picker"
-                                data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF'}" type="hidden">
+                                data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF',closeButton:true,closeText:'關閉'}"
+                                type="hidden">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
                 <div class="d-flex">
+                    <div id="color-pickers-container-2" class="p-1"></div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="vr"></div>
+                    <span class="select-none">&nbsp;</span>
                     <div class="d-flex p-1">
-                        <div id="color-pickers-container-2"></div>
+
                         <div class="center">
                             <span style="font-size:1.25em;">形狀</span>
                             <div class="d-flex">
@@ -211,8 +219,19 @@
                 </div>
             </div>
             <div class="tab-pane fade" id="nav-3" role="tabpanel" aria-labelledby="nav-3-tab" tabindex="0">
-                <button class="btn btn-primary" onclick="_fabric('itext')"><i class="bi bi-textarea-t"></i></button>
-                <span class="select-none">&nbsp;</span>
+                <div class="d-flex">
+                    <div id="color-pickers-container-3"></div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="vr"></div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="d-flex" style="width: fit-content; height: fit-content;">
+                        <input type="text" class="form-control" id="itext-input" placeholder="輸入文字..."
+                            style="width: fit-content !important;">
+                        <span class="select-none">&nbsp;</span>
+                        <button class="btn btn-primary" onclick="_fabric('itext',$('#itextc-input').val())"><i
+                                class="bi bi-textarea-t"></i></button>
+                    </div>
+                </div>
 
             </div>
 
@@ -635,7 +654,7 @@
 
 
 
-        function _fabric(obj) {
+        function _fabric(obj, par) {
 
             if (obj == "circle") {
 
@@ -671,13 +690,20 @@
                     canvas.add(shape)
                 }
                 else if (obj == "itext") {
-                    var shape = new fabric.IText("按兩下以編輯文字", {
+                    if (par == "") {
+                        var shape = new fabric.IText("按兩下以編輯文字", {
+                            left: 0,
+                            top: 0,
+                            fill: $("#color-picker-1").attr("data-current-color")
+                        })
+                    } else {
+                        var shape = new fabric.IText(par, {
+                            left: 0,
+                            top: 0,
+                            fill: $("#color-picker-1").attr("data-current-color")
+                        })
+                    }
 
-
-                        left: 0,
-                        top: 0,
-                        fill: $("#color-picker-1").attr("data-current-color")
-                    })
 
                     canvas.add(shape)
                 }

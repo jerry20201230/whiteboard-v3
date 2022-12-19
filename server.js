@@ -19,6 +19,9 @@ app.get(/js|css|html/, (req, res) => {
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
 })
+app.get('/dist',(req,res) =>{
+  res.status(403).sendFile(__dirname + '/lib/block.html');
+})
 app.get('*', (req, res) => {
   res.status(404).sendFile(__dirname + '/lib/404.html')
 })
@@ -96,11 +99,11 @@ io.on('connection', (socket) => {
 
 
 var con = mysql.createConnection({
-  host: "containers-us-west-175.railway.app",
-  user: "root",
-  password: "CXkOEhzSn0nV5bN0sacO",
-  port:7762,
-  database:"railway"
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  port: process.env.MYSQLPORT,
+  database: process.env.MYSQLDATABASE        
 });
 
 con.connect(function(err) {
