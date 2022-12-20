@@ -4,7 +4,7 @@ const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 const mysql = require('mysql');
 
 app.get('/', (req, res) => {
