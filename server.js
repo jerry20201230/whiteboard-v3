@@ -7,6 +7,7 @@ const io = new Server(server);
 const port = process.env.PORT || 3000;
 const mysql = require('mysql2');
 const session = require('express-session');
+const bodyParser = require('body-parser');
 const sql_Connect = mysql.createConnection({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -14,7 +15,7 @@ const sql_Connect = mysql.createConnection({
   port: process.env.MYSQLPORT,
   database: process.env.MYSQLDATABASE        
 });
-app.use(express.bodyParser());
+
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
