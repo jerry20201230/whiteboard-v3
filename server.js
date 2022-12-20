@@ -6,7 +6,14 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000;
 const mysql = require('mysql2');
-
+const session = require('express-session');
+const sql_Connect = mysql.createConnection({
+  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  port: process.env.MYSQLPORT,
+  database: process.env.MYSQLDATABASE        
+});
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
@@ -24,6 +31,10 @@ app.get('/dist',(req,res) =>{
 })
 
 
+
+sql_Connect.connect(function(err) {
+ console.log(err?err:"connected to sql server")
+});
 app.post('/auth', function(request, response) {
 	// Capture the input fields
   console.log(request.body)
@@ -32,7 +43,7 @@ app.post('/auth', function(request, response) {
 	// Ensure the input fields exists and are not empty
 	if (username && password) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
-		connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(error, results, fields) {
+		sql_Connect.query('SELECT * FROM USER WHERE USERID = ? AND PASSWORD = ?', [username, password], function(error, results, fields) {
 			// If there is an issue with the query, output the error
 			if (error) throw error;
 			// If the account exists
@@ -41,7 +52,7 @@ app.post('/auth', function(request, response) {
 				request.session.loggedin = true;
 				request.session.username = username;
 				// Redirect to home page
-				response.redirect('/home');
+				response.redirect('/');
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
@@ -130,19 +141,6 @@ io.on('connection', (socket) => {
 });
 
 
-
-
-var con = mysql.createConnection({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  port: process.env.MYSQLPORT,
-  database: process.env.MYSQLDATABASE        
-});
-
-con.connect(function(err) {
- console.log(err?err:"connected to sql server")
-});
 
 
 
