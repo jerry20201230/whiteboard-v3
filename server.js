@@ -48,10 +48,11 @@ app.post('/auth',function(request, response) {
 	// Ensure the input fields exists and are not empty
 	if (username && password) {
 		// Execute SQL query that'll select the account from the database based on the specified username and password
-		sql_Connect.query('SELECT * FROM USER WHERE USERID = ? AND PASSWORD = ?', [username, password], function(error, results, fields) {
+		sql_Connect.query('SELECT * FROM userData WHERE user_id = ? AND user_password = ?', [username, password], function(error, results, fields) {
 			// If there is an issue with the query, output the error
 			if (error) throw error;
 			// If the account exists
+      console.log(results)
 			if (results.length > 0) {
 				// Authenticate the user
 				request.session.loggedin = true;
@@ -61,7 +62,7 @@ app.post('/auth',function(request, response) {
 			} else {
 				response.send('Incorrect Username and/or Password!');
 			}			
-      console.log(results)
+      
 			response.end();
 		});
 	} else {
