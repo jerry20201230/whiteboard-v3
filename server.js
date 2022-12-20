@@ -14,6 +14,7 @@ const sql_Connect = mysql.createConnection({
   port: process.env.MYSQLPORT,
   database: process.env.MYSQLDATABASE        
 });
+app.use(express.bodyParser());
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
