@@ -37,7 +37,7 @@ app.get('/dist',(req,res) =>{
 sql_Connect.connect(function(err) {
  console.log(err?err:"connected to sql server")
 });
-app.post('/auth', function(request, response) {
+app.post('/auth', bodyParser,function(request, response) {
 	// Capture the input fields
  
 	let username = request.body.user.account;
