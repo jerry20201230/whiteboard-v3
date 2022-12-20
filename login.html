@@ -312,7 +312,7 @@
                             pass:$("#user_password").val()
                         }
                     })
-                });
+                }).then(data => console.log(data));
             }
         })
         $("#user_account").on("focus", function (e) {
