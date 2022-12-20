@@ -127,7 +127,8 @@
                 <span class="select-none">&nbsp;</span>
                 <button class="btn btn-secondary" id="">註冊</button>
                 <span class="select-none">&nbsp;</span>
-                <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
+                <button class="btn btn-link" id="skip_login_btn"
+                >不登入就繼續</button>
 
             </p>
         </div>
@@ -204,6 +205,49 @@
 
         var socket = io();
 
+        //{title,body,escCallBack,enterCallBack}
+        function PopupAlert(par) {
+            console.log(par)
+            let _Modal = new bootstrap.Modal(document.getElementById('Modal'));
+            $('.modal-title').html('');
+            $('.modal-body').html('');
+            $('#modal-esc-btn').removeAttr('onclick');
+            $('#modal-enter-btn').removeAttr('onclick');
+            $('#modal-esc-btn').removeAttr('disabled');
+            $('#modal-enter-btn').removeAttr('disabled');
+            $('#modal-enter-btn').show();
+            $('#modal-esc-btn').show();
+            $(".modal-backdrop").remove();
+            $("#modal-close-btn").show();
+
+            //------------------------------------------------//
+
+            $('.modal-title').html(par.title);
+            $('.modal-body').html(par.body);
+
+            if (par.escCallBack == 'dismiss') { $('#modal-esc-btn').show(); }
+            else if (par.escCallBack == 'x') { $('#modal-esc-button').hide(); }
+            else { $('#modal-esc-button').attr('onclick', par.escCallBack); }
+
+            if (par.enterCallBack == 'dismiss') { $('#modal-enter-btn').show(); }
+            else if (par.enterCallBack == 'x') { $('#modal-enter-button').hide(); }
+            else { $('#modal-enter-button').attr('onclick', par.enterCallBack); }
+
+
+
+            if (par.closeButtonStatue == undefined || par.closeButtonStatue == true) {
+                $("#modal-close-btn").show()
+
+            } else {
+
+                $("#modal-close-btn").hide()
+            }
+
+
+            _Modal.toggle();
+
+
+        }
 
 
         window.setup = function (par) {
@@ -276,6 +320,14 @@
         });
 
 
+        $("#skip_login_btn").on("click",function(e){
+            PopupAlert({
+                title:"確定繼續?",
+                body:"擬將使用訪客身分登入，部分功能將受到限制",
+                escCallBack:"dismiss",
+                enterCallBack:""
+            })
+        })
 
         socket.on("loginStatus", e => {
             if (e.status == 'success') {
