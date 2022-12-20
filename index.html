@@ -15,8 +15,9 @@
 
     <style>
         .edit-color-container {
-            border: 1px solid gainsboro;
-            height: 70px;
+            border: 1px solid var(--bs-gray-300);
+            height: 73px;
+            border-radius: 5px;
             width: 70px;
             text-align: center;
 
@@ -167,7 +168,7 @@
                                 style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
                                 onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
                             <div style="cursor: pointer;"
-                                onclick="document.getElementById('color-picker-1').jscolor.show()">顏色1
+                                onclick="document.getElementById('color-picker-1').jscolor.show()">主色
                             </div>
                             <input id="color-picker-1" class="color-picker"
                                 data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF',closeButton:true,closeText:'關閉'}"
@@ -179,7 +180,7 @@
                                 style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
                                 onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
                             <div style="cursor: pointer;"
-                                onclick="document.getElementById('color-picker-2').jscolor.show()">顏色2
+                                onclick="document.getElementById('color-picker-2').jscolor.show()">輔色
                             </div>
                             <input id="color-picker-2" class="color-picker"
                                 data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF',closeButton:true,closeText:'關閉'}"
@@ -190,11 +191,11 @@
             </div>
             <div class="tab-pane fade" id="nav-2" role="tabpanel" aria-labelledby="nav-2-tab" tabindex="0">
                 <div class="d-flex">
-                    <div id="color-pickers-container-2" class="p-1"></div>
+                    <div id="color-pickers-container-2"></div>
                     <span class="select-none">&nbsp;</span>
                     <div class="vr"></div>
                     <span class="select-none">&nbsp;</span>
-                    <div class="d-flex p-1">
+                    <div class="d-flex">
 
                         <div class="center">
                             <span style="font-size:1.25em;">形狀</span>
@@ -224,12 +225,23 @@
                     <span class="select-none">&nbsp;</span>
                     <div class="vr"></div>
                     <span class="select-none">&nbsp;</span>
-                    <div class="d-flex" style="width: fit-content; height: fit-content;">
-                        <input type="text" class="form-control" id="itext-input" placeholder="輸入文字..."
-                            style="width: fit-content !important;">
-                        <span class="select-none">&nbsp;</span>
-                        <button class="btn btn-primary" onclick="_fabric('itext',$('#itextc-input').val())"><i
-                                class="bi bi-textarea-t"></i></button>
+                    <div style="width: fit-content; height: fit-content;">
+                        <div class="d-flex">
+                            <input type="text" class="form-control" id="itext-input" placeholder="輸入文字..."
+                                style="width: fit-content !important;">
+                            <span class="select-none">&nbsp;</span>
+                            <button class="btn btn-primary" onclick="_fabric('itext',$('#itext-input').val())"><i
+                                    class="bi bi-check-circle"></i></button>
+                        </div>
+                  
+                        <div class="d-flex mt-1">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-bold"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-italic"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-strikethrough"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-underline"></i></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -243,12 +255,12 @@
                             <span style="font-size:1.25em;">群組</span>
                             <div class="d-flex">
                                 <button class="btn btn-primary" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                                    data-bs-title="組成群組" data-bs-content="將所選取的物件組成群組">
+                                    data-bs-title="組成群組" onclick="canvas.getActiveObject().toGroup()">
                                     <i class="bi bi-plus-circle"></i>
                                 </button>
                                 <span class="select-none">&thinsp;</span>
                                 <button class="btn btn-primary" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                                    data-bs-title="解散群組">
+                                    data-bs-title="解散群組" onclick="canvas.getActiveObject().toActiveSelection();">
                                     <i class="bi bi-dash-circle"></i>
                                 </button>
                             </div>
@@ -259,7 +271,8 @@
                         <div class="center">
                             <span style="font-size:1.25em;">刪除</span>
                             <div class="d-flex">
-                                <button class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                                <button class="btn btn-danger" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                                    data-bs-title="刪除" onclick="_fabric('delete')"><i class="bi bi-trash"></i></button>
 
                             </div>
                         </div>
@@ -269,7 +282,7 @@
             <div class="tab-pane fade" id="nav-5" role="tabpanel" aria-labelledby="nav-5-tab" tabindex="0">
 
                 <div class="d-flex">
-                    <div class="d-flex p-1">
+                    <div class="d-flex">
                         <div class="center">
                             <span style="font-size:1.25em;">共用文件</span>
                             <div class="d-flex">
@@ -471,6 +484,7 @@
         </div>
     </div>
 
+    <div id="toast" class="position-fixed bottom-0 end-0 p-3 toast-container"></div>
     <script src="/socket.io/socket.io.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.2.4/fabric.js"
@@ -509,6 +523,8 @@
             isDrawingMode: true
         });
 
+        var ActiveTab = 'nav-1-tab'
+
         //date -> formated str (y/m/d)
         //time -> formated str (h:m:s)
         //pack -> {year,month,date,day,hour,minute,second}
@@ -535,9 +551,9 @@
                             "month": mont,
                             "date": date,
                             "day": day,
-                            "hour": hour,
-                            "minute": mins,
-                            "second": secs
+                            "hour":   hour>10 ? hour : '0'+hour,
+                            "minute": mins>10 ? mins : '0'+mins,
+                            "second": secs>10 ? secs : '0'+secs
                         }
 
                         return par
@@ -565,7 +581,7 @@
         }
 
 
-        //{ img,         imgclass,     title,  html }
+        //{ icon,         iconClass,     title,  body }
         //  ^ex:bi-text  ^ex:text-success
         var BS_Toast = {
             toast_id: 0,
@@ -576,14 +592,16 @@
                 $("#toast").append(` 
             <div id='BS-Toast-${BS_Toast.toast_id}' class="toast" role="alert" aria-live="assertive" aria-atomic="true">
               <div class="toast-header" >
-                <i class='bi ${data.img} ${data.imgclass}'></i>&nbsp;
+                <i class='bi ${data.icon} ${data.iconClass}'></i>&nbsp;
                 <strong class="me-auto">${data.title}</strong>
                 <small>${hour}:${mins}</small>
                 <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
              </div>
-            <div class="toast-body">${data.html}</div>
+            <div class="toast-body">${data.body}</div>
             </div>`)
 
+                var toastElList = document.querySelectorAll('.toast')
+                var toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
                 let Thistoast = new bootstrap.Toast(document.getElementById(`BS-Toast-${BS_Toast.toast_id}`))
 
                 Thistoast.show()
@@ -648,6 +666,13 @@
                 (localStorage.getItem("login_taken") == undefined || localStorage.getItem("login_taken") == null)) {
 
                 location = "/login"
+            }else{
+                BS_Toast.show({
+                    icon:'bi-bell',
+                    iconClass:'',
+                    title:'歡迎使用',
+                    body:`歡迎使用 WhiteBoard v3`
+                })
             }
         }
 
@@ -706,6 +731,23 @@
 
 
                     canvas.add(shape)
+                }
+                else if (obj == "delete") {
+                    var selected = canvas.getActiveObjects(),
+                        selGroup = new fabric.ActiveSelection(selected, {
+                            canvas: canvas
+                        });
+                    if (selGroup) {
+                        if (confirm('刪除所選取的物件?')) {
+                            selGroup.forEachObject(function (obj) {
+                                canvas.remove(obj);
+                            });
+
+                        }
+                    } else {
+                        alert("請先選擇物件")
+                    }
+                    canvas.renderAll()
                 }
 
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
@@ -836,11 +878,7 @@
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
         })
 
-        canvas.on({
-            'selection:created': HandleElement
-        });
-
-        function HandleElement(obj) {
+        canvas.on('selection:created', e => {
             if ($("#nav-4-tab").length == 0) {
                 $("#nav-tab").append(`            
             <button class="nav-link" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button"
@@ -848,7 +886,13 @@
                 物件
             </button>`)
             }
-        }
+        });
+
+        canvas.on('selection:cleared', e => {
+            $("#nav-1-tab").click()
+            $("#nav-4-tab").remove()
+            $("#nav-1-tab").click()
+        });
 
 
         function _data(type, par, data) {
