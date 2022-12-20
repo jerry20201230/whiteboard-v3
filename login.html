@@ -99,7 +99,7 @@
 
     <div id="login-container">
 
-        <form id="login-dialog" class="login-dialog" action="/auth" method="post">
+        <div id="login-dialog" class="login-dialog" action="/auth" method="post">
             <h1>登入</h1>
             <p>登入以使用 Whiteboard的所有功能<br>
                 如果沒有帳號，請先註冊</p>
@@ -123,15 +123,14 @@
             <div class="alert alert-danger" id="login_error_alert" style="display: none;"></div>
             <p class="d-flex">
 
-                <button class="btn btn-primary" id="" type="submit">登入</button>
+                <button class="btn btn-primary" id="login_btn" type="submit">登入</button>
                 <span class="select-none">&nbsp;</span>
                 <button class="btn btn-secondary" id="">註冊</button>
                 <span class="select-none">&nbsp;</span>
-                <button class="btn btn-link" id="skip_login_btn"
-                >不登入就繼續</button>
+                <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
 
             </p>
-        </form>
+        </div>
 
 
 
@@ -192,8 +191,8 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
+    <!--<script src="/socket.io/socket.io.js"></script>
+    --><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
         integrity='sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A=='
         crossorigin='anonymous'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/js/bootstrap.js'
@@ -203,7 +202,7 @@
     <script>
         var status = "signup";
 
-        var socket = io();
+        //var socket = io();
 
         //{title,body,escCallBack,enterCallBack}
         function PopupAlert(par) {
@@ -253,7 +252,7 @@
         window.setup = function (par) {
 
             if (
-                (localStorage.getItem("logined") == "true" )
+                (localStorage.getItem("logined") == "true")
                 &&
                 (localStorage.getItem("login_taken") !== undefined && localStorage.getItem("login_taken") !== null)) {
 
@@ -271,7 +270,7 @@
                 $("#signup_nickname").addClass("is-invalid")
             } else {
 
-                socket.emit("signup", { 'nickname': $("#signup_nickname").val(), 'id': socket.id })
+               // socket.emit("signup", { 'nickname': $("#signup_nickname").val(), 'id': socket.id })
             }
         })
 
@@ -295,9 +294,25 @@
 
                 $("#user_account").attr("disabled", true)
                 $("#user_password").attr("disabled", true);
-                socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
+              //  socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
                 status = "logining"
                 $("#login_error_alert").text("").hide()
+
+
+
+
+                fetch('/auth', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        user: {
+                            account: $("#user_account").val(),
+                            pass:$("#user_password").val()
+                        }
+                    })
+                });
             }
         })
         $("#user_account").on("focus", function (e) {
@@ -320,16 +335,16 @@
         });
 
 
-        $("#skip_login_btn").on("click",function(e){
+        $("#skip_login_btn").on("click", function (e) {
             PopupAlert({
-                title:"確定繼續?",
-                body:"你將使用訪客身分登入，部分功能將受到限制",
-                escCallBack:"dismiss",
-                enterCallBack:""
+                title: "確定繼續?",
+                body: "你將使用訪客身分登入，部分功能將受到限制",
+                escCallBack: "dismiss",
+                enterCallBack: ""
             })
         })
 
-        socket.on("loginStatus", e => {
+   /*     socket.on("loginStatus", e => {
             if (e.status == 'success') {
 
                 localStorage.setItem("logined", "true")
@@ -340,15 +355,15 @@
             } else {
 
                 $("#login_error_alert").text("帳號或密碼錯誤").show()
-                
+
 
                 $("#user_account").removeAttr("disabled")
                 $("#user_password").removeAttr("disabled");
-                
+
                 $("#login_btn").removeAttr("disabled").html("登入")
             }
         })
-
+*/
     </script>
 
 </body>
