@@ -38,6 +38,7 @@ sql_Connect.connect(function(err) {
 app.post('/auth', function(request, response) {
 	// Capture the input fields
   console.log(request.body)
+  console.log(request.query)
 	let username = request.body.user.account;
 	let password = request.body.user.pass;
 	// Ensure the input fields exists and are not empty
