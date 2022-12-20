@@ -107,8 +107,7 @@ var con = mysql.createConnection({
 });
 
 con.connect(function(err) {
- console.log(err)
-  console.log("Connected!");
+ console.log(err?err:"connected to sql server")
 });
 
 
