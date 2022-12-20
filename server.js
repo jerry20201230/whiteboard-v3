@@ -7,7 +7,7 @@ const io = new Server(server);
 const port = process.env.PORT || 3000;
 const mysql = require('mysql2');
 const session = require('express-session');
-const bodyParser = require('body-parser');
+
 const sql_Connect = mysql.createConnection({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
@@ -15,6 +15,8 @@ const sql_Connect = mysql.createConnection({
   port: process.env.MYSQLPORT,
   database: process.env.MYSQLDATABASE        
 });
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
@@ -37,7 +39,7 @@ app.get('/dist',(req,res) =>{
 sql_Connect.connect(function(err) {
  console.log(err?err:"connected to sql server")
 });
-app.post('/auth', bodyParser,function(request, response) {
+app.post('/auth',function(request, response) {
 	// Capture the input fields
  
 	let username = request.body.user.account;
