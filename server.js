@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000;
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
