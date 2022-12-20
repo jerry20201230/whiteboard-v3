@@ -22,10 +22,6 @@ app.get('/lib/health', (req, res) => {
 app.get('/dist',(req,res) =>{
   res.status(403).sendFile(__dirname + '/lib/block.html');
 })
-app.get('*', (req, res) => {
-  res.status(404).sendFile(__dirname + '/lib/404.html')
-})
-
 
 
 app.post('/auth', function(request, response) {
@@ -55,6 +51,12 @@ app.post('/auth', function(request, response) {
 		response.end();
 	}
 });
+app.get('*', (req, res) => {
+  res.status(404).sendFile(__dirname + '/lib/404.html')
+})
+
+
+
 
 
 var user = {
