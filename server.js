@@ -113,6 +113,6 @@ con.connect(function(err) {
 
 
 
-server.listen(port, () => {
+server.listen(port,'0.0.0.0', () => {
   console.log(`running on ${__dirname}:${port}`);
 });
