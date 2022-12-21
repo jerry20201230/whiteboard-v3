@@ -94,7 +94,7 @@
 
     <div id="login-container">
 
-        <div id="login-dialog" class="login-dialog" action="/auth" method="post">
+        <div id="login-dialog" class="login-dialog">
             <h1>登入</h1>
             <p>登入以使用 Whiteboard的所有功能<br>
                 如果沒有帳號，請先註冊</p>
@@ -120,12 +120,48 @@
 
                 <button class="btn btn-primary" id="login_btn" type="submit">登入</button>
                 <span class="select-none">&nbsp;</span>
-                <button class="btn btn-secondary" id="">註冊</button>
+                <button class="btn btn-secondary toggle-btn">註冊</button>
                 <span class="select-none">&nbsp;</span>
                 <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
 
             </p>
         </div>
+
+
+        <div id="sign-up-dialog" class="login-dialog">
+            <h1>註冊</h1>
+            <p>註冊新的 WhiteBoard帳號<br>
+                如果已經有帳號，請登入</p>
+            <p>
+            <div class="form-check mb-3">
+                <label for="sign_up_user_account">你的使用者帳號:</label>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
+                        id="sign_up_user_account">
+                </div>
+
+                <div class="invalid-feedback" id="signup_user_account_alert" style="display: none;"></div>
+            </div>
+            <div class="form-check mb-3">
+                <label for="sign_up_user_password">使用者密碼:</label><input type="password" class="form-control" placeholder="使用者密碼"
+                    id="sign_up_user_password">
+                <div class="invalid-feedback" id="signup_user_password_alert" style="display: none;"></div>
+
+            </div>
+            <div class="alert alert-danger" id="signup_error_alert" style="display: none;"></div>
+            <p class="d-flex">
+
+                <button class="btn btn-primary" id="signup_btn">註冊</button>
+                <span class="select-none">&nbsp;</span>
+                <button class="btn btn-secondary toggle-btn">登入</button>
+                <span class="select-none">&nbsp;</span>
+                <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
+            </p>
+        </div>
+
+
+
 
 
 
@@ -351,6 +387,18 @@
                 escCallBack: "dismiss",
                 enterCallBack: ""
             })
+        })
+
+        $(".toggle-btn").on("click",function(e){
+            if(status == "login"){
+                status == "signup"
+                $("#login-dialog").hide()
+                $("#sign-up-dialog").show()
+            }else if(status == "signup"){
+                status == "login" 
+                $("#sign-up-dialog").hide()
+                $("#login-dialog").show()
+            }
         })
 
         /*     socket.on("loginStatus", e => {
