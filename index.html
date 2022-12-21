@@ -960,6 +960,12 @@
         });
 
         $("#logout-btn").on("click",function(e){
+            BS_Toast.show({
+                            icon: 'bi-box-arrow-right',
+                            iconClass: '',
+                            title: '登出',
+                            body: `正在準備登出...<br>`
+                        })
             fetch("/account/logout",{
                 method:"POST",
                 headers: {
@@ -972,6 +978,7 @@
             .then(res=>res.json())
             .then(r=>{
                 if(r.code === "success"){
+
                     location.reload()
                 }else{
                     alert("error!")
