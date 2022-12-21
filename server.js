@@ -93,7 +93,7 @@ app.post('/auth', function (request, response) {
         // Authenticate the user
         request.session.loggedin = true;
         request.session.username = username;
-        request.session.nickname = results.user_nickname
+        request.session.nickname = results[0].user_nickname
         console.log(results.user_nickname)
         console.log(request.session.nickname)
         response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
