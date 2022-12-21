@@ -88,14 +88,13 @@ app.post('/auth', function (request, response) {
       // If there is an issue with the query, output the error
       if (error) throw error;
       // If the account exists
-      console.log(results)
+
       if (results.length > 0) {
         // Authenticate the user
         request.session.loggedin = true;
         request.session.username = username;
         request.session.nickname = results[0].user_nickname
-        console.log(results.user_nickname)
-        console.log(request.session.nickname)
+
         response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
       } else {
         response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));

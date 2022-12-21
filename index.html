@@ -378,8 +378,8 @@
                         常用
                     </h3>
                 </button>
-                <button class="nav-link" id="v-pills-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile"
-                    type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                <button class="nav-link" id="v-pills-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-3"
+                    type="button" role="tab" aria-controls="v-pills-3" aria-selected="false">
                     <h3>
                         <center>
 
@@ -472,7 +472,23 @@
                     </div>
 
                 </div>
-                <div class="tab-pane fade" id="v-pills-2" role="tabpanel" <h3>設定</h3>
+                <div class="tab-pane fade" id="v-pills-2" role="tabpanel">
+
+                 <h3>設定</h3>
+                </div>
+
+                <div class="tab-pane fade" id="v-pills-2" role="tabpanel">
+
+                    <h3>帳號</h3>
+
+                    <div class="d-flex">
+                        <div id="person-icon">
+                            <h3><i class="bi bi-person-fill"></i></h3>
+                        </div>
+                        <div id="person-data">
+                            <span id="user-nickname">訪客</span>
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -677,10 +693,10 @@
 
         window.setup = function (par) {
             BS_Toast.show({
-                icon: 'bi-bell',
+                icon: 'bi-person-fill',
                 iconClass: '',
                 title: '身分驗證中...',
-                body: `歡迎使用 WhiteBoard v3<br>正在確認資訊，請稍候片刻...`
+                body: `正在確認身分資料，請稍候片刻...`
             })
 
             fetch('/account/check', {
@@ -697,14 +713,15 @@
                     console.log(data)
                     if (data.login) {
                         BS_Toast.show({
-                            icon: 'bi-check-circle',
+                            icon: 'bi-person-fill-check',
                             iconClass: 'text-success',
                             title: '歡迎使用',
-                            body: `${data.nickname},歡迎使用 WhiteBoard v3<br>`
+                            body: `${data.nickname} , 歡迎使用 WhiteBoard v3<br>`
                         })
+                        $("#user-nickname").text(data.nickname)
                     }else{
                         BS_Toast.show({
-                            icon: 'bi-x-circle',
+                            icon: 'bi-person-fill-x',
                             iconClass: 'text-danger',
                             title: '身分驗證錯誤',
                             body: `請重新登入，以使用 WhiteBoard v3`
