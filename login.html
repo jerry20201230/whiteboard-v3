@@ -314,7 +314,7 @@
                     
                     .then((res) => {
                       if(res.text().includes("[login failed]")){
-                        alert(res.text())
+                        $("#login_error_alert").text(res.text()).show()
                       }
                     });
             }

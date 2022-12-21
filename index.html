@@ -674,21 +674,21 @@
 
 
         window.setup = function (par) {
-
-            if (
+            BS_Toast.show({
+                    icon:'bi-bell',
+                    iconClass:'',
+                    title:'歡迎使用',
+                    body:`歡迎使用 WhiteBoard v3`
+                })
+            /*if (
                 (localStorage.getItem("logined") == "false" || localStorage.getItem("logined") == undefined || localStorage.getItem("logined") == null)
                 &&
                 (localStorage.getItem("login_taken") == undefined || localStorage.getItem("login_taken") == null)) {
 
                 location = "/login"
             }else{
-                BS_Toast.show({
-                    icon:'bi-bell',
-                    iconClass:'',
-                    title:'歡迎使用',
-                    body:`歡迎使用 WhiteBoard v3`
-                })
-            }
+                
+            }*/
         }
 
 
