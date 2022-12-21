@@ -34,8 +34,19 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 
 app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/index.html');
+ 
+  if (request.session.loggedin) {
+		// Output username 
+    res.sendFile(__dirname + '/index.html');
+
+	} else {
+		// Not logged in
+    res.sendFile(__dirname + '/login.html');
+	}
+	response.end();
 });
+
+
 app.get('/login', (req, res) => {
   res.sendFile(__dirname + '/login.html');
 });
