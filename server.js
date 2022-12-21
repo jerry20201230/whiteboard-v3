@@ -75,7 +75,7 @@ app.post('/auth',function(request, response) {
 				// Redirect to home page
 				response.redirect('/');
 			} else {
-				response.send('Incorrect Username and/or Password!');
+				response.send('[login failed] 帳號或密碼錯誤');
 			}			
       
 			response.end();

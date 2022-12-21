@@ -299,9 +299,6 @@
                 status = "logining"
                 $("#login_error_alert").text("").hide()
 
-
-
-
                 fetch('/auth', {
                     method: 'POST',
                     headers: {
@@ -314,9 +311,11 @@
                         }
                     })
                 })
-                    .then((response) => response.text())
-                    .then((text) => {
-                       alert(text)
+                    
+                    .then((res) => {
+                      if(res.text().includes("[login failed]")){
+                        alert(res.text())
+                      }
                     });
             }
         })
