@@ -57,8 +57,8 @@ app.post("/account/check", (req, res) => {
 })
 app.post("/account/logout", (req, res) => {
 
-  res.session.loggedin = false
-  res.send(JSON.stringify({"code":"success",login:res.session.loggedin}))
+  req.session.loggedin = false
+  res.send(JSON.stringify({"code":"success",login:req.session.loggedin}))
 })
 
 
