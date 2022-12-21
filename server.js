@@ -7,6 +7,7 @@ const io = new Server(server);
 const port = process.env.PORT || 3000;
 const mysql = require('mysql2');
 const session = require('express-session');
+const path = require("path")
 
 const sql_Connect = mysql.createConnection({
   host: process.env.MYSQLHOST,
@@ -23,7 +24,13 @@ app.use(session({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
+app.use(express.static(path.join(__dirname, 'static')));
 
 
 app.get('/', (req, res) => {
