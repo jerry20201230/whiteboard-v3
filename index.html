@@ -477,18 +477,20 @@
                  <h3>設定</h3>
                 </div>
 
-                <div class="tab-pane fade" id="v-pills-2" role="tabpanel">
+                <div class="tab-pane fade" id="v-pills-3" role="tabpanel">
 
                     <h3>帳號</h3>
 
                     <div class="d-flex">
                         <div id="person-icon">
-                            <h3><i class="bi bi-person-fill"></i></h3>
+                            <h1><i class="bi bi-person-fill"></i></h1>
                         </div>
                         <div id="person-data">
                             <span id="user-nickname">訪客</span>
                         </div>
                     </div>
+
+                    <button class="btn btn-primary" id="logout-btn">登出</button>
                 </div>
 
             </div>
@@ -957,6 +959,25 @@
             $("#nav-1-tab").click()
         });
 
+        $("#logout-btn").on("click",function(e){
+            fetch("/account/logout",{
+                method:"POST",
+                headers: {
+                        'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "auto":"never gonna give u up"
+                })
+            })
+            .then(res=>res.json())
+            .then(r=>{
+                if(r.code === "success"){
+                    location.reload()
+                }else{
+                    alert("error!")
+                }
+            })
+        })
 
         function _data(type, par, data) {
             if (type == "save") {
