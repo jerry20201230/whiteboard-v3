@@ -311,10 +311,14 @@
                         }
                     })
                 })
+                .then(res=>res.json())
                     
-                    .then((res) => {
-                      if(res.text().includes("[login failed]")){
-                        $("#login_error_alert").text(res.text()).show()
+                .then((json) => {
+                      if(json.code === "failed"){
+                        $("#login_error_alert").text(json.par.text).show()
+                      }else{
+                        localStorage.setItem("USER",json.par.user)
+                        location.href = "/"
                       }
                     });
             }

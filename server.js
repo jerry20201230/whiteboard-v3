@@ -46,9 +46,13 @@ app.get('/', (req, res) => {
 
 });
 
-
 app.get('/login', (req, res) => {
+  if (req.session.loggedin) {
+ res.sendFile(__dirname + '/index.html');
+  }else{
+   
   res.sendFile(__dirname + '/login.html');
+  }
 });
 app.get(/js|css|html/, (req, res) => {
   res.sendFile(__dirname + __filename)
@@ -84,9 +88,9 @@ app.post('/auth',function(request, response) {
 				request.session.loggedin = true;
 				request.session.username = username;
 				// Redirect to home page
-				response.redirect('/');
+				response.send(JSON.stringify({'code':'success','par':{'user':username}}));
 			} else {
-				response.send('[login failed] 帳號或密碼錯誤');
+				response.send(JSON.stringify({'code':'failed','par':{'text':'帳號或密碼輸入錯誤，或是尚未註冊成功。'}}));
 			}			
       
 			response.end();
