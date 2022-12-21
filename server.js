@@ -49,6 +49,7 @@ app.get('/', (req, res) => {
 
 app.post("/account/check", (req, res) => {
   if (req.session.loggedin) {
+    console.log({ "code": "success", "login": true, "account": req.session.username, "nickname": req.session.nickname })
     res.send(JSON.stringify({ "code": "success", "login": true, "account": req.session.username, "nickname": req.session.nickname }))
   } else {
     res.send(JSON.stringify({ "code": "success", "login": false, "account": null }))
