@@ -46,14 +46,19 @@ app.get('/', (req, res) => {
 
 });
 
-app.get('/login', (req, res) => {
+
+app.post("/account/check",(req,res)=>{
   if (req.session.loggedin) {
- res.sendFile(__dirname + '/index.html');
+    res.send(JSON.stringify({"code":"success","login":true,"account":req.session.username}))
   }else{
-   
-  res.sendFile(__dirname + '/login.html');
+    res.send(JSON.stringify({"code":"success","login":false,"account":null}))
   }
-});
+})
+app.post("/account/logout",(req,res)=>{
+
+})
+
+
 app.get(/js|css|html/, (req, res) => {
   res.sendFile(__dirname + __filename)
 })

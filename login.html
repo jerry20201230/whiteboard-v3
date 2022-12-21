@@ -311,15 +311,21 @@
                         }
                     })
                 })
-                .then(res=>res.json())
-                    
-                .then((json) => {
-                      if(json.code === "failed"){
-                        $("#login_error_alert").text(json.par.text).show()
-                      }else{
-                        localStorage.setItem("USER",json.par.user)
-                        location.href = "/"
-                      }
+                    .then(res => res.json())
+
+                    .then((json) => {
+                        if (json.code === "failed") {
+                            $("#login_error_alert").text(json.par.text).show();
+                            
+
+                            $("#user_account").removeAttr("disabled")
+                            $("#user_password").removeAttr("disabled");
+                            $("#login_btn").removeAttr("disabled").html("登入" )
+
+                        } else {
+                            localStorage.setItem("USER", json.par.user)
+                            location.href = "/"
+                        }
                     });
             }
         })
