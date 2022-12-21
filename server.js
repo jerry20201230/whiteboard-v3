@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'static')));
 
 app.get('/', (req, res) => {
  
-  if (request.session.loggedin) {
+  if (req.session.loggedin) {
 		// Output username 
     res.sendFile(__dirname + '/index.html');
 
@@ -43,7 +43,7 @@ app.get('/', (req, res) => {
 		// Not logged in
     res.sendFile(__dirname + '/login.html');
 	}
-	response.end();
+
 });
 
 
