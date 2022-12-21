@@ -94,7 +94,8 @@ app.post('/auth', function (request, response) {
         request.session.loggedin = true;
         request.session.username = username;
         request.session.nickname = results.user_nickname
-        // Redirect to home page
+        console.log(results.user_nickname)
+        console.log(request.session.nickname)
         response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
       } else {
         response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
