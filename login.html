@@ -192,7 +192,8 @@
     </div>
 
     <!--<script src="/socket.io/socket.io.js"></script>
-    --><script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
+    -->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.js'
         integrity='sha512-CX7sDOp7UTAq+i1FYIlf9Uo27x4os+kGeoT7rgwvY+4dmjqV0IuE/Bl5hVsjnQPQiTOhAX1O2r2j5bjsFBvv/A=='
         crossorigin='anonymous'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.1/js/bootstrap.js'
@@ -270,7 +271,7 @@
                 $("#signup_nickname").addClass("is-invalid")
             } else {
 
-               // socket.emit("signup", { 'nickname': $("#signup_nickname").val(), 'id': socket.id })
+                // socket.emit("signup", { 'nickname': $("#signup_nickname").val(), 'id': socket.id })
             }
         })
 
@@ -294,7 +295,7 @@
 
                 $("#user_account").attr("disabled", true)
                 $("#user_password").attr("disabled", true);
-              //  socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
+                //  socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
                 status = "logining"
                 $("#login_error_alert").text("").hide()
 
@@ -309,12 +310,14 @@
                     body: JSON.stringify({
                         user: {
                             account: $("#user_account").val(),
-                            pass:$("#user_password").val()
+                            pass: $("#user_password").val()
                         }
                     })
                 })
-                .then(data => console.log(data))
-                .finally(data => console.log(data));
+                    .then((response) => response.text())
+                    .then((text) => {
+                       alert(text)
+                    });
             }
         })
         $("#user_account").on("focus", function (e) {
@@ -346,26 +349,26 @@
             })
         })
 
-   /*     socket.on("loginStatus", e => {
-            if (e.status == 'success') {
-
-                localStorage.setItem("logined", "true")
-                $("#login_error_alert").text("").hide()
-                localStorage.setItem("login_taken", e.tk)
-                localStorage.setItem("login_un", e.un)
-                location = "/"
-            } else {
-
-                $("#login_error_alert").text("帳號或密碼錯誤").show()
-
-
-                $("#user_account").removeAttr("disabled")
-                $("#user_password").removeAttr("disabled");
-
-                $("#login_btn").removeAttr("disabled").html("登入")
-            }
-        })
-*/
+        /*     socket.on("loginStatus", e => {
+                 if (e.status == 'success') {
+     
+                     localStorage.setItem("logined", "true")
+                     $("#login_error_alert").text("").hide()
+                     localStorage.setItem("login_taken", e.tk)
+                     localStorage.setItem("login_un", e.un)
+                     location = "/"
+                 } else {
+     
+                     $("#login_error_alert").text("帳號或密碼錯誤").show()
+     
+     
+                     $("#user_account").removeAttr("disabled")
+                     $("#user_password").removeAttr("disabled");
+     
+                     $("#login_btn").removeAttr("disabled").html("登入")
+                 }
+             })
+     */
     </script>
 
 </body>
