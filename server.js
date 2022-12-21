@@ -49,7 +49,7 @@ app.get('/', (req, res) => {
 
 app.post("/account/check",(req,res)=>{
   if (req.session.loggedin) {
-    res.send(JSON.stringify({"code":"success","login":true,"account":req.session.username}))
+    res.send(JSON.stringify({"code":"success","login":true,"account":req.session.username,"nickname":req.session.nickname}))
   }else{
     res.send(JSON.stringify({"code":"success","login":false,"account":null}))
   }
@@ -92,6 +92,7 @@ app.post('/auth',function(request, response) {
 				// Authenticate the user
 				request.session.loggedin = true;
 				request.session.username = username;
+        request.session.nickname = results.user_nickname
 				// Redirect to home page
 				response.send(JSON.stringify({'code':'success','par':{'user':username}}));
 			} else {

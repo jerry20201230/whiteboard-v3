@@ -233,13 +233,17 @@
                             <button class="btn btn-primary" onclick="_fabric('itext',$('#itext-input').val())"><i
                                     class="bi bi-check-circle"></i></button>
                         </div>
-                  
+
                         <div class="d-flex mt-1">
                             <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-bold"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-italic"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-strikethrough"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm"><i class="bi bi-type-underline"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i
+                                        class="bi bi-type-bold"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i
+                                        class="bi bi-type-italic"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i
+                                        class="bi bi-type-strikethrough"></i></button>
+                                <button type="button" class="btn btn-primary btn-sm"><i
+                                        class="bi bi-type-underline"></i></button>
                             </div>
                         </div>
                     </div>
@@ -360,9 +364,8 @@
         </div>
         <div class="offcanvas-body d-flex">
             <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                <button class="nav-link active" id="v-pills-1-tab" data-bs-toggle="pill"
-                    data-bs-target="#v-pills-1" type="button" role="tab" aria-controls="v-pills-1"
-                    aria-selected="true">
+                <button class="nav-link active" id="v-pills-1-tab" data-bs-toggle="pill" data-bs-target="#v-pills-1"
+                    type="button" role="tab" aria-controls="v-pills-1" aria-selected="true">
                     <h3>
                         <center>
                             <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
@@ -375,24 +378,24 @@
                         常用
                     </h3>
                 </button>
-                <button class="nav-link" id="v-pills-3-tab" data-bs-toggle="pill"
-                data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile"
-                aria-selected="false">
-                <h3>
-                    <center>
+                <button class="nav-link" id="v-pills-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile"
+                    type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">
+                    <h3>
+                        <center>
 
-                        <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
-                            <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
-                            <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
-                          </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
+                                class="bi bi-person-circle" viewBox="0 0 16 16">
+                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
+                                <path fill-rule="evenodd"
+                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
+                            </svg>
 
-                    </center>
-                    帳號
-                </h3>
-            </button>
-                <button class="nav-link" id="v-pills-2-tab" data-bs-toggle="pill"
-                    data-bs-target="#v-pills-2" type="button" role="tab" aria-controls="v-pills-2"
-                    aria-selected="false">
+                        </center>
+                        帳號
+                    </h3>
+                </button>
+                <button class="nav-link" id="v-pills-2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-2"
+                    type="button" role="tab" aria-controls="v-pills-2" aria-selected="false">
                     <h3>
                         <center>
 
@@ -408,7 +411,7 @@
                         設定
                     </h3>
                 </button>
-                
+
             </div>
             <div class="tab-content" id="v-pills-tabContent">
                 <div class="tab-pane fade show active" id="v-pills-1" role="tabpanel"
@@ -469,8 +472,7 @@
                     </div>
 
                 </div>
-                <div class="tab-pane fade" id="v-pills-2" role="tabpanel" 
-                    <h3>設定</h3>
+                <div class="tab-pane fade" id="v-pills-2" role="tabpanel" <h3>設定</h3>
                 </div>
 
             </div>
@@ -566,9 +568,9 @@
                             "month": mont,
                             "date": date,
                             "day": day,
-                            "hour":   hour>10 ? hour : '0'+hour,
-                            "minute": mins>10 ? mins : '0'+mins,
-                            "second": secs>10 ? secs : '0'+secs
+                            "hour": hour > 10 ? hour : '0' + hour,
+                            "minute": mins > 10 ? mins : '0' + mins,
+                            "second": secs > 10 ? secs : '0' + secs
                         }
 
                         return par
@@ -675,24 +677,39 @@
 
         window.setup = function (par) {
             BS_Toast.show({
-                    icon:'bi-bell',
-                    iconClass:'',
-                    title:'歡迎使用',
-                    body:`歡迎使用 WhiteBoard v3`
-                })
+                icon: 'bi-bell',
+                iconClass: '',
+                title: '身分驗證中...',
+                body: `歡迎使用 WhiteBoard v3<br>正在確認資訊，請稍候片刻...`
+            })
 
-                fetch('/account/check',{
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        "A":"a"
-                    })
+            fetch('/account/check', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "A": "a"
                 })
-                .then(res=>res.json())
-                .then(data=>{
+            })
+                .then(res => res.json())
+                .then(data => {
                     console.log(data)
+                    if (data.login) {
+                        BS_Toast.show({
+                            icon: 'bi-check-circle',
+                            iconClass: 'text-success',
+                            title: '歡迎使用',
+                            body: `${data.nickname} 歡迎使用 WhiteBoard v3<br>`
+                        })
+                    }else{
+                        BS_Toast.show({
+                            icon: 'bi-x-circle',
+                            iconClass: 'text-danger',
+                            title: '身分驗證錯誤',
+                            body: `請重新登入，以使用 WhiteBoard v3`
+                        }) 
+                    }
                 })
             /*if (
                 (localStorage.getItem("logined") == "false" || localStorage.getItem("logined") == undefined || localStorage.getItem("logined") == null)
