@@ -371,13 +371,17 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        uid:$("#sign_up_user_account").val(),
+                        uid:'@'+$("#sign_up_user_account").val(),
                         pass:$("#sign_up_user_password").val(),
                         nickname:$("#signup_user_nickname").val()
                     })
                 })
                     .then(res => res.json())
-                    .then(data => console.log(data))
+                    .then(data => {
+                        if(data.code === "failed"){
+                            $("#signup_error_alert").text(data.par.text).show()
+                        }
+                    })
             }
         })
         $("#signup_user_nickname").on("input",function(e){
