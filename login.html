@@ -352,7 +352,7 @@
         }
         $("#signup_btn").on("click", function (e) {
             if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
-                $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入")
+                $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入").show()
                 console.log("true")
             } else {
                 fetch('/account/signup', {
