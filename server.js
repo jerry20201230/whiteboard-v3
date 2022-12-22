@@ -135,6 +135,30 @@ app.post("/account/signup/checkid", (req, res) => {
 
 })
 
+
+app.post("/account/signup", (req, res) => {
+//判斷ID存在與否
+  sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
+
+    if (err) throw err
+    if (results.length !== 0) {res.send(JSON.stringify({"code":"failed","par":{"uid_used":true},"text":"這個ID已經被註冊過，請使用其他ID"}));res.end();return;}
+
+  })
+
+  sql_Connect.query(
+    `INSERT INTO userData(user_id,user_nickname,user_password)
+     VALUES(${req.body.uid},${req.body.nickname},${req.body.pass})`, function (err, results, fields) {
+
+    if (err) throw err
+   
+
+  })
+
+})
+
+
+
+
 app.get('*', (req, res) => {
   res.status(404).sendFile(__dirname + '/lib/404.html')
 })

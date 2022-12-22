@@ -106,7 +106,7 @@
         <p>
 
             <div class="form-check mb-3">
-                <label for="signup_user_nickname">你的暱稱:</label><input type="password" class="form-control"
+                <label for="signup_user_nickname">你的暱稱:</label><input type="text    " class="form-control"
                     placeholder="暱稱" id="signup_user_nickname">
                 <div class="invalid-feedback" id="signup_user_nickname_alert" style="display: none;"></div>
     
@@ -371,13 +371,26 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        userid:$("#sign_up_user_account").val(),
+                        uid:$("#sign_up_user_account").val(),
                         pass:$("#sign_up_user_password").val(),
                         nickname:$("#signup_user_nickname").val()
                     })
                 })
                     .then(res => res.json())
+                    .then(data => console.log(data))
             }
+        })
+        $("#signup_user_nickname").on("input",function(e){
+            $("#signup_error_alert").hide()
+        })
+        $("##sign_up_user_account").on("input",function(e){
+            $("#signup_error_alert").hide()
+        })        
+        $("#sign_up_user_password").on("input",function(e){
+            $("#signup_error_alert").hide()
+        })        
+        $("#sign_up_user_password_2").on("input",function(e){
+            $("#signup_error_alert").hide()
         })
         $(".toggle-btn").on("click", function (e) {
             if (status == "login") {
