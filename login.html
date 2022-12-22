@@ -24,8 +24,11 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 60%;
-            max-width: 500px;
+            
+            max-width: 500px !important;
+            min-width: 150px;
+            width: 50vw;
+            
 
             transform: translate(-50%, -50%);
             padding: 15px;
@@ -88,7 +91,7 @@
                 <span class="select-none">&nbsp;</span>
                 <button class="btn btn-secondary toggle-btn-1">註冊</button>
                 <span class="select-none">&nbsp;</span>
-                <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
+                <button class="btn btn-link skip_login_btn">訪客登入</button>
 
             </p>
         </div>
@@ -124,7 +127,7 @@
                 <span class="select-none">&nbsp;</span>
                 <button class="btn btn-secondary toggle-btn-2">登入</button>
                 <span class="select-none">&nbsp;</span>
-                <button class="btn btn-link" id="skip_login_btn">不登入就繼續</button>
+                <button class="btn btn-link skip_login_btn">訪客登入</button>
             </p>
         </div>
     </div>
@@ -296,7 +299,7 @@
         });
 
 
-        $("#skip_login_btn").on("click", function (e) {
+        $(".skip_login_btn").on("click", function (e) {
             PopupAlert({
                 title: "確定繼續?",
                 body: "你將使用訪客身分登入，部分功能將受到限制",
