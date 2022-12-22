@@ -105,7 +105,7 @@ app.post('/auth', function (request, response) {
       response.end();
     });
   } else {
-    response.send('Please enter Username and Password!');
+    response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
     response.end();
   }
 });
