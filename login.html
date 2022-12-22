@@ -284,7 +284,6 @@
                             status = "login"
 
                         } else {
-                            localStorage.setItem("USER", json.par.user)
                             location.href = "/"
                         }
                     });
@@ -380,7 +379,7 @@
                         'Content-Type': 'application/json'
                     }
                 }).then(res=>res.json())
-                .then(data=>$("#sign_up_user_account").val(data))
+                .then(data=>$("#sign_up_user_account").val(data.par.uid))
             } else if (status == "signup") {
                 status = "login"
                 $("#sign-up-dialog").hide()
