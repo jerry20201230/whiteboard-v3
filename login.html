@@ -380,7 +380,7 @@
                     .then(data => {
                         console.log(data)
                         if(data.code === "failed"){
-                            $("#signup_error_alert").text(data.par.text).show()
+                            $("#signup_error_alert").text(data.text).show()
                         }
                     })
             }
