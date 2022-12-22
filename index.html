@@ -721,6 +721,11 @@
                             body: `${data.nickname} , 歡迎使用 WhiteBoard v3<br>`
                         })
                         $("#user-nickname").text(data.nickname)
+                        if(data.account === "@admin"){
+                            $("#person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
+                        }else if(data.account === "@guest"){
+                            $("#person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                        }
                     }else{
                         BS_Toast.show({
                             icon: 'bi-person-fill-x',
