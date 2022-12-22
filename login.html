@@ -104,6 +104,13 @@
         <p>註冊新的 WhiteBoard帳號<br>
             如果已經有帳號，請登入</p>
         <p>
+
+            <div class="form-check mb-3">
+                <label for="signup_user_nickname">你的暱稱:</label><input type="password" class="form-control"
+                    placeholder="暱稱" id="signup_user_nickname">
+                <div class="invalid-feedback" id="signup_user_nickname_alert" style="display: none;"></div>
+    
+            </div>
         <div class="form-check mb-3">
             <label for="sign_up_user_account">你的使用者帳號:</label>
 
@@ -345,7 +352,7 @@
                         $("#login_btn").removeAttr("disabled").html("登入")
 
                     } else {
-                        localStorage.setItem("USER", json.par.user)
+              
                         location.href = "/"
                     }
                 });
@@ -353,8 +360,11 @@
         $("#signup_btn").on("click", function (e) {
             if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
                 $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入").show()
-                console.log("true")
-            } else {
+            }
+            else if(IfStrIsBlank($("#sign_up_user_password").val()) ||  $("#sign_up_user_password").val().split("").length>30  || $("#sign_up_user_password").val().split("").length<6){
+                $("#signup_error_alert").text("密碼需在6到30字之間，建議包含特殊符號以提升安全性").show()
+            }
+            else {
                 fetch('/account/signup', {
                     method: 'POST',
                     headers: {
@@ -362,7 +372,8 @@
                     },
                     body: JSON.stringify({
                         userid:$("#sign_up_user_account").val(),
-                        pass:$("#sign_up_user_password").val()
+                        pass:$("#sign_up_user_password").val(),
+                        nickname:$("#signup_user_nickname").val()
                     })
                 })
                     .then(res => res.json())
@@ -408,6 +419,21 @@
                  }
              })
      */
+
+     function IfStrIsBlank(str) {
+            let _arr = str.split(" "),
+                _s;
+            for (i = 0; i < _arr.length; i++) {
+
+                if (_arr[i] !== " " && _arr[i] !== "") {
+
+
+                    return false
+                }
+            }
+
+            return true
+        }
     </script>
 
 </body>
