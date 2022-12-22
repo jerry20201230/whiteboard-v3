@@ -114,7 +114,7 @@ app.post("/account/signup/getid", (req, res) => {
   var num = getRandomInt(100000, 999999),
       result = 1;
   while (result == 0) {
-    sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', "user-" + num, function (err, results, fields) {
+    sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', "@user-" + num, function (err, results, fields) {
 
       if (err) throw err
       if (results.length == 0) { result = 0 }
@@ -122,7 +122,7 @@ app.post("/account/signup/getid", (req, res) => {
 
     })
   }
-  res.send(JSON.stringify({"code":"success","par":{"uid":"@user-"+num}}))
+  res.send(JSON.stringify({"code":"success","par":{"uid":"user-"+num}}))
 })
 app.post("/account/signup/checkid", (req, res) => {
   sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
