@@ -24,15 +24,15 @@
             position: absolute;
             top: 50%;
             left: 50%;
-            
+
             max-width: 500px !important;
             min-width: 150px;
             width: 50vw;
-            
+
 
             transform: translate(-50%, -50%);
             padding: 15px;
-    
+
             transition: box-shadow 1s;
 
         }
@@ -63,73 +63,73 @@
 <body onload="window.setup()">
 
 
-        <div id="login-dialog" class="login-dialog">
-            <h1>登入</h1>
-            <p>登入以使用 Whiteboard的所有功能<br>
-                如果沒有帳號，請先註冊</p>
-            <p>
-            <div class="form-check mb-3">
-                <label for="user_account">使用者帳號:</label>
+    <div id="login-dialog" class="login-dialog">
+        <h1>登入</h1>
+        <p>登入以使用 Whiteboard的所有功能<br>
+            如果沒有帳號，請先註冊</p>
+        <p>
+        <div class="form-check mb-3">
+            <label for="user_account">使用者帳號:</label>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
-                        id="user_account">
-                </div>
-
-                <div class="invalid-feedback" id="login_user_account_alert" style="display: none;"></div>
+            <div class="input-group mb-3">
+                <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
+                    id="user_account">
             </div>
-            <div class="form-check mb-3">
-                <label for="user_password">使用者密碼:</label><input type="password" class="form-control" placeholder="使用者密碼"
-                    id="user_password">
-                <span class="badge bg-danger" id="login_user_password_alert" style="display: none;"></span>
 
-            </div>
-            <div class="alert alert-danger" id="login_error_alert" style="display: none;"></div>
-            <p class="d-flex">
-
-                <button class="btn btn-primary" id="login_btn" type="submit">登入</button>
-                <span class="select-none">&nbsp;</span>
-                <button class="btn btn-secondary toggle-btn-1">註冊</button>
-                <span class="select-none">&nbsp;</span>
-                <button class="btn btn-link skip_login_btn">訪客登入</button>
-
-            </p>
+            <div class="invalid-feedback" id="login_user_account_alert" style="display: none;"></div>
         </div>
+        <div class="form-check mb-3">
+            <label for="user_password">使用者密碼:</label><input type="password" class="form-control" placeholder="使用者密碼"
+                id="user_password">
+            <span class="badge bg-danger" id="login_user_password_alert" style="display: none;"></span>
 
-
-
-
-        <div id="sign-up-dialog" class="login-dialog" style="display: none;">
-            <h1>註冊</h1>
-            <p>註冊新的 WhiteBoard帳號<br>
-                如果已經有帳號，請登入</p>
-            <p>
-            <div class="form-check mb-3">
-                <label for="sign_up_user_account">你的使用者帳號:</label>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
-                        id="sign_up_user_account">
-                </div>
-
-                <div class="invalid-feedback" id="signup_user_account_alert" style="display: none;"></div>
-            </div>
-            <div class="form-check mb-3">
-                <label for="sign_up_user_password">使用者密碼:</label><input type="password" class="form-control" placeholder="使用者密碼"
-                    id="sign_up_user_password">
-                <div class="invalid-feedback" id="signup_user_password_alert" style="display: none;"></div>
-
-            </div>
-            <div class="alert alert-danger" id="signup_error_alert" style="display: none;"></div>
-            <p class="d-flex">
-
-                <button class="btn btn-primary" id="signup_btn">註冊</button>
-                <span class="select-none">&nbsp;</span>
-                <button class="btn btn-secondary toggle-btn-2">登入</button>
-                <span class="select-none">&nbsp;</span>
-                <button class="btn btn-link skip_login_btn">訪客登入</button>
-            </p>
         </div>
+        <div class="alert alert-danger" id="login_error_alert" style="display: none;"></div>
+        <p class="d-flex">
+
+            <button class="btn btn-primary" id="login_btn" type="submit">登入</button>
+            <span class="select-none">&nbsp;</span>
+            <button class="btn btn-secondary toggle-btn-1">註冊</button>
+            <span class="select-none">&nbsp;</span>
+            <button class="btn btn-link skip_login_btn">訪客登入</button>
+
+        </p>
+    </div>
+
+
+
+
+    <div id="sign-up-dialog" class="login-dialog" style="display: none;">
+        <h1>註冊</h1>
+        <p>註冊新的 WhiteBoard帳號<br>
+            如果已經有帳號，請登入</p>
+        <p>
+        <div class="form-check mb-3">
+            <label for="sign_up_user_account">你的使用者帳號:</label>
+
+            <div class="input-group mb-3">
+                <span class="input-group-text">@</span><input type="text" class="form-control" placeholder="使用者帳號"
+                    id="sign_up_user_account">
+            </div>
+
+            <div class="invalid-feedback" id="signup_user_account_alert" style="display: none;"></div>
+        </div>
+        <div class="form-check mb-3">
+            <label for="sign_up_user_password">使用者密碼:</label><input type="password" class="form-control"
+                placeholder="使用者密碼" id="sign_up_user_password">
+            <div class="invalid-feedback" id="signup_user_password_alert" style="display: none;"></div>
+
+        </div>
+        <div class="alert alert-danger" id="signup_error_alert" style="display: none;"></div>
+        <p class="d-flex">
+
+            <button class="btn btn-primary" id="signup_btn">註冊</button>
+            <span class="select-none">&nbsp;</span>
+            <button class="btn btn-secondary toggle-btn-2">登入</button>
+            <span class="select-none">&nbsp;</span>
+            <button class="btn btn-link skip_login_btn">訪客登入</button>
+        </p>
+    </div>
     </div>
 
 
@@ -251,7 +251,7 @@
                 status = "logining"
                 $("#login_error_alert").text("").hide()
 
-                fetch('/auth', {
+                fetch('/account/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -268,11 +268,11 @@
                     .then((json) => {
                         if (json.code === "failed") {
                             $("#login_error_alert").text(json.par.text).show();
-                            
+
 
                             $("#user_account").removeAttr("disabled")
                             $("#user_password").removeAttr("disabled");
-                            $("#login_btn").removeAttr("disabled").html("登入" )
+                            $("#login_btn").removeAttr("disabled").html("登入")
 
                         } else {
                             localStorage.setItem("USER", json.par.user)
@@ -304,29 +304,63 @@
                 title: "確定繼續?",
                 body: "你將使用訪客身分登入，部分功能將受到限制",
                 escCallBack: "dismiss",
-                enterCallBack: ""
+                enterCallBack: "guestlogin()"
             })
         })
 
-        $(".toggle-btn-1").on("click",function(e){
-            if(status == "login"){
-                status= "signup"
+        function guestlogin(e) {
+            $("#login_btn").attr("disabled", true).html("登入中 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+
+            $("#user_account").attr("disabled", true)
+            $("#user_password").attr("disabled", true);
+            fetch('/account/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    user: {
+                        account: "@guest",
+                        pass: "oPbcvakIQf-0-veuYAsAD"
+                    }
+                })
+            })
+                .then(res => res.json())
+
+                .then((json) => {
+                    if (json.code === "failed") {
+                        $("#login_error_alert").text(json.par.text).show();
+
+
+                        $("#user_account").removeAttr("disabled")
+                        $("#user_password").removeAttr("disabled");
+                        $("#login_btn").removeAttr("disabled").html("登入")
+
+                    } else {
+                        localStorage.setItem("USER", json.par.user)
+                        location.href = "/"
+                    }
+                });
+        }
+        $(".toggle-btn-1").on("click", function (e) {
+            if (status == "login") {
+                status = "signup"
                 $("#login-dialog").hide()
                 $("#sign-up-dialog").show()
-            }else if(status == "signup"){
-                status = "login" 
+            } else if (status == "signup") {
+                status = "login"
                 $("#sign-up-dialog").hide()
                 $("#login-dialog").show()
             }
             console.log(status)
         })
-        $(".toggle-btn-2").on("click",function(e){
-            if(status == "login"){
+        $(".toggle-btn-2").on("click", function (e) {
+            if (status == "login") {
                 status = "signup"
                 $("#login-dialog").hide()
                 $("#sign-up-dialog").show()
-            }else if(status == "signup"){
-                status ="login" 
+            } else if (status == "signup") {
+                status = "login"
                 $("#sign-up-dialog").hide()
                 $("#login-dialog").show()
             }
