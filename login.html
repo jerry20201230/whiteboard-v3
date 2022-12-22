@@ -89,7 +89,7 @@
 
             <button class="btn btn-primary" id="login_btn" type="submit">登入</button>
             <span class="select-none">&nbsp;</span>
-            <button class="btn btn-secondary toggle-btn-1">註冊</button>
+            <button class="btn btn-secondary toggle-btn">註冊</button>
             <span class="select-none">&nbsp;</span>
             <button class="btn btn-link skip_login_btn">訪客登入</button>
 
@@ -131,7 +131,7 @@
 
             <button class="btn btn-primary" id="signup_btn">註冊</button>
             <span class="select-none">&nbsp;</span>
-            <button class="btn btn-secondary toggle-btn-2">登入</button>
+            <button class="btn btn-secondary toggle-btn">登入</button>
             <span class="select-none">&nbsp;</span>
             <button class="btn btn-link skip_login_btn">訪客登入</button>
         </p>
@@ -253,6 +253,7 @@
 
                 $("#user_account").attr("disabled", true)
                 $("#user_password").attr("disabled", true);
+                $(".toggle-btn").attr("disabled",true)
                 //  socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
                 status = "logining"
                 $("#login_error_alert").text("").hide()
@@ -278,7 +279,9 @@
 
                             $("#user_account").removeAttr("disabled")
                             $("#user_password").removeAttr("disabled");
+                            $(".toggle-btn").removeAttr("disabled")
                             $("#login_btn").removeAttr("disabled").html("登入")
+                            status = "login"
 
                         } else {
                             localStorage.setItem("USER", json.par.user)
@@ -351,6 +354,7 @@
         $("#signup_btn").on("click", function (e) {
             if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
                 $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入")
+                console.log("true")
             } else {
                 fetch('/account/signup', {
                     method: 'POST',
@@ -365,11 +369,18 @@
                     .then(res => res.json())
             }
         })
-        $(".toggle-btn-1").on("click", function (e) {
+        $(".toggle-btn").on("click", function (e) {
             if (status == "login") {
                 status = "signup"
                 $("#login-dialog").hide()
                 $("#sign-up-dialog").show()
+                fetch("/account/signup/getid",{
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }).then(res=>res.json())
+                .then(data=>$("#sign_up_user_account").val(data))
             } else if (status == "signup") {
                 status = "login"
                 $("#sign-up-dialog").hide()
@@ -377,18 +388,7 @@
             }
             console.log(status)
         })
-        $(".toggle-btn-2").on("click", function (e) {
-            if (status == "login") {
-                status = "signup"
-                $("#login-dialog").hide()
-                $("#sign-up-dialog").show()
-            } else if (status == "signup") {
-                status = "login"
-                $("#sign-up-dialog").hide()
-                $("#login-dialog").show()
-            }
-            console.log(status)
-        })
+
         /*     socket.on("loginStatus", e => {
                  if (e.status == 'success') {
      
