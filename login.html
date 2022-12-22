@@ -348,6 +348,23 @@
                     }
                 });
         }
+        $("#signup_btn").on("click", function (e) {
+            if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
+                $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入")
+            } else {
+                fetch('/account/signup', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        userid:$("#sign_up_user_account").val(),
+                        pass:$("#sign_up_user_password").val()
+                    })
+                })
+                    .then(res => res.json())
+            }
+        })
         $(".toggle-btn-1").on("click", function (e) {
             if (status == "login") {
                 status = "signup"

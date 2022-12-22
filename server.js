@@ -9,12 +9,15 @@ const mysql = require('mysql2');
 const session = require('express-session');
 const path = require("path")
 
-const sql_Connect = mysql.createConnection({
+var sql_Connect = mysql.createConnection({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
   password: process.env.MYSQLPASSWORD,
   port: process.env.MYSQLPORT,
   database: process.env.MYSQLDATABASE
+});
+sql_Connect.connect(function (err) {
+  console.log(err ? err : "connected to sql server")
 });
 
 app.use(session({
@@ -58,7 +61,7 @@ app.post("/account/check", (req, res) => {
 app.post("/account/logout", (req, res) => {
 
   req.session.loggedin = false
-  res.send(JSON.stringify({"code":"success",login:req.session.loggedin}))
+  res.send(JSON.stringify({ "code": "success", login: req.session.loggedin }))
 })
 
 
@@ -73,10 +76,6 @@ app.get('/dist', (req, res) => {
 })
 
 
-
-sql_Connect.connect(function (err) {
-  console.log(err ? err : "connected to sql server")
-});
 app.post('/account/login', function (request, response) {
   // Capture the input fields
 
@@ -109,19 +108,38 @@ app.post('/account/login', function (request, response) {
     response.end();
   }
 });
+
+
+app.post("/account/signup/getid", (req, res) => {
+  var num = getRandomInt(100000, 999999),
+      result = 1;
+  while (result == 0) {
+    sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', "@user-" + num, function (err, results, fields) {
+
+      if (err) throw err
+      if (results.length == 0) { result = 0 }
+      else { num = getRandomInt(100000, 999999) }
+
+    })
+  }
+  res.send(JSON.stringify({"code":"success","par":{"uid":"@user-"+num}}))
+})
+app.post("/account/signup/checkid", (req, res) => {
+  sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
+
+    if (err) throw err
+    if (results.length == 0) { res.send(JSON.stringify({"code":"success","par":{"used":false}})) }
+    else { res.send(JSON.stringify({"code":"success","par":{"used":true}})) }
+
+  })
+
+})
+
 app.get('*', (req, res) => {
   res.status(404).sendFile(__dirname + '/lib/404.html')
 })
 
 
-
-
-
-var user = {
-  IdList: ["@not_logged_in_user", "@admin"],
-  PassList: ["", "tgedqa123"],
-  TakenList: [101010, 0]
-}
 
 
 
@@ -154,36 +172,7 @@ io.on('connection', (socket) => {
     chatId++
   })
 
-  socket.on("loginData", (e) => {
-    console.log(e)
-    console.log(socket.id)
 
-    var status = false
-    var random = getRandomInt(100000, 999999);
-    var userIndex;
-    for (i = 0; i < user.IdList.length; i++) {
-
-      if (e.un === user.IdList[i] && e.up === user.PassList[i]) {
-        status = true;
-        userIndex = i;
-        break;
-      }
-    }
-
-    while (user.TakenList.includes(random)) {
-      random = getRandomInt(100000, 999999);
-    }
-
-    user.TakenList[userIndex] = random
-    if (status === true) {
-      io.to(socket.id).emit("loginStatus", { 'status': 'success', 'un': e.un, 'up': e.up, 'tk': random })
-    }
-    else {
-      io.to(socket.id).emit("loginStatus", { 'status': 'no_match_data', 'un': e.un, 'up': e.up, 'tk': random })
-    }
-
-
-  })
 });
 
 

@@ -722,9 +722,9 @@
                         })
                         $("#user-nickname").text(data.nickname)
                         if(data.account === "@admin"){
-                            $("#person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
+                            $("#person-icon").html(`<h1><i class="bi bi-person-fill-gear"></i></h1>`)
                         }else if(data.account === "@guest"){
-                            $("#person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                            $("#person-icon").html(`<h1><i class="bi bi-person-fill-lock"></i></h1>`)
                         }
                     }else{
                         BS_Toast.show({
