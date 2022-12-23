@@ -9,16 +9,13 @@ const mysql = require('mysql2');
 const session = require('express-session');
 const path = require("path")
 
-var sql_Connect = mysql.createPool({
+var sql_Connect = mysql.createConnection({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
   password: process.env.MYSQLPASSWORD,
   port: process.env.MYSQLPORT,
   database: process.env.MYSQLDATABASE,
 
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
 });
 sql_Connect.connect(function (err) {
   console.log(err ? err : "connected to sql server")
