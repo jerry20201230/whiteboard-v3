@@ -365,6 +365,13 @@
                 $("#signup_error_alert").text("密碼需在6到30字之間，建議包含特殊符號以提升安全性").show()
             }
             else {
+                $("#sign_up_user_account").attr("disabled",true)
+                $("#sign_up_user_password").attr("disabled",true)
+                $("#sign_up_user_password_2").attr("disabled",true)
+                $("#signup_user_nickname").attr("disabled",true)
+
+                $("#signup_btn").attr("disabled",true).html("登入中 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+
                 fetch('/account/signup', {
                     method: 'POST',
                     headers: {
