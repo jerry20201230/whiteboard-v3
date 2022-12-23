@@ -9,12 +9,16 @@ const mysql = require('mysql2');
 const session = require('express-session');
 const path = require("path")
 
-var sql_Connect = mysql.createConnection({
+var sql_Connect = mysql.createPool({
   host: process.env.MYSQLHOST,
   user: process.env.MYSQLUSER,
   password: process.env.MYSQLPASSWORD,
   port: process.env.MYSQLPORT,
-  database: process.env.MYSQLDATABASE
+  database: process.env.MYSQLDATABASE,
+
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 sql_Connect.connect(function (err) {
   console.log(err ? err : "connected to sql server")
@@ -141,7 +145,7 @@ app.post("/account/signup", (req, res) => {
   sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
 
     if (err) throw err
-    if (results.length !== 0) {res.send(JSON.stringify({"code":"failed","par":{"uid_used":true},"text":"這個ID已經被註冊過，請使用其他ID"}));res.end();return;}
+    if (results.length !== 0) {res.send(JSON.stringify({"code":"failed","par":{"uid_used":true,"text":"這個ID已經被註冊過，請使用其他ID"}}));res.end();return;}
 
   })
 
@@ -153,6 +157,8 @@ app.post("/account/signup", (req, res) => {
    
 
   })
+  res.send(JSON.stringify({"code":"success","par":{"uid_used":false,"text":`註冊成功，請記住你的ID(${req.body.uid})和密碼`}}))
+
 
 })
 
