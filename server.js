@@ -40,11 +40,11 @@ app.use(express.static(path.join(__dirname, 'static')));
 app.get('/', (req, res) => {
 
   if (req.session.loggedin) {
-    // Output username 
+    
     res.sendFile(__dirname + '/index.html');
 
   } else {
-    // Not logged in
+    
     res.sendFile(__dirname + '/login.html');
   }
 
@@ -60,7 +60,6 @@ app.post("/account/check", (req, res) => {
   }
 })
 app.post("/account/logout", (req, res) => {
-
   req.session.loggedin = false
   res.send(JSON.stringify({ "code": "success", login: req.session.loggedin }))
 })

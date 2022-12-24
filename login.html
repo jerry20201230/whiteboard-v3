@@ -370,7 +370,7 @@
                 $("#sign_up_user_password_2").attr("disabled",true)
                 $("#signup_user_nickname").attr("disabled",true)
 
-                $("#signup_btn").attr("disabled",true).html("登入中 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+                $("#signup_btn").attr("disabled",true).html("註冊中 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
                 fetch('/account/signup', {
                     method: 'POST',
@@ -388,6 +388,8 @@
                         console.log(data)
                         if(data.code === "failed"){
                             $("#signup_error_alert").text(data.par.text).show()
+                        }else{
+                            $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
                         }
                     })
             }
