@@ -105,12 +105,12 @@
             如果已經有帳號，請登入</p>
         <p>
 
-            <div class="form-check mb-3">
-                <label for="signup_user_nickname">你的暱稱:</label><input type="text    " class="form-control"
-                    placeholder="暱稱" id="signup_user_nickname">
-                <div class="invalid-feedback" id="signup_user_nickname_alert" style="display: none;"></div>
-    
-            </div>
+        <div class="form-check mb-3">
+            <label for="signup_user_nickname">你的暱稱:</label><input type="text    " class="form-control" placeholder="暱稱"
+                id="signup_user_nickname">
+            <div class="invalid-feedback" id="signup_user_nickname_alert" style="display: none;"></div>
+
+        </div>
         <div class="form-check mb-3">
             <label for="sign_up_user_account">你的使用者帳號:</label>
 
@@ -256,12 +256,13 @@
                 $("#user_account").addClass("is-invalid")
             } else {
 
-                $("#login_btn").attr("disabled", true).html("登入中 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+                $("#login_btn").attr("disabled", true).html("正在登入 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
+                $(".skip_login_btn").attr("disabled",true)
                 $("#user_account").attr("disabled", true)
                 $("#user_password").attr("disabled", true);
-                $(".toggle-btn").attr("disabled",true)
-                //  socket.emit("loginData", { 'un': '@' + $("#user_account").val(), 'up': $("#user_password").val() })
+                $(".toggle-btn").attr("disabled", true)
+
                 status = "logining"
                 $("#login_error_alert").text("").hide()
 
@@ -285,15 +286,26 @@
 
 
                             $("#user_account").removeAttr("disabled")
-                            $("#user_password").removeAttr("disabled");
+                            $("#user_password").removeAttr("disabled")
                             $(".toggle-btn").removeAttr("disabled")
+                            $(".skip_login_btn").removeAttr("disabled")
                             $("#login_btn").removeAttr("disabled").html("登入")
                             status = "login"
 
                         } else {
                             location.href = "/"
                         }
-                    });
+                    })
+
+                    .catch(error => {
+                        $("#login_error_alert").text("發生錯誤，暫時無法將你登入").show();
+                        $("#user_account").removeAttr("disabled")
+                        $("#user_password").removeAttr("disabled")
+                        $(".skip_login_btn").removeAttr("disabled")
+                        $(".toggle-btn").removeAttr("disabled")
+                        $("#login_btn").removeAttr("disabled").html("登入")
+                        status = "login"
+                    })
             }
         })
         $("#user_account").on("focus", function (e) {
@@ -324,7 +336,7 @@
         })
 
         function guestlogin(e) {
-            $("#login_btn").attr("disabled", true).html("登入中 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+            $("#login_btn").attr("disabled", true).html("正在登入 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
             $("#user_account").attr("disabled", true)
             $("#user_password").attr("disabled", true);
@@ -352,7 +364,7 @@
                         $("#login_btn").removeAttr("disabled").html("登入")
 
                     } else {
-              
+
                         location.href = "/"
                     }
                 });
@@ -361,16 +373,16 @@
             if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
                 $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入").show()
             }
-            else if(IfStrIsBlank($("#sign_up_user_password").val()) ||  $("#sign_up_user_password").val().split("").length>30  || $("#sign_up_user_password").val().split("").length<6){
+            else if (IfStrIsBlank($("#sign_up_user_password").val()) || $("#sign_up_user_password").val().split("").length > 30 || $("#sign_up_user_password").val().split("").length < 6) {
                 $("#signup_error_alert").text("密碼需在6到30字之間，建議包含特殊符號以提升安全性").show()
             }
             else {
-                $("#sign_up_user_account").attr("disabled",true)
-                $("#sign_up_user_password").attr("disabled",true)
-                $("#sign_up_user_password_2").attr("disabled",true)
-                $("#signup_user_nickname").attr("disabled",true)
-
-                $("#signup_btn").attr("disabled",true).html("註冊中 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+                $("#sign_up_user_account").attr("disabled", true)
+                $("#sign_up_user_password").attr("disabled", true)
+                $("#sign_up_user_password_2").attr("disabled", true)
+                $("#signup_user_nickname").attr("disabled", true)
+                $(".skip_login_btn").attr("disabled",true)
+                $("#signup_btn").attr("disabled", true).html("正在註冊 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
                 fetch('/account/signup', {
                     method: 'POST',
@@ -378,32 +390,32 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        uid:'@'+$("#sign_up_user_account").val(),
-                        pass:$("#sign_up_user_password").val(),
-                        nickname:$("#signup_user_nickname").val()
+                        uid: '@' + $("#sign_up_user_account").val(),
+                        pass: $("#sign_up_user_password").val(),
+                        nickname: $("#signup_user_nickname").val()
                     })
                 })
                     .then(res => res.json())
                     .then(data => {
                         console.log(data)
-                        if(data.code === "failed"){
+                        if (data.code === "failed") {
                             $("#signup_error_alert").text(data.par.text).show()
-                        }else{
+                        } else {
                             $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
                         }
                     })
             }
         })
-        $("#signup_user_nickname").on("input",function(e){
+        $("#signup_user_nickname").on("input", function (e) {
             $("#signup_error_alert").hide()
         })
-        $("#sign_up_user_account").on("input",function(e){
+        $("#sign_up_user_account").on("input", function (e) {
             $("#signup_error_alert").hide()
-        })        
-        $("#sign_up_user_password").on("input",function(e){
+        })
+        $("#sign_up_user_password").on("input", function (e) {
             $("#signup_error_alert").hide()
-        })        
-        $("#sign_up_user_password_2").on("input",function(e){
+        })
+        $("#sign_up_user_password_2").on("input", function (e) {
             $("#signup_error_alert").hide()
         })
         $(".toggle-btn").on("click", function (e) {
@@ -411,13 +423,13 @@
                 status = "signup"
                 $("#login-dialog").hide()
                 $("#sign-up-dialog").show()
-                fetch("/account/signup/getid",{
+                fetch("/account/signup/getid", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     }
-                }).then(res=>res.json())
-                .then(data=>$("#sign_up_user_account").val(data.par.uid))
+                }).then(res => res.json())
+                    .then(data => $("#sign_up_user_account").val(data.par.uid))
             } else if (status == "signup") {
                 status = "login"
                 $("#sign-up-dialog").hide()
@@ -447,7 +459,7 @@
              })
      */
 
-     function IfStrIsBlank(str) {
+        function IfStrIsBlank(str) {
             let _arr = str.split(" "),
                 _s;
             for (i = 0; i < _arr.length; i++) {
