@@ -298,6 +298,7 @@
                     })
 
                     .catch(error => {
+                        console.log(error)
                         $("#login_error_alert").text("發生錯誤，暫時無法將你登入").show();
                         $("#user_account").removeAttr("disabled")
                         $("#user_password").removeAttr("disabled")
