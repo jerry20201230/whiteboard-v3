@@ -491,7 +491,8 @@
                             <h1><i class="bi bi-person-fill"></i></h1>
                         </div>
                         <div id="person-data">
-                            <span id="user-nickname">訪客</span>
+                            <h5 class="user-nickname">訪客</h5>
+                            <i class="user-id">@guest</i>
                         </div>
                     </div>
 
@@ -728,7 +729,8 @@
                             title: '歡迎使用',
                             body: `${data.nickname} , 歡迎使用 WhiteBoard v3<br>`
                         })
-                        $("#user-nickname").text(data.nickname)
+                        $(".user-nickname").text(data.nickname)
+                        $(".user-id").text(data.account)
                         if(data.account === "@admin"){
                             $("#person-icon").html(`<h1><i class="bi bi-person-fill-gear"></i></h1>`)
                         }else if(data.account === "@guest"){
