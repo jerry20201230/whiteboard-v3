@@ -14,6 +14,9 @@
         crossorigin='anonymous' />
 
     <style>
+        .alert-hidden{
+            display: none;
+        }
         .edit-color-container {
             border: 1px solid var(--bs-gray-300);
             height: 73px;
@@ -493,6 +496,9 @@
                     </div>
 
                     <button class="btn btn-primary" id="logout-btn">登出</button>
+
+                    <div id="user-alert" class="alert alert-danger alert-hidden"></div>
+                    <div id="user-logout-alert" class="alert alert-danger alert-hidden"></div>
                 </div>
 
             </div>
@@ -978,9 +984,7 @@
                 headers: {
                         'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({
-                    "auto":"never gonna give u up"
-                })
+                body: JSON.stringify({})
             })
             .then(res=>res.json())
             .then(r=>{
@@ -988,8 +992,11 @@
 
                     location.reload()
                 }else{
-                    alert("error!")
+                    $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
                 }
+            })
+            .catch(error=>{
+                $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
             })
         })
 
