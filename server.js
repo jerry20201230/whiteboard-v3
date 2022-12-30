@@ -138,6 +138,16 @@ app.post("/account/signup/checkid", (req, res) => {
 
 app.post("/account/signup", (req, res) => {
 //判斷ID存在與否
+
+  if(req.body.uid.length-1<5 || req.body.uid.length>20 || IfStrIsBlank(req.body.uid)){
+    res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID需在5到20個字元之間`}}))
+
+  }else if(req.body.uid.include("@")){
+    res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID不能包含2個"@"`}}))
+  }else if( req.body.uid.include(" ")){
+    res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID不能包含空白，請使用底線"_"`}}))
+  }
+
   sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
 
     if (err) throw err
@@ -177,7 +187,20 @@ function getRandomInt(min, max) {
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+function IfStrIsBlank(str) {
+  let _arr = str.split(" "),
+      _s;
+  for (i = 0; i < _arr.length; i++) {
 
+      if (_arr[i] !== " " && _arr[i] !== "") {
+
+
+          return false
+      }
+  }
+
+  return true
+}
 
 io.on('connection', (socket) => {
   console.log('a user connected');
