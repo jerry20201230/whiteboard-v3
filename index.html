@@ -158,10 +158,17 @@
                     onclick="canvas.isDrawingMode = false;$('#color-pickers-container').appendTo($('#color-pickers-container-3'))">
                     文字
                 </button>
+
+                <button class="nav-link" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button"
+                    role="tab" aria-controls="nav-4" aria-selected="false" onclick="canvas.isDrawingMode = false">
+                    物件
+                </button>
+
                 <button class="nav-link" id="nav-5-tab" data-bs-toggle="tab" data-bs-target="#nav-5" type="button"
                     role="tab" aria-controls="nav-5" aria-selected="false" onclick="canvas.isDrawingMode = false">
                     共用
                 </button>
+
             </div>
         </nav>
 
@@ -236,7 +243,8 @@
                             <input type="text" class="form-control draw-tool" id="itext-input" placeholder="輸入文字..."
                                 style="width: fit-content !important;">
                             <span class="select-none">&nbsp;</span>
-                            <button class="btn btn-primary draw-tool" onclick="_fabric('itext',$('#itext-input').val())"><i
+                            <button class="btn btn-primary draw-tool"
+                                onclick="_fabric('itext',$('#itext-input').val())"><i
                                     class="bi bi-check-circle"></i></button>
                         </div>
 
@@ -245,19 +253,19 @@
 
                                 <input type="checkbox" id="canvas-text-bold" class="draw-tool btn-check">
                                 <label class="btn btn-outline-primary btn-sm" for="canvas-text-bold"><i
-                                    class="bi bi-type-bold"></i></label>
+                                        class="bi bi-type-bold"></i></label>
 
                                 <input type="checkbox" id="canvas-text-italic" class="draw-tool btn-check">
                                 <label class="btn btn-outline-primary btn-sm" for="canvas-text-italic"><i
-                                    class="bi bi-type-italic"></i></label>
+                                        class="bi bi-type-italic"></i></label>
 
                                 <input type="checkbox" id="canvas-text-strikethrough" class="draw-tool btn-check">
                                 <label class="btn btn-outline-primary btn-sm" for="canvas-text-strikethrough"><i
-                                    class="bi bi-type-strikethrough"></i></label>
+                                        class="bi bi-type-strikethrough"></i></label>
 
                                 <input type="checkbox" id="canvas-text-underline" class="draw-tool btn-check">
                                 <label class="btn btn-outline-primary btn-sm" for="canvas-text-underline"><i
-                                    class="bi bi-type-underline"></i></label>
+                                        class="bi bi-type-underline"></i></label>
 
                             </div>
                         </div>
@@ -295,6 +303,16 @@
 
                             </div>
                         </div>
+
+                        <span class="select-none">&nbsp;</span>
+                        <div class="vr"></div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="center">
+                            <button class="btn btn-primary draw-tool" onclick="_fabric('copy')"><svg height="16" viewBox="0 0 48 48" width="16" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M32 2h-24c-2.21 0-4 1.79-4 4v28h4v-28h24v-4zm6 8h-22c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h22c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4zm0 32h-22v-28h22v28z"/></svg></button>
+                            <button class="btn btn-primary draw-tool" onclick="_fabric('paste')"><i class="bi bi-clipboard"></i></button>
+
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -527,7 +545,7 @@
             <div id="chat-msgs" class="mb-5" style="overflow: auto;">
 
             </div>
-           
+
         </div>
         <div id="chat-tool" class="buttom p-2 d-flex bg-light">
 
@@ -772,7 +790,39 @@
 
         function _fabric(obj, par) {
 
-            if (obj == "circle") {
+            if (obj == "copy") {
+                // clone what are you copying since you
+                // may want copy and paste on different moment.
+                // and you do not want the changes happened
+                // later to reflect on the copy.
+                canvas.getActiveObject().clone(function (cloned) {
+                    _clipboard = cloned;
+                });
+            } else if (obj == "paste") {
+                _clipboard.clone(function (clonedObj) {
+                    canvas.discardActiveObject();
+                    clonedObj.set({
+                        left: clonedObj.left + 10,
+                        top: clonedObj.top + 10,
+                        evented: true,
+                    });
+                    if (clonedObj.type === 'activeSelection') {
+                        // active selection needs a reference to the canvas.
+                        clonedObj.canvas = canvas;
+                        clonedObj.forEachObject(function (obj) {
+                            canvas.add(obj);
+                        });
+                        // this should solve the unselectability
+                        clonedObj.setCoords();
+                    } else {
+                        canvas.add(clonedObj);
+                    }
+                    _clipboard.top += 10;
+                    _clipboard.left += 10;
+                    canvas.setActiveObject(clonedObj);
+                    canvas.requestRenderAll();
+                })
+            } else if (obj == "circle") {
 
                 var shape = new fabric.Ellipse({
 
@@ -783,63 +833,64 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
-            } else
-                if (obj == "square") {
+            } else if (obj == "square") {
 
-                    var shape = new fabric.Rect({
+                var shape = new fabric.Rect({
 
 
-                        width: 100,
-                        height: 100,
-                        fill: $("#color-picker-1").attr("data-current-color")
+                    width: 100,
+                    height: 100,
+                    fill: $("#color-picker-1").attr("data-current-color")
+                })
+                canvas.add(shape)
+            }
+            else if (obj == "triangle") {
+                var shape = new fabric.Triangle({
+
+                    width: 100,
+                    height: 100,
+                    fill: $("#color-picker-1").attr("data-current-color")
+                })
+
+                canvas.add(shape)
+            }
+            else if (obj == "itext") {
+                if (par == "") {
+                    var shape = new fabric.IText("按兩下以編輯文字", {
+                        left: 0,
+                        top: 0,
+                        fill: $("#color-picker-1").attr("data-current-color"),
+
                     })
-                    canvas.add(shape)
-                }
-                else if (obj == "triangle") {
-                    var shape = new fabric.Triangle({
-
-                        width: 100,
-                        height: 100,
-                        fill: $("#color-picker-1").attr("data-current-color")
+                } else {
+                    var shape = new fabric.IText(par, {
+                        left: 0,
+                        top: 0,
+                        fill: $("#color-picker-1").attr("data-current-color"),
+                        fontWeight: document.getElementById("gh").checked ? "bold" : "normal"
                     })
-
-                    canvas.add(shape)
                 }
-                else if (obj == "itext") {
-                    if (par == "") {
-                        var shape = new fabric.IText("按兩下以編輯文字", {
-                            left: 0,
-                            top: 0,
-                            fill: $("#color-picker-1").attr("data-current-color")
-                        })
-                    } else {
-                        var shape = new fabric.IText(par, {
-                            left: 0,
-                            top: 0,
-                            fill: $("#color-picker-1").attr("data-current-color")
-                        })
-                    }
 
 
-                    canvas.add(shape)
-                }
-                else if (obj == "delete") {
-                    var selected = canvas.getActiveObjects(),
-                        selGroup = new fabric.ActiveSelection(selected, {
-                            canvas: canvas
+                canvas.add(shape)
+            }
+            else if (obj == "delete") {
+                var selected = canvas.getActiveObjects(),
+                    selGroup = new fabric.ActiveSelection(selected, {
+                        canvas: canvas
+                    });
+                if (selGroup) {
+                    if (confirm('刪除所選取的物件?')) {
+                        selGroup.forEachObject(function (obj) {
+                            canvas.remove(obj);
                         });
-                    if (selGroup) {
-                        if (confirm('刪除所選取的物件?')) {
-                            selGroup.forEachObject(function (obj) {
-                                canvas.remove(obj);
-                            });
 
-                        }
-                    } else {
-                        alert("請先選擇物件")
                     }
-                    canvas.renderAll()
+                } else {
+                    alert("請先選擇物件")
                 }
+                canvas.renderAll()
+            }
 
             socket.emit("CanvasUpdate", JSON.stringify(canvas))
             canvas.renderAll()
@@ -971,19 +1022,11 @@
         })
 
         canvas.on('selection:created', e => {
-            if ($("#nav-4-tab").length == 0) {
-                $("#nav-tab").append(`            
-            <button class="nav-link" id="nav-4-tab" data-bs-toggle="tab" data-bs-target="#nav-4" type="button"
-                role="tab" aria-controls="nav-4" aria-selected="false" onclick="canvas.isDrawingMode = false">
-                物件
-            </button>`)
-            }
+
         });
 
         canvas.on('selection:cleared', e => {
-            $("#nav-1-tab").click()
-            $("#nav-4-tab").remove()
-            $("#nav-1-tab").click()
+
         });
 
         $("#logout-btn").on("click", function (e) {
