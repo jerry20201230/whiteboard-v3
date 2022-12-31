@@ -21,9 +21,7 @@ var sql_Connect = mysql.createPool({
   // 連線池可建立的總連線數上限(預設最多為10個連線數)
   connectionLimit: 10
 });
-sql_Connect.connect(function (err) {
-  console.log(err ? err : "connected to sql server")
-});
+
 
 app.use(session({
   secret: 'secret',
