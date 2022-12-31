@@ -143,10 +143,10 @@ app.post("/account/signup", (req, res) => {
     res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID需在5到20個字元之間`}}))
     return;
 
-  }else if(req.body.uid.include("@")){
+  }else if(req.body.uid.includes("@")){
     res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID不能包含2個"@"`}}))
     return;
-  }else if( req.body.uid.include(" ")){
+  }else if( req.body.uid.includes(" ")){
     res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID不能包含空白，請使用底線"_"`}}))
     return; 
   }
