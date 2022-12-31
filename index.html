@@ -206,15 +206,15 @@
                         <div class="center">
                             <span style="font-size:1.25em;">形狀</span>
                             <div class="d-flex">
-                                <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="三角形"
+                                <button class="btn btn-primary draw-tool" data-bs-toggle="tooltip" data-bs-title="三角形"
                                     onclick="_fabric('triangle')"><i class="bi bi-triangle"></i></button>
                                 <span class="select-none">&thinsp;</span>
 
-                                <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="圓形"
+                                <button class="btn btn-primary draw-tool" data-bs-toggle="tooltip" data-bs-title="圓形"
                                     onclick="_fabric('circle')"><i class="bi bi-circle"></i></button>
                                 <span class="select-none">&thinsp;</span>
 
-                                <button class="btn btn-primary" data-bs-toggle="tooltip" data-bs-title="方形"
+                                <button class="btn btn-primary draw-tool" data-bs-toggle="tooltip" data-bs-title="方形"
                                     onclick="_fabric('square')"><i class="bi bi-square"></i></button>
                                 <span class="select-none">&thinsp;</span>
                             </div>
@@ -233,23 +233,32 @@
                     <span class="select-none">&nbsp;</span>
                     <div style="width: fit-content; height: fit-content;">
                         <div class="d-flex">
-                            <input type="text" class="form-control" id="itext-input" placeholder="輸入文字..."
+                            <input type="text" class="form-control draw-tool" id="itext-input" placeholder="輸入文字..."
                                 style="width: fit-content !important;">
                             <span class="select-none">&nbsp;</span>
-                            <button class="btn btn-primary" onclick="_fabric('itext',$('#itext-input').val())"><i
+                            <button class="btn btn-primary draw-tool" onclick="_fabric('itext',$('#itext-input').val())"><i
                                     class="bi bi-check-circle"></i></button>
                         </div>
 
                         <div class="d-flex mt-1">
-                            <div class="btn-group" role="group" aria-label="Basic example">
-                                <button type="button" class="btn btn-primary btn-sm"><i
-                                        class="bi bi-type-bold"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm"><i
-                                        class="bi bi-type-italic"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm"><i
-                                        class="bi bi-type-strikethrough"></i></button>
-                                <button type="button" class="btn btn-primary btn-sm"><i
-                                        class="bi bi-type-underline"></i></button>
+                            <div class="btn-group" role="group">
+
+                                <input type="checkbox" id="canvas-text-bold" class="draw-tool">
+                                <label class="btn btn-outline-primary" for="canvas-text-bold"><i
+                                    class="bi bi-type-bold"></i></label>
+
+                                <input type="checkbox" id="canvas-text-italic" class="draw-tool">
+                                <label class="btn btn-outline-primary" for="canvas-text-italic"><i
+                                    class="bi bi-type-italic"></i></label>
+
+                                <input type="checkbox" id="canvas-text-strikethrough" class="draw-tool">
+                                <label class="btn btn-outline-primary" for="canvas-text-strikethrough"><i
+                                    class="bi bi-type-strikethrough"></i></label>
+
+                                <input type="checkbox" id="canvas-text-underline" class="draw-tool">
+                                <label class="btn btn-outline-primary" for="canvas-text-underline"><i
+                                    class="bi bi-type-underline"></i></label>
+
                             </div>
                         </div>
                     </div>
