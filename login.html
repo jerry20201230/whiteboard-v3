@@ -258,7 +258,7 @@
 
                 $("#login_btn").attr("disabled", true).html("正在登入 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
-                $(".skip_login_btn").attr("disabled",true)
+                $(".skip_login_btn").attr("disabled", true)
                 $("#user_account").attr("disabled", true)
                 $("#user_password").attr("disabled", true);
                 $(".toggle-btn").attr("disabled", true)
@@ -382,7 +382,7 @@
                 $("#sign_up_user_password").attr("disabled", true)
                 $("#sign_up_user_password_2").attr("disabled", true)
                 $("#signup_user_nickname").attr("disabled", true)
-                $(".skip_login_btn").attr("disabled",true)
+                $(".skip_login_btn").attr("disabled", true)
                 $("#signup_btn").attr("disabled", true).html("正在註冊 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
                 fetch('/account/signup', {
@@ -400,10 +400,27 @@
                     .then(data => {
                         console.log(data)
                         if (data.code === "failed") {
-                            $("#signup_error_alert").text(data.par.text).show()
+                            $("#signup_error_alert").text(data.par.text).show();
+                            $("#sign_up_user_account").removeAttr("disabled")
+                            $("#sign_up_user_password").removeAttr("disabled")
+                            $("#sign_up_user_password_2").removeAttr("disabled")
+                            $("#signup_user_nickname").removeAttr("disabled")
+                            $(".skip_login_btn").removeAttr("disabled")
+                            $("#signup_btn").removeAttr("disabled").html("註冊")
+
                         } else {
                             $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
                         }
+                    })
+                    .catch(error => {
+                        $("#signup_error_alert").text("發生錯誤，暫時無法註冊你的帳號").show()
+                        $("#sign_up_user_account").removeAttr("disabled")
+                        $("#sign_up_user_password").removeAttr("disabled")
+                        $("#sign_up_user_password_2").removeAttr("disabled")
+                        $("#signup_user_nickname").removeAttr("disabled")
+                        $(".skip_login_btn").removeAttr("disabled")
+                        $("#signup_btn").removeAttr("disabled").html("註冊")
+
                     })
             }
         })

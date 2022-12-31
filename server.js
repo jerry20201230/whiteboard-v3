@@ -60,7 +60,7 @@ app.post("/account/check", (req, res) => {
   }
 })
 app.post("/account/logout", (req, res) => {
-  req.session.loggedin = false
+  req.session.destroy();
   res.send(JSON.stringify({ "code": "success", login: req.session.loggedin }))
 })
 
@@ -82,6 +82,12 @@ app.post('/account/login', function (request, response) {
   console.log(request.body.user)
   let username = '@' + request.body.user.account;
   let password = request.body.user.pass;
+
+  if(req.session.loggedin){
+    response.send(JSON.stringify({ 'code': 'reload', 'par': { 'text': '正在重新導向...' } }));
+    return;
+  }
+
   // Ensure the input fields exists and are not empty
   if (username && password) {
     // Execute SQL query that'll select the account from the database based on the specified username and password
@@ -178,6 +184,10 @@ app.get('*', (req, res) => {
   res.status(404).sendFile(__dirname + '/lib/404.html')
 })
 
+app.post('*',req,res=>{
+  res.send(JSON.stringify({"code":"failed","par":{"status":404,"text":`未知的路由`}}))
+
+})
 
 
 
