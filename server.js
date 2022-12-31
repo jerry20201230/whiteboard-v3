@@ -83,7 +83,7 @@ app.post('/account/login', function (request, response) {
   let username = '@' + request.body.user.account;
   let password = request.body.user.pass;
 
-  if(req.session.loggedin){
+  if(request.session.loggedin){
     response.send(JSON.stringify({ 'code': 'reload', 'par': { 'text': '正在重新導向...' } }));
     return;
   }
