@@ -141,11 +141,14 @@ app.post("/account/signup", (req, res) => {
 
   if(req.body.uid.length-1<5 || req.body.uid.length>20 || IfStrIsBlank(req.body.uid)){
     res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID需在5到20個字元之間`}}))
+    return;
 
   }else if(req.body.uid.include("@")){
     res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID不能包含2個"@"`}}))
+    return;
   }else if( req.body.uid.include(" ")){
     res.send(JSON.stringify({"code":"failed","par":{"uid_used":null,"text":`ID不能包含空白，請使用底線"_"`}}))
+    return; 
   }
 
   sql_Connect.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
