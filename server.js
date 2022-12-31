@@ -60,8 +60,9 @@ app.post("/account/check", (req, res) => {
   }
 })
 app.post("/account/logout", (req, res) => {
-  req.session.destroy();
-  res.send(JSON.stringify({ "code": "success", login: req.session.loggedin }))
+  res.send(JSON.stringify({ "code": "success", "login": false}))
+  req.session.destroy();  
+
 })
 
 
