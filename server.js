@@ -42,7 +42,11 @@ var sessionStore = new MySQLStore({
 	checkExpirationInterval: 900000,
 	// The maximum age of a valid session; milliseconds:
 	expiration: 86400000,
-});
+},mysql.createPool({  host: process.env.MYSQLHOST,
+  user: process.env.MYSQLUSER,
+  password: process.env.MYSQLPASSWORD,
+  port: process.env.MYSQLPORT,
+  database: process.env.MYSQLDATABASE,}));
 
 app.use(session({
 	key: 'session_cookie_name',
