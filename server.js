@@ -200,12 +200,6 @@ app.post("/account/signup"), (req, res) => {
     res.status(404).sendFile(__dirname + '/lib/404.html')
   })
 
-  app.post('*', (req, res) => {
-    res.send(JSON.stringify({ "code": "failed", "par": { "status": 404, "text": `未知的路由` } }))
-
-  })
-
-
 
 
   var chatId = 0
