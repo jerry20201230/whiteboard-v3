@@ -127,6 +127,15 @@
                 }
             </style>
         </noscript>
+    <div id="header" style="    
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-between;">
+    <div id="top-left-tool-bar"></div>
+        <div><span class="text-danger file-unsaved-mark">*</span><span class="file-name">未命名專案</span> - 白板</div>
+    <div id="top-right-tool-bar"></div>    
+    </div>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
@@ -316,7 +325,7 @@
                                         <path fill="white"
                                             d="M32 2h-24c-2.21 0-4 1.79-4 4v28h4v-28h24v-4zm6 8h-22c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h22c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4zm0 32h-22v-28h22v28z" />
                                     </svg></button>
-                                    <span class="select-none">&thinsp;</span>
+                                <span class="select-none">&thinsp;</span>
                                 <button class="btn btn-primary draw-tool" onclick="_fabric('paste')"
                                     data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-title="貼上"><i
                                         class="bi bi-clipboard"></i></button>
@@ -363,7 +372,8 @@
     <span class="select-none">&nbsp;&nbsp;<p>&nbsp;&nbsp;</p></span>
     <div
         style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 100%;padding: 2px;padding-left: 5px;">
-        <span id="sys-icon">`<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div></span>
+        <span id="sys-icon">`<div class="spinner-border spinner-border-sm text-primary" role="status"><span
+                    class="visually-hidden">Loading...</span></div></span>
         <span id="sys-status">資料讀取中</span>&nbsp;&nbsp;
 
     </div>
@@ -742,7 +752,7 @@
 
 
         window.setup = function (par) {
-            console.log("白板 %cBETA","background:#0d6efd;border-radius:5px;padding-left:5px;padding-right:5px;color:#fff")
+            console.log("白板 %cBETA", "background:#0d6efd;border-radius:5px;padding-left:5px;padding-right:5px;color:#fff")
             BS_Toast.show({
                 icon: 'bi-person-fill',
                 iconClass: '',
@@ -756,7 +766,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                
+
                 })
             })
                 .then(res => res.json())
@@ -871,14 +881,16 @@
                         left: 0,
                         top: 0,
                         fill: $("#color-picker-1").attr("data-current-color"),
-
+                        fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                     })
                 } else {
                     var shape = new fabric.IText(par, {
                         left: 0,
                         top: 0,
                         fill: $("#color-picker-1").attr("data-current-color"),
-                        fontWeight: document.getElementById("gh").checked ? "bold" : "normal"
+                        fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
+                        underline: document.getElementById("canvas-text-underline").checked,
+
                     })
                 }
 

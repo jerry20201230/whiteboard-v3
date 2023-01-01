@@ -232,15 +232,8 @@
         }
 
 
-        window.setup = function (par) {
-
-            if (
-                (localStorage.getItem("logined") == "true")
-                &&
-                (localStorage.getItem("login_taken") !== undefined && localStorage.getItem("login_taken") !== null)) {
-
-                location = "/"
-            }
+        window.setup = function (){
+                    
         }
 
 
@@ -412,6 +405,8 @@
 
                         } else {
                             $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
+                            $(".skip_login_btn").removeAttr("disabled")
+                            $("#signup_btn").html("註冊")
                         }
                     })
                     .catch(error => {
