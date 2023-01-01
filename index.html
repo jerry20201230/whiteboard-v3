@@ -308,9 +308,19 @@
                         <div class="vr"></div>
                         <span class="select-none">&nbsp;</span>
                         <div class="center">
-                            <button class="btn btn-primary draw-tool" onclick="_fabric('copy')"><svg height="16" viewBox="0 0 48 48" width="16" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M32 2h-24c-2.21 0-4 1.79-4 4v28h4v-28h24v-4zm6 8h-22c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h22c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4zm0 32h-22v-28h22v28z"/></svg></button>
-                            <button class="btn btn-primary draw-tool" onclick="_fabric('paste')"><i class="bi bi-clipboard"></i></button>
-
+                            <span style="font-size:1.25em;">剪貼</span>
+                            <div class="d-flex">
+                                <button class="btn btn-primary draw-tool" onclick="_fabric('copy')"
+                                    data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-title="複製"><svg
+                                        height="16" viewBox="0 0 48 48" width="16" xmlns="http://www.w3.org/2000/svg">
+                                        <path fill="white"
+                                            d="M32 2h-24c-2.21 0-4 1.79-4 4v28h4v-28h24v-4zm6 8h-22c-2.21 0-4 1.79-4 4v28c0 2.21 1.79 4 4 4h22c2.21 0 4-1.79 4-4v-28c0-2.21-1.79-4-4-4zm0 32h-22v-28h22v28z" />
+                                    </svg></button>
+                                    <span class="select-none">&thinsp;</span>
+                                <button class="btn btn-primary draw-tool" onclick="_fabric('paste')"
+                                    data-bs-placement="bottom" data-bs-toggle="tooltip" data-bs-title="貼上"><i
+                                        class="bi bi-clipboard"></i></button>
+                            </div>
                         </div>
 
                     </div>
@@ -353,8 +363,8 @@
     <span class="select-none">&nbsp;&nbsp;<p>&nbsp;&nbsp;</p></span>
     <div
         style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 100%;padding: 2px;padding-left: 5px;">
-        <span id="sys-icon"></span>
-        <span id="sys-status"></span>&nbsp;&nbsp;
+        <span id="sys-icon">`<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="visually-hidden">Loading...</span></div></span>
+        <span id="sys-status">資料讀取中</span>&nbsp;&nbsp;
 
     </div>
 
@@ -1094,7 +1104,7 @@
                         <hr>
                         <h6>管理存取權</h6>
                         <span>點選下方項目，即可在上方更改權限</span>
-                        <div style="overflow-y:scroll" id="share-info">
+                        <div style="overflow-y:scroll;max-height:150px" id="share-info">
                             
 
                             <div class="alert alert-primary" data-user-id="@all_know_link_user" data-share="viewer" onclick="_data('share','update')">
@@ -1127,7 +1137,7 @@
                         
                         <div class="alert alert-success" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
-                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>${$("#share-uid-input").val()}&nbsp;&nbsp;[編輯者]
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>@${$("#share-uid-input").val()}&nbsp;&nbsp;[編輯者]
                         </div>
                         `)
                             } else if ($("#share-type-select").val() == "viewer") {
@@ -1135,7 +1145,7 @@
                         
                         <div class="alert alert-primary" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
-                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>${$("#share-uid-input").val()}&nbsp;&nbsp;[檢視者]
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>@${$("#share-uid-input").val()}&nbsp;&nbsp;[檢視者]
                         </div>
                         `)
                             } else {
@@ -1143,7 +1153,7 @@
                         
                         <div class="alert alert-danger" >
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
-                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>${$("#share-uid-input").val()}&nbsp;&nbsp;[禁止存取]
+                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>@${$("#share-uid-input").val()}&nbsp;&nbsp;[禁止存取]
                         </div>
                         `)
                             }
