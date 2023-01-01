@@ -339,8 +339,10 @@
         function guestlogin(e) {
             $("#login_btn").attr("disabled", true).html("正在登入 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
+            $(".skip_login_btn").attr("disabled", true)
             $("#user_account").attr("disabled", true)
             $("#user_password").attr("disabled", true);
+            $(".toggle-btn").attr("disabled", true)
             fetch('/account/login', {
                 method: 'POST',
                 headers: {

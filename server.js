@@ -6,7 +6,7 @@ const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000;
 const mysql = require('mysql2/promise');
-
+const session = require('express-session');
 const path = require("path")
 
 var sql_Connect = mysql.createPool({
@@ -23,43 +23,18 @@ var sql_Connect = mysql.createPool({
 });
 
 
-
-
-
-var session = require('express-session');
-var MySQLStore = require('express-mysql-session')(session);
-
-
-
-var sessionStore = new MySQLStore({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  port: process.env.MYSQLPORT,
-  database: process.env.MYSQLDATABASE,
-  clearExpired: true,
-	// How frequently expired sessions will be cleared; milliseconds:
-	checkExpirationInterval: 900000,
-	// The maximum age of a valid session; milliseconds:
-	expiration: 86400000,
-},mysql.createPool({  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  port: process.env.MYSQLPORT,
-  database: process.env.MYSQLDATABASE,}));
-
 app.use(session({
-	key: 'session_cookie_name',
-	secret: 'session_cookie_secret',
-	store: sessionStore,
-	resave: false,
-	saveUninitialized: false
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
 }));
-
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}));
 
 app.use(express.static(path.join(__dirname, 'static')));
 
