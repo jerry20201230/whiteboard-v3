@@ -5,7 +5,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000;
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 const session = require('express-session');
 const path = require("path")
 
