@@ -742,7 +742,7 @@
 
 
         window.setup = function (par) {
-            console.log("白板 %cBETA","background:var(--bs-primary);border-radius:5px;border:solid 1px var(--bs-secondary)")
+            console.log("白板 %cBETA","background:#0d6efd;border-radius:5px;padding-left:5px;padding-right:5px;color:#fff")
             BS_Toast.show({
                 icon: 'bi-person-fill',
                 iconClass: '',
@@ -756,7 +756,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    "A": "a"
+                
                 })
             })
                 .then(res => res.json())
@@ -767,7 +767,7 @@
                             icon: 'bi-person-fill-check',
                             iconClass: 'text-success',
                             title: '歡迎使用',
-                            body: `${data.nickname} , 歡迎使用 WhiteBoard v3<br>`
+                            body: `${data.nickname} , 歡迎使用白板<br>`
                         })
                         $(".user-nickname").text(data.nickname)
                         $(".user-id").text(data.account)
@@ -781,7 +781,7 @@
                             icon: 'bi-person-fill-x',
                             iconClass: 'text-danger',
                             title: '身分驗證錯誤',
-                            body: `請重新登入，以使用 WhiteBoard v3`
+                            body: `請重新登入，以繼續使用白板`
                         })
                     }
                 })
