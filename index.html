@@ -218,10 +218,10 @@
                         <span style="font-size:1.25em;">筆刷</span>
                         <div class="d-flex">
                             <select id="" class="form-select" style="width: fit-content !important;">
-                            <option value="pencil">鉛筆</option>
-                            <option value="">圓點</option>
-                            <option value="">直條紋</option>
-                            <option value="">橫條紋</option>
+                                <option value="pencil">鉛筆</option>
+                                <option value="">圓點</option>
+                                <option value="">直條紋</option>
+                                <option value="">橫條紋</option>
                             </select>
                         </div>
                     </div>
@@ -388,8 +388,10 @@
     <span class="select-none">&nbsp;&nbsp;<p>&nbsp;&nbsp;</p></span>
     <div
         style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 100%;padding: 2px;padding-left: 5px;">
-        <span id="sys-icon"><div class="spinner-border spinner-border-sm text-primary" role="status"><span
-                    class="visually-hidden">Loading...</span></div></span>
+        <span id="sys-icon">
+            <div class="spinner-border spinner-border-sm text-primary" role="status"><span
+                    class="visually-hidden">Loading...</span></div>
+        </span>
         <span id="sys-status">資料讀取中</span>&nbsp;&nbsp;
 
     </div>
@@ -1050,22 +1052,22 @@
 
         });
 
-/*
-        canvas.on('object:modified', e => {
-            socket.emit("CanvasUpdate", JSON.stringify(canvas))
-        })
-
-        canvas.on('before:transform', e => {
-            socket.emit("CanvasUpdate", JSON.stringify(canvas))
-        })
-        canvas.on('path:created', e => {
-            socket.emit("CanvasUpdate", JSON.stringify(canvas))
-        })
-
-        canvas.on('selection:created', e => {
-
-        });
-*/
+        /*
+                canvas.on('object:modified', e => {
+                    socket.emit("CanvasUpdate", JSON.stringify(canvas))
+                })
+        
+                canvas.on('before:transform', e => {
+                    socket.emit("CanvasUpdate", JSON.stringify(canvas))
+                })
+                canvas.on('path:created', e => {
+                    socket.emit("CanvasUpdate", JSON.stringify(canvas))
+                })
+        
+                canvas.on('selection:created', e => {
+        
+                });
+        */
         canvas.on('selection:cleared', e => {
 
         });
@@ -1106,7 +1108,13 @@
 
             }
             else if (type == "new") {
+                PopupAlert({
 
+                    title: "新建專案",
+                    body: `<h5 style="color:var(--bs-red)">注意:</h5><p>若未儲存目前專案，變更將會<span class="text-danger">遺失</span><br>是否要繼續?</p>`,
+                    escCallBack: "dismiss",
+                    enterCallBack: "dismiss"
+                })
             }
             else if (type == "share") {
 

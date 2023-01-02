@@ -389,7 +389,7 @@
                 $(".skip_login_btn").attr("disabled", true)
                 $("#signup_btn").attr("disabled", true).html("正在註冊 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
-                fetch("/account/signup", {
+                fetch("https://whiteboard-v3-production.up.railway.app/account/signup", {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
