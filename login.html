@@ -173,6 +173,7 @@
             </div>
         </div>
     </div>
+    <div id="toast" class="position-fixed bottom-0 end-0 p-3 toast-container"></div>
 
     <!--<script src="/socket.io/socket.io.js"></script>
     -->
@@ -232,8 +233,16 @@
         }
 
 
-        window.setup = function (){
-                    
+        window.setup = function () {
+            if ($.UrlParam("signuped") == "true") {
+                BS_Toast.show({
+                    icon: 'bi-person-fill',
+                    iconClass: '',
+                    title: '註冊成功',
+                    body: `請使用你的帳號登入`,
+                    toastClass:"text-bg-success"
+                })
+            }
         }
 
 
@@ -453,26 +462,7 @@
             console.log(status)
         })
 
-        /*     socket.on("loginStatus", e => {
-                 if (e.status == 'success') {
-     
-                     localStorage.setItem("logined", "true")
-                     $("#login_error_alert").text("").hide()
-                     localStorage.setItem("login_taken", e.tk)
-                     localStorage.setItem("login_un", e.un)
-                     location = "/"
-                 } else {
-     
-                     $("#login_error_alert").text("帳號或密碼錯誤").show()
-     
-     
-                     $("#user_account").removeAttr("disabled")
-                     $("#user_password").removeAttr("disabled");
-     
-                     $("#login_btn").removeAttr("disabled").html("登入")
-                 }
-             })
-     */
+
 
         function IfStrIsBlank(str) {
             let _arr = str.split(" "),
@@ -487,6 +477,83 @@
             }
 
             return true
+        }
+        (function ($) {
+            $.UrlParam = function (name) {
+                //宣告正規表達式
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                /*
+                 * window.location.search 獲取URL ?之後的參數(包含問號)
+                 * substr(1) 獲取第一個字以後的字串(就是去除掉?號)
+                 * match(reg) 用正規表達式檢查是否符合要查詢的參數
+                */
+                var r = window.location.search.substr(1).match(reg);
+                //如果取出的參數存在則取出參數的值否則回穿null
+                if (r != null) return (r[2]); return null;
+            }
+        })(jQuery);
+
+        //date -> formated str (y/m/d)
+        //time -> formated str (h:m:s)
+        //pack -> {year,month,date,day,hour,minute,second}
+        function getTime(type) {
+            var DATE = new Date(),
+                year = DATE.getFullYear(),
+                mont = DATE.getMonth() + 1,
+                date = DATE.getDate(),
+                day = DATE.getDay(),
+                //--------------------//
+                hour = DATE.getHours(),
+                mins = DATE.getMinutes(),
+                secs = DATE.getSeconds();
+
+            if (type == "date") {
+                return `${year} / ${mont} / ${date}`
+            } else
+                if (type == "time") {
+                    return `${hour} : ${mins} : ${secs}`
+                } else
+                    if (type == "pack") {
+                        let par = {
+                            "year": year,
+                            "month": mont,
+                            "date": date,
+                            "day": day,
+                            "hour": hour > 10 ? hour : '0' + hour,
+                            "minute": mins > 10 ? mins : '0' + mins,
+                            "second": secs > 10 ? secs : '0' + secs
+                        }
+
+                        return par
+                    }
+        }
+        //{ icon,         iconClass,     title,  body  toastClass}
+        //  ^ex:bi-text  ^ex:text-success              ^ex:text-bg-primary
+        var BS_Toast = {
+            toast_id: 0,
+
+            show: function (data) {
+                let hour = getTime("pack").hour,
+                    mins = getTime("pack").minute;
+                $("#toast").append(` 
+            <div id='BS-Toast-${BS_Toast.toast_id}' class="toast ${data.toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header" >
+                <i class='bi ${data.icon} ${data.iconClass}'></i>&nbsp;
+                <strong class="me-auto">${data.title}</strong>
+                <small>${hour}:${mins}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+             </div>
+            <div class="toast-body">${data.body}</div>
+            </div>`)
+
+                var toastElList = document.querySelectorAll('.toast')
+                var toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
+                let Thistoast = new bootstrap.Toast(document.getElementById(`BS-Toast-${BS_Toast.toast_id}`))
+
+                Thistoast.show()
+
+                BS_Toast.toast_id++
+            }
         }
     </script>
 

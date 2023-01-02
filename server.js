@@ -19,7 +19,7 @@ var sql_Connect = mysql.createPool({
   // 無可用連線時是否等待pool連線釋放(預設為true)
   waitForConnections: true,
   // 連線池可建立的總連線數上限(預設最多為10個連線數)
-  connectionLimit: 10
+  connectionLimit: 15
 });
 
 
@@ -80,7 +80,7 @@ app.get('/dist', (req, res) => {
 
 app.post("/account/signup"), (req, res) => {
   //判斷ID存在與否
-
+console.log(req.body)
   if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
     res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID需在5到20個字元之間` } }))
     return;
@@ -116,7 +116,6 @@ app.post("/account/signup"), (req, res) => {
 
   })
 }
-
 app.post('/account/login', function (request, response) {
   // Capture the input fields
 

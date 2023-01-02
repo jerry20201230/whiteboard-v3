@@ -127,15 +127,15 @@
                 }
             </style>
         </noscript>
-    <div id="header" style="    
+        <div id="header" style="    
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     justify-content: space-between;">
-    <div id="top-left-tool-bar"></div>
-        <div><span class="text-danger file-unsaved-mark">*</span><span class="file-name">未命名專案</span> - 白板</div>
-    <div id="top-right-tool-bar"></div>    
-    </div>
+            <div id="top-left-tool-bar"></div>
+            <div><span class="text-danger file-unsaved-mark">*</span><span class="file-name">未命名專案</span> - 白板</div>
+            <div id="top-right-tool-bar"></div>
+        </div>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
@@ -183,30 +183,46 @@
 
         <div class="tab-content">
             <div class="tab-pane fade show active" id="nav-1" role="tabpanel" aria-labelledby="nav-1-tab" tabindex="0">
-                <div id="color-pickers-container-1">
-                    <div class="d-flex" style="width: fit-content;" id="color-pickers-container">
-                        <div class="edit-color-container">
-                            <div id="styleSpan-1"
-                                style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
-                                onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
-                            <div style="cursor: pointer;"
-                                onclick="document.getElementById('color-picker-1').jscolor.show()">主色
+                <div class="d-flex">
+                    <div id="color-pickers-container-1">
+                        <div class="d-flex" style="width: fit-content;" id="color-pickers-container">
+                            <div class="edit-color-container">
+                                <div id="styleSpan-1"
+                                    style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                                    onclick="document.getElementById('color-picker-1').jscolor.show()"></div>
+                                <div style="cursor: pointer;"
+                                    onclick="document.getElementById('color-picker-1').jscolor.show()">主色
+                                </div>
+                                <input id="color-picker-1" class="color-picker"
+                                    data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF',closeButton:true,closeText:'關閉'}"
+                                    type="hidden">
                             </div>
-                            <input id="color-picker-1" class="color-picker"
-                                data-jscolor="{previewElement:'#styleSpan-1',value:'DF068CFF',closeButton:true,closeText:'關閉'}"
-                                type="hidden">
+                            <span class="select-none">&nbsp;</span>
+                            <div class="edit-color-container">
+                                <div id="styleSpan-2"
+                                    style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
+                                    onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
+                                <div style="cursor: pointer;"
+                                    onclick="document.getElementById('color-picker-2').jscolor.show()">輔色
+                                </div>
+                                <input id="color-picker-2" class="color-picker"
+                                    data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF',closeButton:true,closeText:'關閉'}"
+                                    type="hidden">
+                            </div>
                         </div>
-                        <span class="select-none">&nbsp;</span>
-                        <div class="edit-color-container">
-                            <div id="styleSpan-2"
-                                style="background-image: none; background-color: rgb(186, 243, 255); color: rgb(0, 0, 0);"
-                                onclick="document.getElementById('color-picker-2').jscolor.show()"></div>
-                            <div style="cursor: pointer;"
-                                onclick="document.getElementById('color-picker-2').jscolor.show()">輔色
-                            </div>
-                            <input id="color-picker-2" class="color-picker"
-                                data-jscolor="{previewElement:'#styleSpan-2',value:'FFFFFFFF',closeButton:true,closeText:'關閉'}"
-                                type="hidden">
+                    </div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="vr"></div>
+                    <span class="select-none">&nbsp;</span>
+                    <div class="center">
+                        <span style="font-size:1.25em;">筆刷</span>
+                        <div class="d-flex">
+                            <select id="" class="form-select" style="width: fit-content !important;">
+                            <option value="pencil">鉛筆</option>
+                            <option value="">圓點</option>
+                            <option value="">直條紋</option>
+                            <option value="">橫條紋</option>
+                            </select>
                         </div>
                     </div>
                 </div>
@@ -372,7 +388,7 @@
     <span class="select-none">&nbsp;&nbsp;<p>&nbsp;&nbsp;</p></span>
     <div
         style="position: fixed;bottom:0;background-color:rgb(223, 223, 223);width: 100%;padding: 2px;padding-left: 5px;">
-        <span id="sys-icon">`<div class="spinner-border spinner-border-sm text-primary" role="status"><span
+        <span id="sys-icon"><div class="spinner-border spinner-border-sm text-primary" role="status"><span
                     class="visually-hidden">Loading...</span></div></span>
         <span id="sys-status">資料讀取中</span>&nbsp;&nbsp;
 
@@ -539,8 +555,8 @@
                             <h1><i class="bi bi-person-fill"></i></h1>
                         </div>
                         <div id="person-data">
-                            <h5 class="user-nickname">訪客</h5>
-                            <i class="user-id">@guest</i>
+                            <h5 class="user-nickname"><span class="text-danger">未確認的使用者</span></h5>
+                            <i class="user-id">找不到使用者ID</i>
                         </div>
                     </div>
 
