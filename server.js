@@ -105,10 +105,11 @@ console.log(req.body)
 
       connection.release();
     })
-    res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
-
+   
 
   })
+  res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
+
 }
 app.post("/account/signup"), (req, res) => {
   //判斷ID存在與否
