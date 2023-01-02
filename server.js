@@ -78,7 +78,7 @@ app.get('/dist', (req, res) => {
   res.status(403).sendFile(__dirname + '/lib/block.html');
 })
 
-app.post("/account/signup"), (req, res) => {
+app.post("/account/signup2"), (req, res) => {
   //判斷ID存在與否
 console.log(req.body)
   if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
