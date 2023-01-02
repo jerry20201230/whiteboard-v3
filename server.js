@@ -30,11 +30,6 @@ app.use(session({
 }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session({
-  secret: 'secret',
-  resave: true,
-  saveUninitialized: true
-}));
 
 app.use(express.static(path.join(__dirname, 'static')));
 
@@ -77,8 +72,45 @@ app.get('/lib/health', (req, res) => {
 app.get('/dist', (req, res) => {
   res.status(403).sendFile(__dirname + '/lib/block.html');
 })
+app.post("/account/signup"), (req, res) => {
+  //判斷ID存在與否
+console.log(req.body)
+  if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
+    res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID需在5到20個字元之間` } }))
+    return;
 
-app.post("/account/signup2"), (req, res) => {
+  } else if (req.body.uid.includes("@")) {
+    res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID不能包含2個"@"` } }))
+    return;
+  } else if (req.body.uid.includes(" ")) {
+    res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID不能包含空白，請使用底線"_"` } }))
+    return;
+  }
+  sql_Connect.getConnection(function (err, connection) {
+    if (err) throw err
+    connection.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
+
+      if (err) throw err
+      if (results.length !== 0) { res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; }
+      connection.release();
+    })
+  })
+  sql_Connect.getConnection(function (err, connection) {
+    if (err) throw err
+    connection.query(
+      `INSERT INTO userData(user_id,user_nickname,user_password)
+     VALUES("${req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
+
+      if (err) throw err
+
+      connection.release();
+    })
+    res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
+
+
+  })
+}
+app.post("/account/signup"), (req, res) => {
   //判斷ID存在與否
 console.log(req.body)
   if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
