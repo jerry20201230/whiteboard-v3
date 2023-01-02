@@ -302,10 +302,10 @@ sql_Connect.getConnection(function (err, connection) {
     });
 
 
-    socket.on("CanvasUpdate", (e) => {
+   /* socket.on("CanvasUpdate", (e) => {
 
       socket.broadcast.emit("CanvasUpdate", e)
-    })
+    })*/
     socket.on("ChatMsg", (e) => {
       socket.broadcast.emit("ChatMsg", e);
       console.log(e)

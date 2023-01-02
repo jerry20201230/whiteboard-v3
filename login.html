@@ -240,7 +240,7 @@
                     iconClass: '',
                     title: '註冊成功',
                     body: `請使用你的帳號登入`,
-                    toastClass:"text-bg-success"
+                    toastClass: "text-bg-success"
                 })
             }
         }
@@ -395,8 +395,8 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        action:"signup",
-                        uid:  $("#sign_up_user_account").val(),
+                        action: "signup",
+                        uid: $("#sign_up_user_account").val(),
                         pass: $("#sign_up_user_password").val(),
                         nickname: $("#signup_user_nickname").val()
                     })
@@ -417,6 +417,12 @@
                             $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
                             $(".skip_login_btn").removeAttr("disabled")
                             $("#signup_btn").html("註冊")
+                            $("#sign_up_user_account").val("")
+                            $("#sign_up_user_password").val("")
+                            $("#sign_up_user_password_2").val("")
+                            $("#signup_user_nickname").val("")
+
+
                         }
                     })
                     .catch(error => {
