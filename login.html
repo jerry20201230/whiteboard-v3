@@ -419,6 +419,7 @@
                         }
                     })
                     .catch(error => {
+                        console.log(error)
                         $("#signup_error_alert").text("發生錯誤，暫時無法註冊你的帳號").show()
                         $("#sign_up_user_account").removeAttr("disabled")
                         $("#sign_up_user_password").removeAttr("disabled")

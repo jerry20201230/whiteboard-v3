@@ -321,18 +321,6 @@
                         <div class="vr"></div>
                         <span class="select-none">&nbsp;</span>
                         <div class="center">
-                            <span style="font-size:1.25em;">刪除</span>
-                            <div class="d-flex">
-                                <button class="btn btn-danger" data-bs-placement="bottom" data-bs-toggle="tooltip"
-                                    data-bs-title="刪除" onclick="_fabric('delete')"><i class="bi bi-trash"></i></button>
-
-                            </div>
-                        </div>
-
-                        <span class="select-none">&nbsp;</span>
-                        <div class="vr"></div>
-                        <span class="select-none">&nbsp;</span>
-                        <div class="center">
                             <span style="font-size:1.25em;">剪貼</span>
                             <div class="d-flex">
                                 <button class="btn btn-primary draw-tool" onclick="_fabric('copy')"
@@ -347,6 +335,19 @@
                                         class="bi bi-clipboard"></i></button>
                             </div>
                         </div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="vr"></div>
+                        <span class="select-none">&nbsp;</span>
+                        <div class="center">
+                            <span style="font-size:1.25em;">刪除</span>
+                            <div class="d-flex">
+                                <button class="btn btn-danger" data-bs-placement="bottom" data-bs-toggle="tooltip"
+                                    data-bs-title="刪除" onclick="_fabric('delete')"><i class="bi bi-trash"></i></button>
+
+                            </div>
+                        </div>
+
+                        
 
                     </div>
                 </div>
@@ -815,15 +816,7 @@
                         })
                     }
                 })
-            /*if (
-                (localStorage.getItem("logined") == "false" || localStorage.getItem("logined") == undefined || localStorage.getItem("logined") == null)
-                &&
-                (localStorage.getItem("login_taken") == undefined || localStorage.getItem("login_taken") == null)) {
 
-                location = "/login"
-            }else{
-                
-            }*/
         }
 
 
