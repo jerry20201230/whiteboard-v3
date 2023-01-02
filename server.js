@@ -228,6 +228,7 @@ app.post("/account/signup/checkid", (req, res) => {
     res.status(404).sendFile(__dirname + '/lib/404.html')
   })
 app.post("*",(req,res)=>{
+  console.log("post")
   if(req.body.action == "signup"){
       //判斷ID存在與否
 console.log(req.body)
