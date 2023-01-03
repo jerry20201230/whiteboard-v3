@@ -103,7 +103,7 @@ console.log(req.body)
     if (err) throw err
     connection.query(
       `INSERT INTO userData(user_id,user_nickname,user_password)
-     VALUES("${req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
+     VALUES("${"@"+req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
 
       if (err) throw err
 
