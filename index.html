@@ -1104,7 +1104,7 @@
                 PopupAlert({
 
                     title: "新建專案",
-                    body: `<h5 style="color:var(--bs-red)">注意:</h5><p>若未儲存目前專案，變更將會<span class="text-danger">遺失</span><br>是否要繼續?</p>`,
+                    body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱">`,
                     escCallBack: "dismiss",
                     enterCallBack: "dismiss"
                 })
