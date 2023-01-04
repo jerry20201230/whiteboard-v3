@@ -233,7 +233,7 @@ sql_Connect.getConnection(function (err, connection) {
   res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
   res.end(); // end the response
 
-})
+})  
   }
 })
 

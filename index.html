@@ -1101,13 +1101,17 @@
 
             }
             else if (type == "new") {
+                if(par !== "callback"){
                 PopupAlert({
 
                     title: "新建專案",
-                    body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱">`,
+                    body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">`,
                     escCallBack: "dismiss",
-                    enterCallBack: "dismiss"
+                    enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
                 })
+            }else{
+                //do with file name
+            }
             }
             else if (type == "share") {
 
