@@ -347,7 +347,7 @@
                             </div>
                         </div>
 
-                        
+
 
                     </div>
                 </div>
@@ -928,7 +928,7 @@
                 canvas.renderAll()
             }
 
-         //   socket.emit("CanvasUpdate", JSON.stringify(canvas))
+            //   socket.emit("CanvasUpdate", JSON.stringify(canvas))
             canvas.renderAll()
         }
 
@@ -1101,18 +1101,28 @@
 
             }
             else if (type == "new") {
-                if(par !== "callback"){
-                PopupAlert({
+                if (par !== "callback") {
+                    PopupAlert({
 
-                    title: "新建專案",
-                    body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">`,
-                    escCallBack: "dismiss",
-                    enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
-                })
-            }else{
-                //do with file name
-                console.log(data)
-            }
+                        title: "新建專案",
+                        body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">`,
+                        escCallBack: "dismiss",
+                        enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
+                    })
+                } else {
+                    //do with file name
+                    console.log(data)
+                    if (data.includes("/") || data.includes(":") || data.includes("*") || data.includes("?") || data.includes('"') || data.includes("<") || data.includes(">") || data.includes("|")) {
+                        PopupAlert({
+                            title: "檔案名稱無效",
+                            body: `<div class="alert alert-warning">檔案名稱 "${data}" 無效，請重新輸入</div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">`,
+                            escCallBack: "dismiss",
+                            enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
+                        })
+                    } else {
+                        $(".file-name").text(data)
+                    }
+                }
             }
             else if (type == "share") {
 
