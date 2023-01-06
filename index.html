@@ -32,6 +32,10 @@
 
             padding: 12px;
         }
+        .dropdown-item{
+            user-select: none;
+            cursor: pointer;
+        }
 
         #styleSpan-1,
         #styleSpan-2 {
@@ -131,17 +135,40 @@
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
-    justify-content: space-between;">
-            <div id="top-left-tool-bar"></div>
-            <div><span class="text-danger file-unsaved-mark">*</span><span class="file-name">未命名專案</span> - 白板</div>
-            <div id="top-right-tool-bar"></div>
+    justify-content: space-between;
+    margin-bottom: 10px;">
+            <div id="top-left-tool-bar">
+                <div class="btn-group" role="group">
+                    <button class="btn btn-secondary btn-sm " type="button">
+                        <i class="bi bi-file-earmark-post"></i>
+                    </button>
+                    <button class="btn btn-secondary btn-sm " type="button">
+                        <i class="bi"></i>
+                    </button>
+                </div>
+            </div>
+            <div style="text-align: center;"><span class="text-danger file-unsaved-mark">*</span><span
+                    class="file-name">未命名專案</span> - 白板</div>
+            <div id="top-right-tool-bar">
+
+                <button class="btn btn-secondary btn-sm" id="person-option-button" disabled type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <span class="person-icon"><i class="bi bi-person-fill-x"></i></span><span
+                        class="user-nickname">未確認的使用者</span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li  onclick="$('#v-pills-3-tab').click();$('#nav-0-tab').click()" class="dropdown-item">資料</li>
+                    <li><a class="dropdown-item" href="#" >設定</a></li>
+                    <li><a class="dropdown-item" href="#">登出</a></li>
+                </ul>
+            </div>
         </div>
         <nav>
             <div class="nav nav-tabs" id="nav-tab" role="tablist">
 
                 <button class="nav-link " id="nav-0-tab" type="button" role="button" aria-selected="false"
                     style="background-color: #0099ff; color:#fff;" data-bs-toggle="offcanvas"
-                    data-bs-target="#offcanvas" aria-controls="offcanvas" onclick=" _Offcanvas.isShowing = true;">
+                    data-bs-target="#offcanvas" aria-controls="offcanvas">
 
                     檔案
                 </button>
@@ -438,50 +465,24 @@
             <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                 <button class="nav-link active" id="v-pills-1-tab" data-bs-toggle="pill" data-bs-target="#v-pills-1"
                     type="button" role="tab" aria-controls="v-pills-1" aria-selected="true">
-                    <h3>
-                        <center>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
-                                class="bi bi-file-earmark nav-svg" viewBox="0 0 16 16">
-                                <path
-                                    d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
-                            </svg>
-                        </center>
-
+                    <h4 class="m-0">
+                        <i class="bi bi-file-earmark"></i>
                         常用
-                    </h3>
+                    </h4>
                 </button>
                 <button class="nav-link" id="v-pills-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-3"
                     type="button" role="tab" aria-controls="v-pills-3" aria-selected="false">
-                    <h3>
-                        <center>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor"
-                                class="bi bi-person-circle" viewBox="0 0 16 16">
-                                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z" />
-                                <path fill-rule="evenodd"
-                                    d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z" />
-                            </svg>
-
-                        </center>
+                    <h4 class="m-0">
+                        <i class="bi bi-person-circle"></i>
                         帳號
-                    </h3>
+                    </h4>
                 </button>
                 <button class="nav-link" id="v-pills-2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-2"
                     type="button" role="tab" aria-controls="v-pills-2" aria-selected="false">
-                    <h3>
-                        <center>
-
-                            <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50 " fill="currentColor"
-                                class="bi bi-gear nav-svg " viewBox="0 0 16 16">
-                                <path
-                                    d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
-                                <path
-                                    d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
-                            </svg>
-
-                        </center>
+                    <h4 class="m-0">
+                        <i class="bi bi-gear"></i>
                         設定
-                    </h3>
+                    </h4>
                 </button>
 
             </div>
@@ -492,8 +493,7 @@
                     <div id="file-list">
 
                         <div onclick="
-                           _data('new')
-                            _Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style="
+                           _data('new')" data-bs-dismiss="offcanvas" style="
             display: inline-block; text-align: center; border-radius: 5px; 
             border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
             margin: 2px; cursor: pointer;">
@@ -509,7 +509,7 @@
 
                         </div>
 
-                        <div onclick="upload();_Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style=" display: inline-block; text-align: center; 
+                        <div onclick="upload();" data-bs-dismiss="offcanvas" style=" display: inline-block; text-align: center; 
                             border-radius: 5px; border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
                             margin: 2px; cursor: pointer;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -523,7 +523,7 @@
 
                         </div>
 
-                        <div onclick="download();_Offcanvas.isShowing = false;" data-bs-dismiss="offcanvas" style="
+                        <div onclick="download();" data-bs-dismiss="offcanvas" style="
             display: inline-block; text-align: center; border-radius: 5px; 
             border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
             margin: 2px; cursor: pointer;">
@@ -554,8 +554,8 @@
                     <h3>帳號</h3>
 
                     <div class="d-flex">
-                        <div id="person-icon">
-                            <h1><i class="bi bi-person-fill"></i></h1>
+                        <div>
+                            <h1 class="person-icon"><i class="bi bi-person-fill-x text-danger"></i></h1>
                         </div>
                         <div id="person-data">
                             <h5 class="user-nickname"><span class="text-danger">未確認的使用者</span></h5>
@@ -621,7 +621,7 @@
 
         $("#chat-tool").css("width", "400px")
         $("#canvas").attr('width', window.innerWidth - 60)
-        $("#canvas").attr('height', window.innerHeight - 160)
+        $("#canvas").attr('height',Math.abs(window.innerHeight - 290))
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.js'
         integrity='sha512-UP6tOIJfUgQv7uNUL4IXb8HDO1PlEUVSOuPGUcX11obi7Eh24geCoL2X+8JxB4tA9BfdppntOzqrmVQUblSYYQ=='
@@ -631,8 +631,7 @@
 
     <script>
         const socket = io();
-        $("#canvas").attr('width', window.innerWidth - 60)
-        $("#canvas").attr('height', window.innerHeight - 160)
+        
         const canvas = new fabric.Canvas('canvas', {
             isDrawingMode: true
         });
@@ -802,10 +801,13 @@
                         })
                         $(".user-nickname").text(data.nickname)
                         $(".user-id").text(data.account)
+                        $("#person-option-button").removeAttr("disabled")
                         if (data.account === "@admin") {
-                            $("#person-icon").html(`<h1><i class="bi bi-person-fill-gear"></i></h1>`)
+                            $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
                         } else if (data.account === "@guest") {
-                            $("#person-icon").html(`<h1><i class="bi bi-person-fill-lock"></i></h1>`)
+                            $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                        }else{
+                            $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
                         }
                     } else {
                         BS_Toast.show({
@@ -1115,7 +1117,7 @@
                     if (data.includes("/") || data.includes(":") || data.includes("*") || data.includes("?") || data.includes('"') || data.includes("<") || data.includes(">") || data.includes("|")) {
                         PopupAlert({
                             title: "檔案名稱無效",
-                            body: `<div class="alert alert-warning">檔案名稱 "${data}" 無效，請重新輸入</div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">`,
+                            body: `<div class="alert alert-danger">檔案名稱 "${data}" 無效，請重新輸入</div>輸入檔案名稱來新增專案:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">`,
                             escCallBack: "dismiss",
                             enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
                         })
