@@ -159,12 +159,12 @@
 
                 <button class="btn btn-secondary btn-sm" id="person-option-button" disabled type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    <span class="person-icon"><i class="bi bi-person-fill-x"></i></span><span
+                    <span class="person-icon"><i class="bi bi-person-fill-x select-none">&nbsp;&nbsp;</i></span><span
                         class="user-nickname">正在確認使用者...</span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item">資料</li>
-                    <li onclick="$('#v-pills-3-tab').click();$('#nav-0-tab').click()" class="dropdown-item">設定</li>
+                    <li onclick="$('#v-pills-3-tab').click();$('#nav-0-tab').click()" class="dropdown-item">帳號</li>
+                    <li onclick="$('#v-pills-2-tab').click();$('#nav-0-tab').click()" class="dropdown-item">設定</li>
                     <li onclick=" window.logout()" class="dropdown-item">登出</li>
                 </ul>
             </div>
