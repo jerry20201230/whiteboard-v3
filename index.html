@@ -32,7 +32,8 @@
 
             padding: 12px;
         }
-        .dropdown-item{
+
+        .dropdown-item {
             user-select: none;
             cursor: pointer;
         }
@@ -142,30 +143,33 @@
                     <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="儲存">
                         <i class="bi bi-file-earmark-post"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="上一步">
+                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip"
+                        data-bs-title="上一步">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="下一步">
+                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip"
+                        data-bs-title="下一步">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="共用" onclick="_data('share')">
+                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="共用"
+                        onclick="_data('share')">
                         <i class="bi bi-share"></i>
                     </button>
                 </div>
             </div>
-            <div style="text-align: center;"><span class="text-danger file-unsaved-mark">*</span><span
+            <div style="text-align: center;"><span class="text-danger file-unsaved-mark"></span><span
                     class="file-name">未命名專案</span> - 白板</div>
             <div id="top-right-tool-bar">
 
-                <button class="btn btn-secondary btn-sm" id="person-option-button" disabled type="button" data-bs-toggle="dropdown"
-                    aria-expanded="false">
+                <button class="btn btn-secondary btn-sm" id="person-option-button"  type="button"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     <span class="person-icon"><i class="bi bi-person-fill-x select-none">&nbsp;&nbsp;</i></span><span
                         class="user-nickname">正在確認使用者...</span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li onclick="$('#v-pills-3-tab').click();$('#nav-0-tab').click()" class="dropdown-item">帳號</li>
-                    <li onclick="$('#v-pills-2-tab').click();$('#nav-0-tab').click()" class="dropdown-item">設定</li>
-                    <li onclick=" window.logout()" class="dropdown-item">登出</li>
+                    <li onclick="$('#v-pills-3-tab').click();$('#nav-0-tab').click()" class="dropdown-item bi bi-person-circle"> 帳號</li>
+                    <li onclick="$('#v-pills-2-tab').click();$('#nav-0-tab').click()" class="dropdown-item bi bi-gear"> 設定</li>
+                    <li onclick=" window.logout()" class="dropdown-item bi bi-box-arrow-right"> 登出</li>
                 </ul>
             </div>
         </div>
@@ -627,7 +631,7 @@
 
         $("#chat-tool").css("width", "400px")
         $("#canvas").attr('width', window.innerWidth - 60)
-        $("#canvas").attr('height',Math.abs(window.innerHeight - 290))
+        $("#canvas").attr('height', Math.abs(window.innerHeight - 290))
     </script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.js'
         integrity='sha512-UP6tOIJfUgQv7uNUL4IXb8HDO1PlEUVSOuPGUcX11obi7Eh24geCoL2X+8JxB4tA9BfdppntOzqrmVQUblSYYQ=='
@@ -637,7 +641,7 @@
 
     <script>
         const socket = io();
-        
+
         const canvas = new fabric.Canvas('canvas', {
             isDrawingMode: true
         });
@@ -699,7 +703,7 @@
 
         }
 
-        window.logout = function(e){
+        window.logout = function (e) {
             BS_Toast.show({
                 icon: 'bi-box-arrow-right',
                 iconClass: '',
@@ -720,16 +724,30 @@
                         location.reload()
                     } else {
                         $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
+                        BS_Toast.show({
+                            icon: 'bi-box-arrow-right',
+                            iconClass: '',
+                            title: '登出',
+                            body: `正在準備登出...<br>`,
+                            toastClass: "bg-danger"
+                        })
                     }
                 })
                 .catch(error => {
-                    $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
+                    $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
+                    BS_Toast.show({
+                        icon: 'bi-box-arrow-right',
+                        iconClass: '',
+                        title: '登出',
+                        body: `正在準備登出...<br>`,
+                        toastClass: "bg-danger"
+                    })
                 })
         }
 
 
-        //{ icon,         iconClass,     title,  body }
-        //  ^ex:bi-text  ^ex:text-success
+        //{ icon,         iconClass,     title,  body  toastClass}
+        //  ^ex:bi-text  ^ex:text-success              ^ex:text-bg-primary
         var BS_Toast = {
             toast_id: 0,
 
@@ -737,7 +755,7 @@
                 let hour = getTime("pack").hour,
                     mins = getTime("pack").minute;
                 $("#toast").append(` 
-            <div id='BS-Toast-${BS_Toast.toast_id}' class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+            <div id='BS-Toast-${BS_Toast.toast_id}' class="toast ${data.toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
               <div class="toast-header" >
                 <i class='bi ${data.icon} ${data.iconClass}'></i>&nbsp;
                 <strong class="me-auto">${data.title}</strong>
@@ -840,7 +858,7 @@
                             $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
                         } else if (data.account === "@guest") {
                             $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
-                        }else{
+                        } else {
                             $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
                         }
                     } else {
@@ -1102,7 +1120,7 @@
         });
 
         $("#logout-btn").on("click", function (e) {
-           window.logout()
+            window.logout()
         })
 
         function _data(type, par, data) {

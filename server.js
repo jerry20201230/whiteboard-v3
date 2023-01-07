@@ -75,7 +75,7 @@ app.get('/dist', (req, res) => {
 
 app.post("/account/signup"), (req, res) => {
   //判斷ID存在與否
-console.log(req.body)
+  console.log(req.body)
   if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
     res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID需在5到20個字元之間` } }))
     res.end(); // end the response
@@ -92,7 +92,7 @@ console.log(req.body)
   }
   sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
-    connection.query('SELECT * FROM userData WHERE user_id = ?', '@'+req.body.uid, function (err, results, fields) {
+    connection.query('SELECT * FROM userData WHERE user_id = ?', '@' + req.body.uid, function (err, results, fields) {
 
       if (err) throw err
       if (results.length !== 0) { res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; }
@@ -103,7 +103,7 @@ console.log(req.body)
     if (err) throw err
     connection.query(
       `INSERT INTO userData(user_id,user_nickname,user_password)
-     VALUES("${"@"+req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
+     VALUES("${"@" + req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
 
       if (err) throw err
 
@@ -189,104 +189,104 @@ app.post("/account/signup/checkid", (req, res) => {
 
 
 
-  app.get('*', (req, res) => {
-    res.status(404).sendFile(__dirname + '/lib/404.html')
-  })
-app.post("*",(req,res)=>{
+app.get('*', (req, res) => {
+  res.status(404).sendFile(__dirname + '/lib/404.html')
+})
+app.post("*", (req, res) => {
   console.log("post")
-  if(req.body.action == "signup"){
-   //判斷ID存在與否
-console.log(req.body)
-if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
-  res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID需在5到20個字元之間` } }))
-  res.end(); // end the response
-  return;
+  if (req.body.action == "signup") {
+    //判斷ID存在與否
+    console.log(req.body)
+    if (req.body.uid.length - 1 < 5 || req.body.uid.length > 20 || IfStrIsBlank(req.body.uid)) {
+      res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID需在5到20個字元之間` } }))
+      res.end(); // end the response
+      return;
 
-} else if (req.body.uid.includes("@")) {
-  res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID不能包含2個"@"` } }))
-  res.end(); // end the response
-  return;
-} else if (req.body.uid.includes(" ")) {
-  res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID不能包含空白，請使用底線"_"` } }))
-  res.end(); // end the response
-  return;
-}
-sql_Connect.getConnection(function (err, connection) {
-  if (err) throw err
-  connection.query('SELECT * FROM userData WHERE user_id = ?', '@'+req.body.uid, function (err, results, fields) {
-
-    if (err) throw err
-    if (results.length !== 0) { res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; }
-    connection.release();
-  })
-})
-sql_Connect.getConnection(function (err, connection) {
-  if (err) throw err
-  connection.query(
-    `INSERT INTO userData(user_id,user_nickname,user_password)
-   VALUES("${"@"+req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
-
-    if (err) throw err
-
-    connection.release();
-  })
-  res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
-  res.end(); // end the response
-
-})  
-  }
-})
-
-
-  var chatId = 0
-
-
-  function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
-  function IfStrIsBlank(str) {
-    let _arr = str.split(" "),
-      _s;
-    for (i = 0; i < _arr.length; i++) {
-
-      if (_arr[i] !== " " && _arr[i] !== "") {
-
-
-        return false
-      }
+    } else if (req.body.uid.includes("@")) {
+      res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID不能包含2個"@"` } }))
+      res.end(); // end the response
+      return;
+    } else if (req.body.uid.includes(" ")) {
+      res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": null, "text": `ID不能包含空白，請使用底線"_"` } }))
+      res.end(); // end the response
+      return;
     }
+    sql_Connect.getConnection(function (err, connection) {
+      if (err) throw err
+      connection.query('SELECT * FROM userData WHERE user_id = ?', '@' + req.body.uid, function (err, results, fields) {
 
-    return true
+        if (err) throw err
+        if (results.length !== 0) { res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; }
+        connection.release();
+      })
+    })
+    sql_Connect.getConnection(function (err, connection) {
+      if (err) throw err
+      connection.query(
+        `INSERT INTO userData(user_id,user_nickname,user_password)
+   VALUES("${"@" + req.body.uid}","${req.body.nickname}","${req.body.pass}")`, function (err, results, fields) {
+
+        if (err) throw err
+
+        connection.release();
+      })
+      res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
+      res.end(); // end the response
+
+    })
+  }
+})
+
+
+var chatId = 0
+
+
+function getRandomInt(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function IfStrIsBlank(str) {
+  let _arr = str.split(" "),
+    _s;
+  for (i = 0; i < _arr.length; i++) {
+
+    if (_arr[i] !== " " && _arr[i] !== "") {
+
+
+      return false
+    }
   }
 
-  io.on('connection', (socket) => {
-    console.log('a user connected');
-    socket.emit("data-update", { chat_id: chatId })
+  return true
+}
 
-    socket.on('disconnect', () => {
-      console.log('user disconnected');
-    });
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.emit("data-update", { chat_id: chatId })
 
-
-   /* socket.on("CanvasUpdate", (e) => {
-
-      socket.broadcast.emit("CanvasUpdate", e)
-    })*/
-    socket.on("ChatMsg", (e) => {
-      socket.broadcast.emit("ChatMsg", e);
-      console.log(e)
-      chatId++
-    })
-
-
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
   });
 
 
+  /* socket.on("CanvasUpdate", (e) => {
+
+     socket.broadcast.emit("CanvasUpdate", e)
+   })*/
+  socket.on("ChatMsg", (e) => {
+    socket.broadcast.emit("ChatMsg", e);
+    console.log(e)
+    chatId++
+  })
+
+
+});
 
 
 
-  server.listen(port, '0.0.0.0', () => {
-    console.log(`running on ${__dirname}:${port}`);
-  });
+
+
+server.listen(port, '0.0.0.0', () => {
+  console.log(`running on ${__dirname}:${port}`);
+});
