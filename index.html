@@ -152,7 +152,7 @@
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
                     <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="共用"
-                        onclick="_data('share')"> 
+                        onclick="_data('share')">
                         <i class="bi bi-share"></i>
                     </button>
                 </div>
@@ -167,7 +167,8 @@
                         class="user-nickname">正在確認使用者...</span>
                 </button>
                 <ul class="dropdown-menu">
-                    <div class="px-3 pt-1 pb-1 text-muted" style="max-width: 200px;"><span class="user-nickname">使用者暱稱</span></div>
+                    <div class="px-3 pt-1 pb-1 text-muted" style="max-width: 200px;"><span
+                            class="user-nickname">使用者暱稱</span></div>
                     <li onclick="$('#v-pills-3-tab').click();$('#nav-0-tab').click()"
                         class="dropdown-item bi bi-person-circle"> 帳號</li>
                     <li onclick="$('#v-pills-2-tab').click();$('#nav-0-tab').click()" class="dropdown-item bi bi-gear">
@@ -622,6 +623,9 @@
         integrity='sha512-gMrnU9iM+azBQtrSC8kTJy6+g+hjaIHnElQmb41QeHNTGYjbbtm0BptpIMgXYpS6iyWq9bPkxrcqgK8aqRsjAg=='
         crossorigin='anonymous'></script>
     <script>
+        var _User
+
+
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
         var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
             return new bootstrap.Tooltip(tooltipTriggerEl)
@@ -741,8 +745,8 @@
                     BS_Toast.show({
                         icon: 'bi-box-arrow-right',
                         iconClass: '',
-                        title: '登出',
-                        body: `正在準備登出...<br>`,
+                        title: '發生錯誤',
+                        body: `無法登出<br>`,
                         toastClass: "bg-danger"
                     })
                 })
@@ -864,6 +868,7 @@
                         } else {
                             $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
                         }
+                        _User = data;
                     } else {
                         BS_Toast.show({
                             icon: 'bi-person-fill-x',
@@ -1144,6 +1149,10 @@
                         escCallBack: "dismiss",
                         enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
                     })
+
+                    if (_User.account == "@guest") {
+                        $("#inlineRadio2").attr("disabled")
+                    }
                 } else {
                     //do with file name
                     console.log(data)
@@ -1156,6 +1165,9 @@
                             escCallBack: "dismiss",
                             enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
                         })
+                        if (_User.account == "@guest") {
+                            $("#inlineRadio2").attr("disabled")
+                        }
                     } else {
                         $(".file-name").text(data)
                     }
@@ -1271,6 +1283,16 @@
             return true
         }
 
+
+        window.onerror = function () {
+            BS_Toast.show({
+                icon: 'bi-box-arrow-right',
+                iconClass: '',
+                title: '發生錯誤',
+                body: `ERROR`,
+                toastClass: "bg-danger"
+            })
+        }
     </script>
 </body>
 
