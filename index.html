@@ -636,7 +636,7 @@
         var toastElList = document.querySelectorAll('.toast')
         var toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
 
-        $("#chat-tool").css("width", "400px")
+        $("#chat-tool").css("width", "100%")
         $("#canvas").attr('width', window.innerWidth - 60)
         $("#canvas").attr('height', Math.abs(window.innerHeight - 290))
     </script>
@@ -955,6 +955,9 @@
                         top: 0,
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
+                        underline: document.getElementById("canvas-text-underline").checked ? true : false,
+                        linethrough: document.getElementById("canvas-text-strikethrough").checked ? true : false,
+                        fontStyle: document.getElementById("canvas-text-italic").checked ? 'italic' : 'normal',
                     })
                 } else {
                     var shape = new fabric.IText(par, {
@@ -962,8 +965,9 @@
                         top: 0,
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
-                        underline: document.getElementById("canvas-text-underline").checked,
-
+                        underline: document.getElementById("canvas-text-underline").checked ? true : false,
+                        linethrough: document.getElementById("canvas-text-strikethrough").checked ? true : false,
+                        fontStyle: document.getElementById("canvas-text-italic").checked ? 'italic' : 'normal',
                     })
                 }
 
@@ -1160,7 +1164,7 @@
                             body: `<div class="alert alert-danger">檔案名稱 "${data}" 無效，請重新輸入</div>輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">
                             <br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>
                             <script>if (_User.account == "@guest") {$("#inlineRadio2").attr("disabled")}<\/script>`,
-                            
+
                             escCallBack: "dismiss",
                             enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
                         })
@@ -1288,7 +1292,7 @@
                 icon: 'bi-x-circle-fill',
                 iconClass: 'text-danger',
                 title: '發生錯誤',
-                body: `: ( 程式發生錯誤`,
+                body: `: ( <br>程式發生錯誤`,
                 toastClass: "text-bg-danger"
             })
         }
