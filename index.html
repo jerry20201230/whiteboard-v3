@@ -1285,11 +1285,11 @@
 
         window.onerror = function () {
             BS_Toast.show({
-                icon: 'bi-box-arrow-right',
-                iconClass: '',
+                icon: 'bi-x-circle-fill',
+                iconClass: 'text-danger',
                 title: '發生錯誤',
-                body: `ERROR`,
-                toastClass: "bg-danger"
+                body: `: ( 程式發生錯誤`,
+                toastClass: "text-bg-danger"
             })
         }
     </script>
