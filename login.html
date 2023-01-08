@@ -252,6 +252,69 @@
                 $("#user_account").addClass("is-invalid")
             }
         })
+
+        window.onkeydown = function (e) {
+            if (e.keyCode == 13 & status == "login") {
+                if ($("#user_account").val() == "") {
+                    $("#login_user_account_alert").html("*請填寫此欄位*").show();
+                    $("#user_account").addClass("is-invalid")
+                } else {
+
+                    $("#login_btn").attr("disabled", true).html("正在登入 " + `<div class="spinner-border  spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+
+                    $(".skip_login_btn").attr("disabled", true)
+                    $("#user_account").attr("disabled", true)
+                    $("#user_password").attr("disabled", true);
+                    $(".toggle-btn").attr("disabled", true)
+
+                    status = "logining"
+                    $("#login_error_alert").text("").hide()
+
+                    fetch('/account/login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            user: {
+                                account: $("#user_account").val(),
+                                pass: $("#user_password").val()
+                            }
+                        })
+                    })
+                        .then(res => res.json())
+
+                        .then((json) => {
+                            if (json.code === "failed") {
+                                $("#login_error_alert").text(json.par.text).show();
+
+
+                                $("#user_account").removeAttr("disabled")
+                                $("#user_password").removeAttr("disabled")
+                                $(".toggle-btn").removeAttr("disabled")
+                                $(".skip_login_btn").removeAttr("disabled")
+                                $("#login_btn").removeAttr("disabled").html("登入")
+                                status = "login"
+
+                            } else {
+                                location.href = "/"
+                            }
+                        })
+
+                        .catch(error => {
+                            console.log(error)
+                            $("#login_error_alert").text("發生錯誤，暫時無法將你登入").show();
+                            $("#user_account").removeAttr("disabled")
+                            $("#user_password").removeAttr("disabled")
+                            $(".skip_login_btn").removeAttr("disabled")
+                            $(".toggle-btn").removeAttr("disabled")
+                            $("#login_btn").removeAttr("disabled").html("登入")
+                            status = "login"
+                        })
+                }
+            }
+        }
+
         $("#login_btn").on("click", function (e) {
             if ($("#user_account").val() == "") {
                 $("#login_user_account_alert").html("*請填寫此欄位*").show();

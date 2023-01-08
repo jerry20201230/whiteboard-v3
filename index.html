@@ -600,7 +600,7 @@
             </div>
 
         </div>
-        <div id="chat-tool" class="buttom p-2 d-flex bg-light">
+        <div id="chat-tool" class="buttom p-2 d-flex bg-light" style="width:inherit">
 
             <input type="text" style="border-radius: 5em; flex-grow: 1;" class="form-control" id="chat-text-input"
                 placeholder="輸入新訊息...">
@@ -636,7 +636,7 @@
         var toastElList = document.querySelectorAll('.toast')
         var toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, option))
 
-        $("#chat-tool").css("width", "100%")
+
         $("#canvas").attr('width', window.innerWidth - 60)
         $("#canvas").attr('height', Math.abs(window.innerHeight - 290))
     </script>
