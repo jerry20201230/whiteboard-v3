@@ -523,7 +523,7 @@
 
                         </div>
 
-                        <div onclick="upload();" data-bs-dismiss="offcanvas" style=" display: inline-block; text-align: center; 
+                        <div onclick="_data('upload')" data-bs-dismiss="offcanvas" style=" display: inline-block; text-align: center; 
                             border-radius: 5px; border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
                             margin: 2px; cursor: pointer;">
                             <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
@@ -537,7 +537,7 @@
 
                         </div>
 
-                        <div onclick="download();" data-bs-dismiss="offcanvas" style="
+                        <div onclick="_data('save')" data-bs-dismiss="offcanvas" style="
             display: inline-block; text-align: center; border-radius: 5px; 
             border: 1px solid rgb(59, 59, 59); padding:  15px; user-select: none;
             margin: 2px; cursor: pointer;">
@@ -1138,38 +1138,57 @@
 
             }
             else if (type == "upload") {
+                if (par !== "callback") {
+                    PopupAlert({
+                        title: "上傳專案",
+                        body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>上傳檔案<br><input type="file" id="upload-file-input" style="display:none"><label for="upload-file-input" class="btn btn-primary">選擇檔案</label>`,
+                        escCallBack: "dismiss",
+                        enterCallBack: `_data('upload','callback')`
+                    })
+                } else {
 
+                }
             }
             else if (type == "new") {
                 if (par !== "callback") {
-                    PopupAlert({
+                    if (_User.account !== "@guest") {
+                        PopupAlert({
 
-                        title: "新建專案",
-                        body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">
-                       <br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>
-                       <script>if (_User.account == "@guest") {$("#inlineRadio2").attr("disabled")}<\/script>
-                       `,
-                        escCallBack: "dismiss",
-                        enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
-                    })
+                            title: "新建專案",
+                            body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input"><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div><script>if (_User.account == "@guest") {$("#inlineRadio2").attr("disabled")}<\/script>`,
+                            escCallBack: "dismiss",
+                            enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
+                        })
+                    } else {
+                        PopupAlert({
+
+                            title: "新建專案",
+                            body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input"><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>`,
+                            escCallBack: "dismiss",
+                            enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
+                        })
+                    }
+
 
 
                 } else {
                     //do with file name
                     console.log(data)
                     if (data.includes("/") || data.includes(":") || data.includes("*") || data.includes("?") || data.includes('"') || data.includes("<") || data.includes(">") || data.includes("|")) {
-                        PopupAlert({
-                            title: "新建專案",
-
-                            body: `<div class="alert alert-danger">檔案名稱 "${data}" 無效，請重新輸入</div>輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input">
-                            <br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>
-                            <script>if (_User.account == "@guest") {$("#inlineRadio2").attr("disabled")}<\/script>`,
-
-                            escCallBack: "dismiss",
-                            enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
-                        })
-                        if (_User.account == "@guest") {
-                            $("#inlineRadio2").attr("disabled")
+                        if (_User.account !== "@guest") {
+                            PopupAlert({
+                                title: "新建專案",
+                                body: `<div class="alert alert-danger">檔案名稱 ${data} 無效，請重新輸入</div>重新輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input" value="${data}"><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div><script>if (_User.account == "@guest") {$("#inlineRadio2").attr("disabled")}<\/script>`,
+                                escCallBack: "dismiss",
+                                enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
+                            })
+                        } else {
+                            PopupAlert({
+                                title: "新建專案",
+                                body: `<div class="alert alert-danger">檔案名稱 ${data} 無效，請重新輸入</div>重新輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input"  value="${data}"><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" disabled><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>`,
+                                escCallBack: "dismiss",
+                                enterCallBack: `_data('new','callback',$('#create-file-name-input').val())`
+                            })
                         }
                     } else {
                         $(".file-name").text(data)
