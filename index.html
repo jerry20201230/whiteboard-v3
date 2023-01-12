@@ -593,7 +593,14 @@
                         </div>
                     </div>
 
-                    <button class="btn btn-primary" id="logout-btn">登出</button>
+                    <div class="mb-1">&nbsp;</div>
+                        <h3>帳號驗證碼</h3>
+                        <span>當你嘗試在其他裝置上登入，系統可能會要求你輸入以下代碼<wbr>來驗證登入者是你本人</span>
+                        <div data-code-shown="false" class="text-bg-dark p-3" style="border-radius: 5px;width:fit-content; font-size: 1.3em;">
+<pre class="m-0 p-0">代碼已隱藏</pre></div>
+                        <a href="#"
+                        onclick="_ui('show_account_secret_code')"
+                        class="link-dark">顯示代碼</a>
 
                     <div id="user-alert" class="alert alert-danger alert-hidden"></div>
                     <div id="user-logout-alert" class="alert alert-danger alert-hidden"></div>
@@ -1295,6 +1302,11 @@
                     })
                 }
             }
+        }
+
+
+        function _ui(type,par,data){
+            console.log(type)
         }
 
 
