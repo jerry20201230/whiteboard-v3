@@ -34,9 +34,9 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(express.static('public'))
 */
-app.use(express.static("lib"))
-app.use(express.static("/lib"))
-//app.use(express.static(path.join(__dirname, 'static')));
+app.use('/lib', express.static(__dirname + '/lib'));
+
+app.use(express.static(path.join(__dirname, 'static')));
 
 app.get('/', (req, res) => {
 
