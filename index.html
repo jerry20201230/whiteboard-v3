@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>畫板 - 即時線上協作</title>
-    <link id="browser-icon" rel="shortcut icon" type="image/png" href="/lib/icon.png" />
+    <link id="browser-icon" rel="shortcut icon" type="image/png" href="/lib/icon-active.png" />
 
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/css/bootstrap.css'
         integrity='sha512-+QrNe4Kul4TNKwDK+EJM71C9z5I9I/iYLEIJPYTfmXouMSU8tkayWYnOsAKjDAaOOH21+MS747IPTYcD+2euuQ=='
@@ -126,14 +126,14 @@
     width: 100vw;
     height: 100vh;
     background-color:var(--bs-light)">
-<center style="margin-top:35vh">
-   <img src="/lib/icon.png" style="max-width: 7em;" alt="" srcset="">
+<center style="margin-top:40vh">
+   <img src="/lib/icon-active.png" style="max-width: 3em;" alt="" srcset="">
    <br><p></p> 
-   <h3>資料讀取中</h3>
+   <h3 id="loading-status">資料讀取中</h3>
     </center>
     </div>
 
-    <div id="app">
+    <div id="app"
         <noscript>
             <div class="alert alert-danger" role="alert">
                 本程式需要JavaScript才能正確執行，請先開啟JavaScript!
@@ -855,6 +855,7 @@
                 .then(data => {
                     console.log(data)
                     if (data.login) {
+                        $("#loading-layer").fadeOut()
                         $("#loading-layer").remove()
                         $(".user-nickname").text(data.nickname)
                         $(".user-id").text(data.account)
