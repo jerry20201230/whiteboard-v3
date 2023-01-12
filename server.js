@@ -63,7 +63,7 @@ app.post("/account/logout", (req, res) => {
 })
 
 
-app.get(/lib/, (req, res) => {
+app.get(/js|css|html|.png|icon/, (req, res) => {
   res.sendFile(__dirname + __filename)
 })
 app.get('/lib/health', (req, res) => {
