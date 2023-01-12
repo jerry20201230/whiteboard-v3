@@ -63,7 +63,7 @@ app.post("/account/logout", (req, res) => {
 })
 
 app.get("/lib/icon.png",(req,res)=>{
-  res.sendFile(__dirname + __filename)
+  res.sendFile(__dirname +"/lib/icon.png")
 })
 app.get(/js|css|html|.png|icon/, (req, res) => {
   res.sendFile(__dirname + __filename)
