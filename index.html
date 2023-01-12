@@ -870,12 +870,7 @@
                         }
                         _User = data;
                     } else {
-                        BS_Toast.show({
-                            icon: 'bi-person-fill-x',
-                            iconClass: 'text-danger',
-                            title: '身分驗證錯誤',
-                            body: `請重新登入，以繼續使用白板`
-                        })
+                        $("#loading-status").attr("class","text-danger").text("發生暫時性的錯誤，請重新登入")
                     }
                 })
 
