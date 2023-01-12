@@ -193,7 +193,9 @@ app.post("/account/signup/checkid", (req, res) => {
   })
 
 })
+app.post("/share/getcode",(req,res)=>{
 
+})
 
 
 app.get('*', (req, res) => {
