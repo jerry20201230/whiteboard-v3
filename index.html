@@ -126,11 +126,12 @@
     width: 100vw;
     height: 100vh;
     background-color:var(--bs-light)">
-<center style="margin-top:40vh">
-   <img src="/lib/icon-active.png" style="max-width: 3em;" alt="" srcset="">
-   <br><p></p> 
-   <h3 id="loading-status">資料讀取中</h3>
-    </center>
+        <center style="margin-top:40vh">
+            <img src="/lib/icon-active.png" style="max-width: 3em;" alt="" srcset="">
+            <br>
+            <p></p>
+            <h3 id="loading-status">資料讀取中</h3>
+        </center>
     </div>
 
     <div id="app">
@@ -1202,7 +1203,20 @@
                     PopupAlert({
                         title: "共用",
                         body: `
-                        <div class="d-flex">
+<ul class="nav nav-tabs" id="share-tabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="share-tabs-1" data-bs-toggle="tab" data-bs-target="#share-tab-1" type="button" role="tab" aria-controls="home" aria-selected="true">共用</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="share-tabs-2" data-bs-toggle="tab" data-bs-target="#share-tab-2" type="button" role="tab" aria-controls="profile" aria-selected="false">快速分享</button>
+  </li>
+
+</ul>
+
+<div class="tab-content">
+  <div class="tab-pane fade show active" id="share-tab-1" role="tabpanel" tabindex="0">
+    
+    <div class="d-flex">
                             <div class="input-group" style="width:fit-content !important;flex-grow:1;">
                                 <span class="input-group-text">@</span>
                                 <input class="form-control" placeholder="使用者ID..." id="share-uid-input" oninput='$("#share-invalid-feedback").hide();$("#share-uid-input").removeClass("is-invalid")'>
@@ -1235,7 +1249,16 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
                                 <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>所有已經登入的使用者&nbsp;&nbsp;[檢視者]
                             </div>
-                        </div>`,
+                        </div>
+    
+    
+    
+    </div>
+  <div class="tab-pane fade" id="share-tab-2" role="tabpanel" tabindex="0">...</div>
+
+</div>
+
+`,
                         escCallBack: "dismiss",
                         enterCallBack: "_data('share','submit')"
                     })
