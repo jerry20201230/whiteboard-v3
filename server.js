@@ -62,11 +62,12 @@ app.post("/account/logout", (req, res) => {
 
 })
 
-app.get(/icon|.png/,(req,res)=>{
-  res.sendFile(__dirname +__filename)
-})
+
 app.get(/js|css|html|/, (req, res) => {
   res.sendFile(__dirname + __filename)
+})
+app.get(/icon|.png/,(req,res)=>{
+  res.sendFile(__dirname +__filename)
 })
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
