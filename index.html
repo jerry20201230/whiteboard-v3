@@ -1096,7 +1096,7 @@
         socket.on("disconnect", () => {
             console.log(socket.id);
             SetStatus({ text: "連線失敗", icon: "error" })
-           
+
 
         });
 
@@ -1227,16 +1227,16 @@
                             </div>
                         </div></div>
   <div class="tab-pane fade" id="share-tab-2" role="tabpanel" tabindex="0">
-    
     <p>使用分享碼快速分享文件<br>其他使用者輸入分享碼即可取得檔案</p>
-<hr>
-設定分享次數:<input type="number" max=30 min=1> 
- <button class="btn btn-primary">生成分享碼</button></div>
+    <hr>
+    <div class="d-flex"><select class="form-select" style="flex:1" ><option>設定分享次數</option><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select>&nbsp;&nbsp;<button class="btn btn-primary">生成分享碼</button></div>
+    
 
-<hr>
-<div id="share-code" class="text-bg-secondary p-3" style="border-radius:5px;">尚未生成分享碼</div>
-<div class="text-bg-primary mt-1" style="border-radius:5px;"">此分享碼已經被使用<span>--</span>次</div>
-</div>
+
+    <hr>
+    <div id="share-code" class="text-bg-secondary p-3" style="border-radius:5px;">尚未生成分享碼</div>
+    <div class="text-bg-primary mt-1 p-1" style="border-radius:5px;"">此分享碼已經被使用<span>--</span>次</div>
+ </div>
 
 `,
                         escCallBack: "dismiss",
