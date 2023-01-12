@@ -639,7 +639,7 @@
         integrity='sha512-gMrnU9iM+azBQtrSC8kTJy6+g+hjaIHnElQmb41QeHNTGYjbbtm0BptpIMgXYpS6iyWq9bPkxrcqgK8aqRsjAg=='
         crossorigin='anonymous'></script>
     <script>
-        var _User
+        var _User, _Project = {}
 
 
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -1136,7 +1136,7 @@
                         enterCallBack: `_data('upload','callback')`
                     })
                 } else {
-
+                    console.log(document.getElementById("upload-file-input").files)
                 }
             }
             else if (type == "new") {
@@ -1275,18 +1275,25 @@
 
             }
 
-            else if(type == "share_with_code"){
-                                        PopupAlert({
-                            title:"分享",
-                            body:` 
-    <div class="alert alert-warning">注意:這個功能並不是與特定帳號分享檔案，如果要與特定對象分享，請使用 共用</div>
+            else if (type == "share_with_code") {
+                if (!par) {
+                    PopupAlert({
+                        title: "分享",
+                        body: ` <div class="alert alert-warning">注意:這個功能並不是與特定帳號分享檔案<br>如果要與特定對象分享，請使用 共用</div>
     <p>使用分享碼快速分享文件<br>其他使用者輸入分享碼即可取得檔案</p><hr>
-    <div class="d-flex"><select class="form-select" style="flex:1" ><option>設定分享次數</option><option value="5">5</option><option value="10">10</option><option value="20">20</option><option value="30">30</option></select></div>
-    <hr>
+    <select id="share-with-code-select" class="form-select" style="flex:1" ><option>設定分享次數限制</option><option value="5">5次</option><option value="10">10次</option><option value="20">20次</option><option value="30">30次</option></select>
     <!--<div id="share-code" class="text-bg-secondary p-3" style="border-radius:5px;">尚未生成分享碼</div>
-    <div class="text-bg-primary mt-1 p-1" style="border-radius:5px;"">此分享碼已經被使用<span>--</span>次</div>-->`
-                        
-                        })
+    <div class="text-bg-primary mt-1 p-1" style="border-radius:5px;"">此分享碼已經被使用<span>--</span>次</div>-->`,
+                        escCallBack: "dismiss",
+                        enterCallBack: `_data("share_with_code","callback",$("#share-with-code-select").val())`
+
+                    })
+                } else {
+                    fetch({
+                        method: "POST",
+                        url: "/share/getcode"
+                    })
+                }
             }
         }
 
