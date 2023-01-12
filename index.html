@@ -115,6 +115,22 @@
 </head>
 
 <body onload="window.setup()">
+
+    <div id="loading-layer" style="    
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100vw;
+    height: 100vh;
+    background-color:var(--bs-light)">
+<center style="margin-top:35vh">
+   <img src="/lib/icon.png" style="max-width: 7em;" alt="" srcset="">
+   <br><p></p> 
+   <h3>資料讀取中</h3>
+    </center>
+    </div>
+
     <div id="app">
         <noscript>
             <div class="alert alert-danger" role="alert">
@@ -519,8 +535,6 @@
                             </svg>
                             <p></p>
                             <h5>新增</h5>
-                            <small>(沒有快速鍵)</small>
-
                         </div>
 
                         <div onclick="_data('upload')" data-bs-dismiss="offcanvas" style=" display: inline-block; text-align: center; 
@@ -533,8 +547,6 @@
                             </svg>
                             <p></p>
                             <h5>開啟</h5>
-                            <small>(Ctrl + O)</small>
-
                         </div>
 
                         <div onclick="_data('save')" data-bs-dismiss="offcanvas" style="
@@ -550,9 +562,6 @@
                             </svg>
                             <p></p>
                             <h5>儲存</h5>
-                            <small>(Ctrl + S)</small>
-
-
                         </div>
                         <br>
                     </div>
@@ -830,12 +839,6 @@
 
         window.setup = function (par) {
             console.log("白板 %cBETA", "background:#0d6efd;border-radius:5px;padding-left:5px;padding-right:5px;color:#fff")
-            BS_Toast.show({
-                icon: 'bi-person-fill',
-                iconClass: '',
-                title: '身分驗證中...',
-                body: `正在確認身分資料，請稍候片刻...`
-            })
 
             fetch('/account/check', {
                 method: 'POST',
@@ -850,12 +853,7 @@
                 .then(data => {
                     console.log(data)
                     if (data.login) {
-                        BS_Toast.show({
-                            icon: 'bi-person-fill-check',
-                            iconClass: 'text-success',
-                            title: '歡迎使用',
-                            body: `${data.nickname} , 歡迎使用白板<br>`
-                        })
+                        $("#loading-layer").remove()
                         $(".user-nickname").text(data.nickname)
                         $(".user-id").text(data.account)
                         $("#person-option-button").removeAttr("disabled")
