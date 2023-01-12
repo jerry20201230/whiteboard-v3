@@ -1096,18 +1096,7 @@
         socket.on("disconnect", () => {
             console.log(socket.id);
             SetStatus({ text: "連線失敗", icon: "error" })
-            $("#chat-msgBox").html(`
-            <div class="alert alert-danger">
-            無法連線到討論區
-            </div>
-            `)
-            PopupAlert({
-
-                title: "連線到伺服器時發生錯誤",
-                body: `<h1 class="text-primary">: (</h1><span class="text-secondary">目前無法連接至伺服器<br>無法同步資料</span><p></p><div class="accordion"><div class="accordion-item"><h2 class="accordion-header"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne"  aria-expanded="false">可能原因</button></h2><div id="collapseOne" class="accordion-collapse collapse " data-bs-parent="#accordionExample"><div class="accordion-body"><ol><li>沒有網路連線或連線品質不佳</li><li>伺服器發生故障</li></ol></div></div></div></div>`,
-                escCallBack: "x",
-                enterCallBack: "dismiss"
-            })
+           
 
         });
 
@@ -1240,11 +1229,14 @@
   <div class="tab-pane fade" id="share-tab-2" role="tabpanel" tabindex="0">
     
     <p>使用分享碼快速分享文件<br>其他使用者輸入分享碼即可取得檔案</p>
-<div id="share-code" class="text-bg-secondary p-3">尚未生成分享碼</div>
+<hr>
+設定分享次數:<input type="number" max=30 min=1> 
+ <button class="btn btn-primary">生成分享碼</button></div>
 
-  </div>
-<button class="btn btn-primary">取得分享碼</button>
-    </div>
+<hr>
+<div id="share-code" class="text-bg-secondary p-3" style="border-radius:5px;">尚未生成分享碼</div>
+<div class="text-bg-primary mt-1" style="border-radius:5px;"">此分享碼已經被使用<span>--</span>次</div>
+</div>
 
 `,
                         escCallBack: "dismiss",
