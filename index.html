@@ -917,36 +917,19 @@
 
                 } else {
 
-                   fetch('/account/check', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-
-                        })
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            console.log(data)
-                            _User = data
-                            if (data.login) {
-                                if (data.account === "@guest") {
-                                }
-                            }else{
-                                return;
-                            }
-                        })
-
                     fetch('/file/check',{
                         method:"POST",
                         headers:{
                             'Content-Type':'application/json'
                         },
                         body:JSON.stringify({
-                            "userData":_User,
                             "fileID":fileID
                         })
+                    })
+                    .then(res=>res.json())
+                    .than(data=>{
+                        $("#loading-status").attr("class", "text-danger").text(data.par.text)
+
                     })
                 }
             }

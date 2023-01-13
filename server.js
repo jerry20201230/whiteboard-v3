@@ -79,8 +79,21 @@ app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
 })
 app.post("/file/check",(req,res)=>{
-  console.log("file check")
-  console.log(req.body)
+  var uid = req.session.loggedin? req.session.username:"";
+
+  sql_Connect.getConnection(function (err, connection) {
+    if (err) throw err
+    connection.query('SELECT * FROM drawData WHERE fileID = ?', req.body.fileID, function (err, results, fields) {
+
+      if (err) throw err
+      if (results.length !== 0) { 
+        
+      }else{
+        res.send(JSON.stringify({ "code": "failed", "par": { "text": "找不到檔案，或者你沒有權限使用此檔案" } })); res.end(); return; 
+      }
+      connection.release();
+    })
+  })
 })
 
 app.post("/account/signup"), (req, res) => {
