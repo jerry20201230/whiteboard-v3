@@ -162,20 +162,20 @@
                     <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="儲存">
                         <i class="bi bi-file-earmark-post"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip"
-                        data-bs-title="上一步" onclick="undo()">
+                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="上一步"
+                        onclick="undo()">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip"
-                        data-bs-title="下一步" onclick="redo()">
+                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="下一步"
+                        onclick="redo()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip" data-bs-title="共用"
-                        onclick="_data('share')">
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip"
+                        data-bs-title="共用" onclick="_data('share')">
                         <i class="bi bi-person-add"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip" data-bs-title="分享"
-                        onclick="_data('share_with_code')">
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip"
+                        data-bs-title="分享" onclick="_data('share_with_code')">
                         <i class="bi bi-share"></i>
                     </button>
                 </div>
@@ -423,7 +423,8 @@
                         <div class="center">
                             <span style="font-size:1.25em;">共用文件</span>
                             <div class="d-flex">
-                                <button class="btn btn-primary not-allow-guest share-work-button" onclick="_data('share')"><i class="bi bi-lock"></i>
+                                <button class="btn btn-primary not-allow-guest share-work-button"
+                                    onclick="_data('share')"><i class="bi bi-lock"></i>
                                     未共用</button>
                             </div>
                         </div>
@@ -594,12 +595,12 @@
                     </div>
 
                     <div class="mb-1">&nbsp;</div>
-                        <h3>帳號驗證碼</h3>
-                        <span>當你嘗試在其他裝置上登入，系統可能會要求你輸入以下代碼<wbr>來驗證登入者是你本人</span>
-                        <div class="text-bg-dark p-3" style="border-radius: 5px;width:fit-content; font-size: 1.3em;">
-<pre id="account-secret-code" data-code-shown="false" class="m-0 p-0">代碼已隱藏</pre></div>
-                        <a id="account-secret-code-toggle" href="#"
-                        onclick="_ui('show_account_secret_code')"
+                    <h3>帳號驗證碼</h3>
+                    <span>當你嘗試在其他裝置上登入，系統可能會要求你輸入以下代碼<wbr>來驗證登入者是你本人</span>
+                    <div class="text-bg-dark p-3" style="border-radius: 5px;width:fit-content; font-size: 1.3em;">
+                        <pre id="account-secret-code" data-code-shown="false" class="m-0 p-0">代碼已隱藏</pre>
+                    </div>
+                    <a id="account-secret-code-toggle" href="#" onclick="_ui('show_account_secret_code')"
                         class="link-dark">顯示代碼</a>
 
                     <div id="user-alert" class="alert alert-danger alert-hidden"></div>
@@ -868,15 +869,20 @@
                     console.log(data)
                     if (data.login) {
                         $("#loading-layer").fadeOut()
-                        
+
                         $(".user-nickname").text(data.nickname)
                         $(".user-id").text(data.account)
                         $("#person-option-button").removeAttr("disabled")
                         if (data.account === "@admin") {
                             $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
                         } else if (data.account === "@guest") {
+
+                            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                return new bootstrap.Tooltip(tooltipTriggerEl)
+                            })
                             $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
-                            $(".not-allow-guest").attr("disabled",true).attr("data-bs-toggle","tooltip").attr("data-bs-title","訪客無法使用此功能")
+                            $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
                             $(".share-work-button").text("無法共用")
                         } else {
                             $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
@@ -1307,9 +1313,9 @@
         }
 
 
-        function _ui(type,par,data){
-            if(type == ""){
-                
+        function _ui(type, par, data) {
+            if (type == "") {
+
             }
         }
 
@@ -1343,120 +1349,120 @@
 
 
 
-        fabric.StaticCanvas.prototype.getObjectByName  = function(name){
-  if(!name || typeof name === 'undefined'){
-  return [];
-  }
-  return this._objects.filter(function(o) {
-      return o.name === name;
-    });
-}
-
-canvas.counter = 0;
-var newleft = 0;
-canvas.selection = false;
-var undoStack = [];
-var redoStack = [];
-
-var state = [];
-var mods = 0;
-var props = {};
-canvas.on(
-    'mouse:down', function (e) {
-    var block = e.target;
-    if(block){
-    	 props.oldStage = {
-       left:block.left,
-       top:block.top,
-       width:block.width,
-       height:block.height,
-       scaleX:block.scaleX,
-       scaleY:block.scaleY,
-       }
-    }
-}).on(
-    'mouse:up', function (e) {
-    var block = e.target;
-    if(block){
-    	 props.newStage = {
-       left:block.left,
-       top:block.top,
-       width:block.width,
-       height:block.height,
-       scaleX:block.scaleX,
-       scaleY:block.scaleY,
-       }
-       undoStack.push({
-        objectName : block.name,
-        type:'modified',
-        oldStage:props.oldStage,
-        newStage:props.newStage
-       });
-       props={};
-    }
-});
-
-
-
-undo = function undo() {
-    if(undoStack.length){
-     var undoData = undoStack.pop();
-     if(undoData && undoData.type){
-       switch(undoData.type){
-         case 'added':
-         var objectByName = canvas.getObjectByName(undoData.object.name);
-         if(objectByName.length){
-           canvas.remove(objectByName[0]);
-          
-         }
-         break;
-         case 'modified':
-         var objectByName = canvas.getObjectByName(undoData.objectName);
-         if(objectByName.length){
-          	for(var key in undoData.oldStage){
-              objectByName[0].set(key, undoData.oldStage[key]);
+        fabric.StaticCanvas.prototype.getObjectByName = function (name) {
+            if (!name || typeof name === 'undefined') {
+                return [];
             }
-         }
-         break;
-       }
-       canvas.renderAll();
-     }
-     redoStack.push(undoData);
-    }
-}
+            return this._objects.filter(function (o) {
+                return o.name === name;
+            });
+        }
 
-redo = function redo() {
-    if(redoStack.length){
-     var redoData = redoStack.pop();
-     if(redoData && redoData.type){
-       switch(redoData.type){
-         case 'added':
-         if(redoData.object){
-           canvas.add(redoData.object);
-          
-         }
-         break;
-         case 'modified':
-         var objectByName = canvas.getObjectByName(redoData.objectName);
-         if(objectByName.length){
-          	for(var key in redoData.newStage){
-              objectByName[0].set(key, redoData.newStage[key]);
+        canvas.counter = 0;
+        var newleft = 0;
+        canvas.selection = false;
+        var undoStack = [];
+        var redoStack = [];
+
+        var state = [];
+        var mods = 0;
+        var props = {};
+        canvas.on(
+            'mouse:down', function (e) {
+                var block = e.target;
+                if (block) {
+                    props.oldStage = {
+                        left: block.left,
+                        top: block.top,
+                        width: block.width,
+                        height: block.height,
+                        scaleX: block.scaleX,
+                        scaleY: block.scaleY,
+                    }
+                }
+            }).on(
+                'mouse:up', function (e) {
+                    var block = e.target;
+                    if (block) {
+                        props.newStage = {
+                            left: block.left,
+                            top: block.top,
+                            width: block.width,
+                            height: block.height,
+                            scaleX: block.scaleX,
+                            scaleY: block.scaleY,
+                        }
+                        undoStack.push({
+                            objectName: block.name,
+                            type: 'modified',
+                            oldStage: props.oldStage,
+                            newStage: props.newStage
+                        });
+                        props = {};
+                    }
+                });
+
+
+
+        undo = function undo() {
+            if (undoStack.length) {
+                var undoData = undoStack.pop();
+                if (undoData && undoData.type) {
+                    switch (undoData.type) {
+                        case 'added':
+                            var objectByName = canvas.getObjectByName(undoData.object.name);
+                            if (objectByName.length) {
+                                canvas.remove(objectByName[0]);
+
+                            }
+                            break;
+                        case 'modified':
+                            var objectByName = canvas.getObjectByName(undoData.objectName);
+                            if (objectByName.length) {
+                                for (var key in undoData.oldStage) {
+                                    objectByName[0].set(key, undoData.oldStage[key]);
+                                }
+                            }
+                            break;
+                    }
+                    canvas.renderAll();
+                }
+                redoStack.push(undoData);
             }
-         }
-         break;
-       }
-       canvas.renderAll();
-     }
-     undoStack.push(redoData);
-    }
-}
-clearcan = function clearcan() {
-    canvas.clear().renderAll();
-    canvas.counter=0;
-    undoStack=[];
-    redoStack=[];
-    newleft = 0;
-}
+        }
+
+        redo = function redo() {
+            if (redoStack.length) {
+                var redoData = redoStack.pop();
+                if (redoData && redoData.type) {
+                    switch (redoData.type) {
+                        case 'added':
+                            if (redoData.object) {
+                                canvas.add(redoData.object);
+
+                            }
+                            break;
+                        case 'modified':
+                            var objectByName = canvas.getObjectByName(redoData.objectName);
+                            if (objectByName.length) {
+                                for (var key in redoData.newStage) {
+                                    objectByName[0].set(key, redoData.newStage[key]);
+                                }
+                            }
+                            break;
+                    }
+                    canvas.renderAll();
+                }
+                undoStack.push(redoData);
+            }
+        }
+        clearcan = function clearcan() {
+            canvas.clear().renderAll();
+            canvas.counter = 0;
+            undoStack = [];
+            redoStack = [];
+            newleft = 0;
+        }
     </script>
 </body>
 
