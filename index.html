@@ -950,6 +950,9 @@
                     type: 'added',
                     object: shape
                 })
+                canvas.counter++;
+
+                redoStack = [];
             } else if (obj == "square") {
 
                 var shape = new fabric.Rect({
@@ -964,6 +967,9 @@
                     type: 'added',
                     object: shape
                 })
+                canvas.counter++;
+
+                redoStack = [];
             }
             else if (obj == "triangle") {
                 var shape = new fabric.Triangle({
@@ -978,6 +984,9 @@
                     type: 'added',
                     object: shape
                 })
+                canvas.counter++;
+
+                redoStack = [];
             }
             else if (obj == "itext") {
                 if (par == "") {
@@ -1008,6 +1017,8 @@
                     type: 'added',
                     object: shape
                 })
+                canvas.counter++;
+                redoStack = [];
             }
             else if (obj == "delete") {
                 var selected = canvas.getActiveObjects(),
@@ -1466,6 +1477,8 @@
 
         undo = function undo() {
             if (undoStack.length) {
+                console.log("[UNDO]")
+                console.log([undoStack,redoStack])
                 var undoData = undoStack.pop();
                 if (undoData && undoData.type) {
                     switch (undoData.type) {
@@ -1488,11 +1501,14 @@
                     canvas.renderAll();
                 }
                 redoStack.push(undoData);
+                console.log([undoStack,redoStack])
             }
         }
 
         redo = function redo() {
             if (redoStack.length) {
+                console.log("[REDO]")
+                console.log([undoStack,redoStack])
                 var redoData = redoStack.pop();
                 if (redoData && redoData.type) {
                     switch (redoData.type) {
@@ -1514,6 +1530,7 @@
                     canvas.renderAll();
                 }
                 undoStack.push(redoData);
+                console.log([undoStack,redoStack])
             }
         }
         clearcan = function clearcan() {
