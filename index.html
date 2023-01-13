@@ -912,11 +912,12 @@
                     })
             } else if (location.pathname == "/file") {
                 var fileID = $.UrlParam("open")
-                if (fileID !== null) {
+                if (fileID == null) {
                     $("#loading-status").attr("class", "text-danger").html(`發生暫時性的錯誤，請前往<a class="link-danger" href="/">首頁</a>`)
 
                 } else {
-                    fetch('/account/check', {
+
+                   fetch('/account/check', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
@@ -927,11 +928,26 @@
                     })
                         .then(res => res.json())
                         .then(data => {
+                            console.log(data)
+                            _User = data
                             if (data.login) {
                                 if (data.account === "@guest") {
                                 }
+                            }else{
+                                return;
                             }
                         })
+
+                    fetch('/file/check',{
+                        method:"POST",
+                        headers:{
+                            'Content-Type':'application/json'
+                        },
+                        body:JSON.stringify({
+                            "userData":_User,
+                            "fileID":fileID
+                        })
+                    })
                 }
             }
         }

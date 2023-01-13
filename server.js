@@ -78,8 +78,9 @@ app.get(/icon|.png/,(req,res)=>{
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
 })
-app.get('/dist', (req, res) => {
-  res.status(403).sendFile(__dirname + '/lib/block.html');
+app.post("/file/check",(req,res)=>{
+  console.log("file check")
+  console.log(req.body)
 })
 
 app.post("/account/signup"), (req, res) => {
