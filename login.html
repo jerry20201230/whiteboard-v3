@@ -385,8 +385,69 @@
                 if ($("#user_account").val() == "") {
                     $("#login_user_account_alert").html("*請填寫此欄位*").show();
                     $("#user_account").addClass("is-invalid")
-                } else {
+                } else if (event.which == 13 && status == "signup"){
+                    if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
+                $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入").show()
+            }
+            else if (IfStrIsBlank($("#sign_up_user_password").val()) || $("#sign_up_user_password").val().split("").length > 30 || $("#sign_up_user_password").val().split("").length < 6) {
+                $("#signup_error_alert").text("密碼需在6到30字之間，建議包含特殊符號以提升安全性").show()
+            }
+            else {
+                $("#sign_up_user_account").attr("disabled", true)
+                $("#sign_up_user_password").attr("disabled", true)
+                $("#sign_up_user_password_2").attr("disabled", true)
+                $("#signup_user_nickname").attr("disabled", true)
+                $(".skip_login_btn").attr("disabled", true)
+                $("#signup_btn").attr("disabled", true).html("正在註冊 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
+                fetch("https://whiteboard-v3-production.up.railway.app/account/signup", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        action: "signup",
+                        uid: $("#sign_up_user_account").val(),
+                        pass: $("#sign_up_user_password").val(),
+                        nickname: $("#signup_user_nickname").val()
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        if (data.code === "failed") {
+                            $("#signup_error_alert").text(data.par.text).show();
+                            $("#sign_up_user_account").removeAttr("disabled")
+                            $("#sign_up_user_password").removeAttr("disabled")
+                            $("#sign_up_user_password_2").removeAttr("disabled")
+                            $("#signup_user_nickname").removeAttr("disabled")
+                            $(".skip_login_btn").removeAttr("disabled")
+                            $("#signup_btn").removeAttr("disabled").html("註冊")
+
+                        } else {
+                            $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
+                            $(".skip_login_btn").removeAttr("disabled")
+                            $("#signup_btn").html("註冊")
+                            $("#sign_up_user_account").val("")
+                            $("#sign_up_user_password").val("")
+                            $("#sign_up_user_password_2").val("")
+                            $("#signup_user_nickname").val("")
+
+
+                        }
+                    })
+                    .catch(error => {
+                        console.log(error)
+                        $("#signup_error_alert").text("發生錯誤，暫時無法註冊你的帳號").show()
+                        $("#sign_up_user_account").removeAttr("disabled")
+                        $("#sign_up_user_password").removeAttr("disabled")
+                        $("#sign_up_user_password_2").removeAttr("disabled")
+                        $("#signup_user_nickname").removeAttr("disabled")
+                        $(".skip_login_btn").removeAttr("disabled")
+                        $("#signup_btn").removeAttr("disabled").html("註冊")
+
+                    })
+            }
                 }
             }
 

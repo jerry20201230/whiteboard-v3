@@ -1340,103 +1340,123 @@
             })
         }
 
-        var current;
-var list = [];
+
+
+
+        fabric.StaticCanvas.prototype.getObjectByName  = function(name){
+  if(!name || typeof name === 'undefined'){
+  return [];
+  }
+  return this._objects.filter(function(o) {
+      return o.name === name;
+    });
+}
+
+canvas.counter = 0;
+var newleft = 0;
+canvas.selection = false;
+var undoStack = [];
+var redoStack = [];
+
 var state = [];
-var index = 0;
-var index2 = 0;
-var action = false;
-var refresh = true;
-
-canvas.on("object:added", function (e) {
-    var object = e.target;
-    console.log('object:modified');
-
-    if (action === true) {
-        state = [state[index2]];
-        list = [list[index2]];
-
-        action = false;
-        console.log(state);
-        index = 1;
+var mods = 0;
+var props = {};
+canvas.on(
+    'mouse:down', function (e) {
+    var block = e.target;
+    if(block){
+    	 props.oldStage = {
+       left:block.left,
+       top:block.top,
+       width:block.width,
+       height:block.height,
+       scaleX:block.scaleX,
+       scaleY:block.scaleY,
+       }
     }
-    object.saveState();
-
-    console.log(object.originalState);
-    state[index] = JSON.stringify(object.originalState);
-    list[index] = object;
-    index++;
-    index2 = index - 1;
-    
-    refresh = true;
+}).on(
+    'mouse:up', function (e) {
+    var block = e.target;
+    if(block){
+    	 props.newStage = {
+       left:block.left,
+       top:block.top,
+       width:block.width,
+       height:block.height,
+       scaleX:block.scaleX,
+       scaleY:block.scaleY,
+       }
+       undoStack.push({
+        objectName : block.name,
+        type:'modified',
+        oldStage:props.oldStage,
+        newStage:props.newStage
+       });
+       props={};
+    }
 });
 
-canvas.on("object:modified", function (e) {
-    var object = e.target;
-    console.log('object:modified');
 
-    if (action === true) {
-        state = [state[index2]];
-        list = [list[index2]];
 
-        action = false;
-        console.log(state);
-        index = 1;
+undo = function undo() {
+    if(undoStack.length){
+     var undoData = undoStack.pop();
+     if(undoData && undoData.type){
+       switch(undoData.type){
+         case 'added':
+         var objectByName = canvas.getObjectByName(undoData.object.name);
+         if(objectByName.length){
+           canvas.remove(objectByName[0]);
+          
+         }
+         break;
+         case 'modified':
+         var objectByName = canvas.getObjectByName(undoData.objectName);
+         if(objectByName.length){
+          	for(var key in undoData.oldStage){
+              objectByName[0].set(key, undoData.oldStage[key]);
+            }
+         }
+         break;
+       }
+       canvas.renderAll();
+     }
+     redoStack.push(undoData);
     }
-
-    object.saveState();
-
-    state[index] = JSON.stringify(object.originalState);
-    list[index] = object;
-    index++;
-    index2 = index - 1;
-
-    console.log(state);
-    refresh = true;
-});
-
-function undo() {
-
-    if (index <= 0) {
-        index = 0;
-        return;
-    }
-    
-    if (refresh === true) {
-        index--;
-        refresh = false;
-    }
-
-    console.log('undo');
-
-    index2 = index - 1;
-    current = list[index2];
-    current.setOptions(JSON.parse(state[index2]));
-
-    index--;
-    current.setCoords();
-    canvas.renderAll();
-    action = true;
 }
 
-function redo() {
-
-    action = true;
-    if (index >= state.length - 1) {
-        return;
+redo = function redo() {
+    if(redoStack.length){
+     var redoData = redoStack.pop();
+     if(redoData && redoData.type){
+       switch(redoData.type){
+         case 'added':
+         if(redoData.object){
+           canvas.add(redoData.object);
+          
+         }
+         break;
+         case 'modified':
+         var objectByName = canvas.getObjectByName(redoData.objectName);
+         if(objectByName.length){
+          	for(var key in redoData.newStage){
+              objectByName[0].set(key, redoData.newStage[key]);
+            }
+         }
+         break;
+       }
+       canvas.renderAll();
+     }
+     undoStack.push(redoData);
     }
-
-    console.log('redo');
-
-    index2 = index + 1;
-    current = list[index2];
-    current.setOptions(JSON.parse(state[index2]));
-
-    index++;
-    current.setCoords();
-    canvas.renderAll();
 }
-
+clearcan = function clearcan() {
+    canvas.clear().renderAll();
+    canvas.counter=0;
+    undoStack=[];
+    redoStack=[];
+    newleft = 0;
+}
     </script>
 </body>
 
