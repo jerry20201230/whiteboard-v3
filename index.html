@@ -848,54 +848,92 @@
             _Modal.toggle();
         }
 
-
+        (function ($) {
+            $.UrlParam = function (name) {
+                //宣告正規表達式
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                /*
+                 * window.location.search 獲取URL ?之後的參數(包含問號)
+                 * substr(1) 獲取第一個字以後的字串(就是去除掉?號)
+                 * match(reg) 用正規表達式檢查是否符合要查詢的參數
+                */
+                var r = window.location.search.substr(1).match(reg);
+                //如果取出的參數存在則取出參數的值否則回穿null
+                if (r != null) return (r[2]); return null;
+            }
+        })(jQuery);
 
 
 
         window.setup = function (par) {
             console.log("白板 %cBETA", "background:#0d6efd;border-radius:5px;padding-left:5px;padding-right:5px;color:#fff")
 
-            fetch('/account/check', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
 
+            if (location.pathname == "/") {
+                fetch('/account/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+
+                    })
                 })
-            })
-                .then(res => res.json())
-                .then(data => {
-                    console.log(data)
-                    if (data.login) {
-                        $("#loading-layer").fadeOut()
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        if (data.login) {
+                            $("#loading-layer").fadeOut()
 
-                        $(".user-nickname").text(data.nickname)
-                        $(".user-id").text(data.account)
-                        $("#person-option-button").removeAttr("disabled")
-                        if (data.account === "@admin") {
-                            $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
-                        } else if (data.account === "@guest") {
+                            $(".user-nickname").text(data.nickname)
+                            $(".user-id").text(data.account)
+                            $("#person-option-button").removeAttr("disabled")
+                            if (data.account === "@admin") {
+                                $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
+                            } else if (data.account === "@guest") {
 
 
-                            $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
-                            $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
-                            $(".share-work-button").text("無法共用")
+                                $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                                $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
+                                $(".share-work-button").text("無法共用")
 
-                            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                                return new bootstrap.Tooltip(tooltipTriggerEl)
-                            })
+                                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                                })
+                            } else {
+                                $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
+                            }
+                            _User = data;
+                            $("#loading-layer").remove()
                         } else {
-                            $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
+                            $("#loading-status").attr("class", "text-danger").text("發生暫時性的錯誤，請重新登入")
                         }
-                        _User = data;
-                        $("#loading-layer").remove()
-                    } else {
-                        $("#loading-status").attr("class", "text-danger").text("發生暫時性的錯誤，請重新登入")
-                    }
-                })
+                    })
+            } else if (location.pathname == "/file") {
+                var fileID = $.UrlParam("open")
+                if (fileID !== null) {
+                    $("#loading-status").attr("class", "text-danger").html(`發生暫時性的錯誤，請前往<a class="link-danger" href="/">首頁</a>`)
 
+                } else {
+                    fetch('/account/check', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+
+                        })
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.login) {
+                                if (data.account === "@guest") {
+                                }
+                            }
+                        })
+                }
+            }
         }
 
 
@@ -1482,7 +1520,7 @@
         undo = function undo() {
             if (undoStack.length) {
                 console.log("[UNDO]")
-                console.log([undoStack,redoStack])
+                console.log([undoStack, redoStack])
                 var undoData = undoStack.pop();
                 if (undoData && undoData.type) {
                     switch (undoData.type) {
@@ -1505,14 +1543,14 @@
                     canvas.renderAll();
                 }
                 redoStack.push(undoData);
-                console.log([undoStack,redoStack])
+                console.log([undoStack, redoStack])
             }
         }
 
         redo = function redo() {
             if (redoStack.length) {
                 console.log("[REDO]")
-                console.log([undoStack,redoStack])
+                console.log([undoStack, redoStack])
                 var redoData = redoStack.pop();
                 if (redoData && redoData.type) {
                     switch (redoData.type) {
@@ -1534,7 +1572,7 @@
                     canvas.renderAll();
                 }
                 undoStack.push(redoData);
-                console.log([undoStack,redoStack])
+                console.log([undoStack, redoStack])
             }
         }
         clearcan = function clearcan() {
