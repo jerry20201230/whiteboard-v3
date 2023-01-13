@@ -163,18 +163,18 @@
                         <i class="bi bi-file-earmark-post"></i>
                     </button>
                     <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip"
-                        data-bs-title="上一步">
+                        data-bs-title="上一步" onclick="undo()">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
                     <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip"
-                        data-bs-title="下一步">
+                        data-bs-title="下一步" onclick="redo()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="共用"
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip" data-bs-title="共用"
                         onclick="_data('share')">
                         <i class="bi bi-person-add"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="分享"
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip" data-bs-title="分享"
                         onclick="_data('share_with_code')">
                         <i class="bi bi-share"></i>
                     </button>
@@ -423,7 +423,7 @@
                         <div class="center">
                             <span style="font-size:1.25em;">共用文件</span>
                             <div class="d-flex">
-                                <button class="btn btn-primary" onclick="_data('share')"><i class="bi bi-lock"></i>
+                                <button class="btn btn-primary not-allow-guest share-work-button" onclick="_data('share')"><i class="bi bi-lock"></i>
                                     未共用</button>
                             </div>
                         </div>
@@ -433,7 +433,7 @@
                         <div class="center">
                             <span style="font-size:1.25em;">即時討論</span>
                             <div class="d-flex center">
-                                <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas"
+                                <button class="btn btn-primary not-allow-guest" type="button" data-bs-toggle="offcanvas"
                                     data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
                                     onclick="$('#chat-text-input').focus()">開啟</button>
 
@@ -596,9 +596,9 @@
                     <div class="mb-1">&nbsp;</div>
                         <h3>帳號驗證碼</h3>
                         <span>當你嘗試在其他裝置上登入，系統可能會要求你輸入以下代碼<wbr>來驗證登入者是你本人</span>
-                        <div data-code-shown="false" class="text-bg-dark p-3" style="border-radius: 5px;width:fit-content; font-size: 1.3em;">
-<pre class="m-0 p-0">代碼已隱藏</pre></div>
-                        <a href="#"
+                        <div class="text-bg-dark p-3" style="border-radius: 5px;width:fit-content; font-size: 1.3em;">
+<pre id="account-secret-code" data-code-shown="false" class="m-0 p-0">代碼已隱藏</pre></div>
+                        <a id="account-secret-code-toggle" href="#"
                         onclick="_ui('show_account_secret_code')"
                         class="link-dark">顯示代碼</a>
 
@@ -868,7 +868,7 @@
                     console.log(data)
                     if (data.login) {
                         $("#loading-layer").fadeOut()
-                        $("#loading-layer").remove()
+                        
                         $(".user-nickname").text(data.nickname)
                         $(".user-id").text(data.account)
                         $("#person-option-button").removeAttr("disabled")
@@ -876,10 +876,13 @@
                             $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
                         } else if (data.account === "@guest") {
                             $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                            $(".not-allow-guest").attr("disabled",true).attr("data-bs-toggle","tooltip").attr("data-bs-title","訪客無法使用此功能")
+                            $(".share-work-button").text("無法共用")
                         } else {
                             $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
                         }
                         _User = data;
+                        $("#loading-layer").remove()
                     } else {
                         $("#loading-status").attr("class", "text-danger").text("發生暫時性的錯誤，請重新登入")
                     }
@@ -1306,7 +1309,9 @@
 
 
         function _ui(type,par,data){
-            console.log(type)
+            if(type == ""){
+                
+            }
         }
 
 
@@ -1335,6 +1340,37 @@
                 toastClass: "text-bg-danger"
             })
         }
+
+
+canvas.on('object:added', function () {
+  if (!isRedoing) {
+    h = [];
+  }
+  isRedoing = false;
+});
+
+
+canvas.on('object:modified', function () {
+  if (!isRedoing) {
+    h = [];
+  }
+  isRedoing = false;
+});
+var isRedoing = false;
+var h = [];
+function undo() {
+  if (canvas._objects.length > 0) {
+    h.push(canvas._objects.pop());
+    canvas.renderAll();
+  }
+}
+function redo() {
+
+  if (h.length > 0) {
+    isRedoing = true;
+    canvas.add(h.pop());
+  }
+}
     </script>
 </body>
 
