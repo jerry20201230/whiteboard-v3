@@ -65,7 +65,9 @@ app.post("/account/logout", (req, res) => {
   req.session.destroy();
 
 })
-
+app.get("/file",(req,res)=>{
+  res.sendFile(__dirname+"/index.html")
+})
 
 app.get(/js|css|html|/, (req, res) => {
   res.sendFile(__dirname + __filename)

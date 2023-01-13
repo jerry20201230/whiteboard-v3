@@ -946,6 +946,10 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
             } else if (obj == "square") {
 
                 var shape = new fabric.Rect({
@@ -956,6 +960,10 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
             }
             else if (obj == "triangle") {
                 var shape = new fabric.Triangle({
@@ -966,6 +974,10 @@
                 })
 
                 canvas.add(shape)
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
             }
             else if (obj == "itext") {
                 if (par == "") {
@@ -992,6 +1004,10 @@
 
 
                 canvas.add(shape)
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
             }
             else if (obj == "delete") {
                 var selected = canvas.getActiveObjects(),
@@ -1360,12 +1376,54 @@
             });
         }
 
+        /*     canvas.counter = 0;
+             var newleft = 0;
+      
+             var undoStack = [];
+             var redoStack = [];
+             var isUndoRedoing = false
+             canvas.on("object:added",e=>{
+     
+             })
+             canvas.on("object:modified",e=>{
+     
+             })*/
+
+
+
+
         canvas.counter = 0;
         var newleft = 0;
         canvas.selection = false;
         var undoStack = [];
         var redoStack = [];
-
+        addrect = function addrect(top, left, width, height, fill) {
+            var rect = new fabric.Rect({
+                top: document.getElementById("fabriccanvas").height,
+                name: 'rectangle ' + canvas.counter,
+                left: 0 + newleft,
+                width: 100,
+                height: 100,
+                fill: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6),
+                //fix attributes applied for all rects
+                opacity: 0.75,
+                lockRotation: true,
+                originX: 'left',
+                originY: 'bottom',
+                cornerSize: 15,
+                hasRotatingPoint: false,
+                perPixelTargetFind: true,
+                minScaleLimit: 1
+            })
+            canvas.add(rect);
+            undoStack.push({
+                type: 'added',
+                object: rect
+            })
+            canvas.counter++;
+            newleft += 100;
+            redoStack = [];
+        }
         var state = [];
         var mods = 0;
         var props = {};
