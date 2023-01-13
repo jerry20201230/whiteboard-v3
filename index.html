@@ -877,13 +877,15 @@
                             $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
                         } else if (data.account === "@guest") {
 
+
+                            $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                            $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
+                            $(".share-work-button").text("無法共用")
+
                             var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
                             var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
                                 return new bootstrap.Tooltip(tooltipTriggerEl)
                             })
-                            $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
-                            $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
-                            $(".share-work-button").text("無法共用")
                         } else {
                             $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
                         }
