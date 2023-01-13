@@ -914,9 +914,11 @@
             } else if (obj == "paste") {
                 _clipboard.clone(function (clonedObj) {
                     canvas.discardActiveObject();
+                    canvas.counter++
                     clonedObj.set({
                         left: clonedObj.left + 10,
                         top: clonedObj.top + 10,
+                        name: 'object-' + canvas.counter,
                         evented: true,
                     });
                     if (clonedObj.type === 'activeSelection') {
@@ -939,7 +941,7 @@
 
                 var shape = new fabric.Ellipse({
 
-
+                    name: 'object-' + canvas.counter,
                     rx: 50, ry: 50,
                     width: 100,
                     height: 100,
@@ -957,7 +959,7 @@
 
                 var shape = new fabric.Rect({
 
-
+                    name: 'object-' + canvas.counter,
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
@@ -973,7 +975,7 @@
             }
             else if (obj == "triangle") {
                 var shape = new fabric.Triangle({
-
+                    name: 'object-' + canvas.counter,
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
@@ -993,6 +995,7 @@
                     var shape = new fabric.IText("按兩下以編輯文字", {
                         left: 0,
                         top: 0,
+                        name: 'object-' + canvas.counter,
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1003,6 +1006,7 @@
                     var shape = new fabric.IText(par, {
                         left: 0,
                         top: 0,
+                        name: 'object-' + canvas.counter,
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
