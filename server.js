@@ -89,7 +89,7 @@ app.post("/file/check",(req,res)=>{
       if (results.length !== 0) { 
         
       }else{
-        res.send(JSON.stringify({ "code": "failed", "par": { "text": "找不到檔案，或者你沒有權限使用此檔案" } })); res.end(); return; 
+        res.send(JSON.stringify({ "code": "failed", "par": {"code":404, "text": "找不到檔案，或者你沒有權限使用此檔案" } })); res.end(); return; 
       }
       connection.release();
     })

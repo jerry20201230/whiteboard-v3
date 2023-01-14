@@ -131,6 +131,8 @@
             <br>
             <p></p>
             <h3 id="loading-status">資料讀取中</h3>
+            <p></p>
+            <div id="loading-failed-text-container"></div>
         </center>
     </div>
 
@@ -917,20 +919,23 @@
 
                 } else {
 
-                    fetch('/file/check',{
-                        method:"POST",
-                        headers:{
-                            'Content-Type':'application/json'
+                    fetch('/file/check', {
+                        method: "POST",
+                        headers: {
+                            'Content-Type': 'application/json'
                         },
-                        body:JSON.stringify({
-                            "fileID":fileID
+                        body: JSON.stringify({
+                            "fileID": fileID
                         })
                     })
-                    .then(res=>res.json())
-                    .then(data=>{
-                        $("#loading-status").attr("class", "text-danger").text(data.par.text)
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.par.code == 404) {
+                                $("#loading-failed-text-container").html(`<p>請檢查文件ID</p><div class="text-bg-dark p-3" style="border-radius:5px;width:fit-content">${fileID}</div>`)
+                            }
+                            $("#loading-status").attr("class", "text-danger").text(data.par.text)
 
-                    })
+                        })
                 }
             }
         }
