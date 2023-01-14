@@ -744,74 +744,74 @@
                 body: `正在準備登出...<br>`
             })
 
-            if(e){
-            fetch("/account/logout", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(e)
-            })
-                .then(res => res.json())
-                .then(r => {
-                    if (r.code === "success") {
-
-                        location.reload()
-                    } else {
-                        $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
-                        BS_Toast.show({
-                            icon: 'bi-box-arrow-right',
-                            iconClass: '',
-                            title: '登出',
-                            body: `正在準備登出...<br>`,
-                            toastClass: "bg-danger"
-                        })
-                    }
-                })
-                .catch(error => {
-                    $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
-                    BS_Toast.show({
-                        icon: 'bi-box-arrow-right',
-                        iconClass: '',
-                        title: '發生錯誤',
-                        body: `無法登出<br>`,
-                        toastClass: "bg-danger"
-                    })
-                })
-            }else{
+            if (e) {
                 fetch("/account/logout", {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({})
-            })
-                .then(res => res.json())
-                .then(r => {
-                    if (r.code === "success") {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(e)
+                })
+                    .then(res => res.json())
+                    .then(r => {
+                        if (r.code === "success") {
 
-                        location.reload()
-                    } else {
-                        $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
+                            location.reload()
+                        } else {
+                            $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
+                            BS_Toast.show({
+                                icon: 'bi-box-arrow-right',
+                                iconClass: '',
+                                title: '登出',
+                                body: `正在準備登出...<br>`,
+                                toastClass: "bg-danger"
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
                         BS_Toast.show({
                             icon: 'bi-box-arrow-right',
                             iconClass: '',
-                            title: '登出',
-                            body: `正在準備登出...<br>`,
+                            title: '發生錯誤',
+                            body: `無法登出<br>`,
                             toastClass: "bg-danger"
                         })
-                    }
-                })
-                .catch(error => {
-                    $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
-                    BS_Toast.show({
-                        icon: 'bi-box-arrow-right',
-                        iconClass: '',
-                        title: '發生錯誤',
-                        body: `無法登出<br>`,
-                        toastClass: "bg-danger"
                     })
+            } else {
+                fetch("/account/logout", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
                 })
+                    .then(res => res.json())
+                    .then(r => {
+                        if (r.code === "success") {
+
+                            location.reload()
+                        } else {
+                            $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
+                            BS_Toast.show({
+                                icon: 'bi-box-arrow-right',
+                                iconClass: '',
+                                title: '登出',
+                                body: `正在準備登出...<br>`,
+                                toastClass: "bg-danger"
+                            })
+                        }
+                    })
+                    .catch(error => {
+                        $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
+                        BS_Toast.show({
+                            icon: 'bi-box-arrow-right',
+                            iconClass: '',
+                            title: '發生錯誤',
+                            body: `無法登出<br>`,
+                            toastClass: "bg-danger"
+                        })
+                    })
             }
         }
 
@@ -950,6 +950,41 @@
                         }
                     })
             } else if (location.pathname == "/file") {
+
+                fetch('/account/check', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+
+                    })
+                })
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        
+                            $(".user-nickname").text(data.nickname)
+                            $(".user-id").text(data.account)
+                            $("#person-option-button").removeAttr("disabled")
+                            if (data.account === "@admin" && data.login) {
+                                $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
+                            } else if (data.account === "@guest"  && data.login || data.account === "尚未登入") {
+                                $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                                $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
+                                $(".share-work-button").text("無法共用")
+                                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                                })
+                            } else {
+                                $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
+                            }
+                            _User = data;
+    
+                    })
+
+
                 var fileID = $.UrlParam("open")
                 if (fileID == null) {
                     $("#loading-status").attr("class", "text-danger").html(`發生暫時性的錯誤，請前往<a class="link-danger" href="/">首頁</a>`)
@@ -972,9 +1007,9 @@
                             if (data.par.code !== 200) {
                                 $("#loading-failed-text-container").html(`文件ID: <span class="text-bg-dark" style="width:fit-content">${fileID}</span>`)
                                 $("#loading-status").attr("class", "text-danger").text(data.par.text)
-                                if(data.par.user == "@all_know_link_user"){
+                                if (data.par.user == "@all_know_link_user") {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
-                                }else{
+                                } else {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
                             }
@@ -982,12 +1017,12 @@
                                 _Project = data.par.file[0]
                                 $("#loading-status").text("要開啟檔案嗎?")
                                 $("#loading-failed-text-container").html(`檔案名稱:${data.par.file[0].filename}<br>擁有者:${data.par.file[0].owner_nickname} (${data.par.file[0].owner_id})<br>最後修改時間:${data.par.file[0].last_edit_date.replace("|", " ")}<br><div class"d-flex"><button class="btn btn-primary" onclick="_data('load_from_json',{data:_Project.data,filename:_Project.filename});$('#loading-layer').remove();$('.file-name').text(_Project.filename)">開啟</button>&nbsp;&nbsp;<button class="btn btn-secondary" onclick="location.href = '/'">取消</button></div>`)
-                                if(data.par.user == "@all_know_link_user"){
+                                if (data.par.user == "@all_know_link_user") {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
-                                }else{
+                                } else {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
-                                
+
                                 $("#loading-layer>center").css("margin-top", "33vh")
 
                             }
@@ -1441,24 +1476,24 @@
                         url: "/share/getcode"
                     })
                 }
-            }else if(type == "load_from_json"){
+            } else if (type == "load_from_json") {
                 console.log(JSON.parse(par.data))
                 canvas.loadFromJSON(JSON.parse(par.data))
                 canvas.renderAll()
                 BS_Toast.show({
-                icon: 'bi-file-earmark',
-                iconClass: 'text-success',
-                title: '已開啟檔案',
-                body: `已經開啟檔案:<br>${par.filename}`,
-         
-            })
+                    icon: 'bi-file-earmark',
+                    iconClass: 'text-success',
+                    title: '已開啟檔案',
+                    body: `已經開啟檔案:<br>${par.filename}`,
+
+                })
             }
         }
 
 
         function _ui(type, par, data) {
             if (type == "switch_account") {
-                window.logout({next:location.pathname+location.search})
+                window.logout({ next: location.pathname + location.search })
             }
         }
 

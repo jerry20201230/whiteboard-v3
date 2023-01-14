@@ -57,17 +57,19 @@ app.post("/account/check", (req, res) => {
     console.log({ "code": "success", "login": true, "account": req.session.username, "nickname": req.session.nickname })
     res.send(JSON.stringify({ "code": "success", "login": true, "account": req.session.username, "nickname": req.session.nickname }))
   } else {
-    res.send(JSON.stringify({ "code": "success", "login": false, "account": null }))
+    res.send(JSON.stringify({ "code": "success", "login": false, "account": "尚未登入", "nickname":"尚未登入的使用者" }))
   }
 })
 app.post("/account/logout", (req, res) => {
 
-  req.session.destroy();
+
   if (req.body.next) {
     res.sendFile(__dirname + "/login.html")
     req.session.switching_account = true
+    req.session.loggedin = false
     req.session.next_path = req.body.next
   } else {
+    req.session.destroy();
     res.send(JSON.stringify({ "code": "success", "login": false }))
   }
 })
@@ -95,7 +97,7 @@ app.post("/file/check", (req, res) => {
 
         for (i = 0; i < JSON.parse(results[0].share_with).user.length; i++) {
           if (JSON.parse(results[0].share_with).user[i] == uid || JSON.parse(results[0].share_with).user[i] == "@all_know_link_user" && JSON.parse(results[0].share_with).role[i] !== "disabled") {
-            res.send(JSON.stringify({ "code": "success", "par": { "code": 200, "text": "找到檔案", "file": results, "user": uid } })); res.end(); connection.release(); return;
+            res.send(JSON.stringify({ "code": "success", "par": { "code": 200, "text": "找到1筆資料", "file": results, "user": uid } })); res.end(); connection.release(); return;
 
           }
         }
