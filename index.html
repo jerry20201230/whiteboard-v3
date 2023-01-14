@@ -752,32 +752,9 @@
                     },
                     body: JSON.stringify(e)
                 })
-                    .then(res => res.json())
-                    .then(r => {
-                        if (r.code === "success") {
-
-                            location.reload()
-                        } else {
-                            $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
-                            BS_Toast.show({
-                                icon: 'bi-box-arrow-right',
-                                iconClass: '',
-                                title: '登出',
-                                body: `正在準備登出...<br>`,
-                                toastClass: "bg-danger"
-                            })
-                        }
-                    })
-                    .catch(error => {
-                        $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
-                        BS_Toast.show({
-                            icon: 'bi-box-arrow-right',
-                            iconClass: '',
-                            title: '發生錯誤',
-                            body: `無法登出<br>`,
-                            toastClass: "bg-danger"
-                        })
-                    })
+                    .then(res=>location.reload())
+                    
+                   
             } else {
                 fetch("/account/logout", {
                     method: "POST",
