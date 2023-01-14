@@ -298,7 +298,11 @@
                                 status = "login"
 
                             } else {
+                                if(!$.UrlParam("next")){
                                 location.href = "/"
+                            }else{
+                                location.href = "/file"+$.UrlParam("next")
+                            }
                             }
                         })
 
@@ -359,7 +363,12 @@
                             status = "login"
 
                         } else {
-                            location.href = "/"
+                            if(!$.UrlParam("next")){
+                                location.href = "/"
+                            }else{
+                                location.href = "/file"+$.UrlParam("next")
+                            }
+                            
                         }
                     })
 
@@ -494,8 +503,11 @@
                         $("#login_btn").removeAttr("disabled").html("登入")
 
                     } else {
-
-                        location.href = "/"
+                        if(!$.UrlParam("next")){
+                                location.href = "/"
+                            }else{
+                                location.href = "/file"+$.UrlParam("next")
+                            }
                     }
                 });
         }

@@ -1276,10 +1276,7 @@
                 canvas.on('selection:created', e => {
         
                 });
-        */
-        canvas.on('selection:cleared', e => {
-
-        });
+*/
 
         $("#logout-btn").on("click", function (e) {
             window.logout()
@@ -1581,7 +1578,7 @@
                     }
                 }
             }).on(
-                'mouse:up', function (e) {
+                'object:modified', function (e) {
                     var block = e.target;
                     if (block) {
                         props.newStage = {
@@ -1662,13 +1659,7 @@
                 console.log([undoStack, redoStack])
             }
         }
-        clearcan = function clearcan() {
-            canvas.clear().renderAll();
-            canvas.counter = 0;
-            undoStack = [];
-            redoStack = [];
-            newleft = 0;
-        }
+
     </script>
 </body>
 
