@@ -931,11 +931,16 @@
                         .then(res => res.json())
                         .then(data => {
                             console.log(data)
-                            if(data.par.code == 200){console.log(data.par.file[0])}
-                            if (data.par.code == 404) {
+                           
+                            if (data.par.code !== 200) {
                                 $("#loading-failed-text-container").html(`文件ID: <span class="text-bg-dark" style="width:fit-content">${fileID}</span>`)
+                                $("#loading-status").attr("class", "text-danger").text(data.par.text)                            
                             }
-                            $("#loading-status").attr("class", "text-danger").text(data.par.text)
+                            else{
+                                $("#loading-status").text("要開啟檔案嗎?")
+                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file.filename}<br>擁有者:${data.par.file.owner_nickname} (${data.par.file.owner_id}<br>最後修改時間:${data.par.file.last_edit.replace("|"," ")})`)        
+
+                            }
 
                         })
                 }
