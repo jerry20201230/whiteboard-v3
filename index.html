@@ -576,6 +576,9 @@
                         <br>
                     </div>
 
+                    <h3>我的檔案</h3>
+                    <div id="my-files" class="text-bg-light p-3">最近使用過的檔案會顯示在這裡</div>
+                    <h3>範本</h3>
                 </div>
                 <div class="tab-pane fade" id="v-pills-2" role="tabpanel">
 
@@ -752,7 +755,7 @@
                     },
                     body: JSON.stringify(e)
                 })
-                    .then(res=>location.href="/?"+e)
+                    .then(res=>location.href="/?next="+e.next)
                     
                    
             } else {
@@ -1000,7 +1003,7 @@
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
 
-                                $("#loading-layer>center").css("margin-top", "33vh")
+                                $("#loading-layer>center").css("margin-top", "30vh")
 
                             }
 
@@ -1470,7 +1473,7 @@
 
         function _ui(type, par, data) {
             if (type == "switch_account") {
-                window.logout({ next: location.pathname+ location.search })
+                window.logout({ next: location.search })
             }
         }
 
