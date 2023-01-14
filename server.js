@@ -80,7 +80,6 @@ app.get('/lib/health', (req, res) => {
 })
 app.post("/file/check",(req,res)=>{
   var uid = req.session.loggedin? req.session.username:"@all_know_link_user";
-
   sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
     connection.query('SELECT * FROM drawData WHERE fileID = ?', req.body.fileID, function (err, results, fields) {
@@ -89,12 +88,12 @@ app.post("/file/check",(req,res)=>{
       if (results.length !== 0 && results.length<2) {
 
         for(i=0;i<JSON.parse(results[0].share_with).user.length;i++){
-          if(JSON.parse(results[0].share_with).user[i] == uid && JSON.parse(results[0].share_with).role[i] !== "disabled"){
+          if(JSON.parse(results[0].share_with).user[i] == uid ||JSON.parse(results[0].share_with).user[i] == "@all_know_link_user"  && JSON.parse(results[0].share_with).role[i] !== "disabled"){
             res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results,"user":uid } })); res.end();connection.release(); return; 
 
           }
         }
-      res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","file":results,"user":uid } }));
+      res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","user":uid } }));
       res.end();connection.release(); return
         //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
 
