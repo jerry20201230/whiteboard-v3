@@ -681,7 +681,7 @@
         const canvas = new fabric.Canvas('canvas', {
             isDrawingMode: true,
             selection:true
-            
+
         });
 
         var ActiveTab = 'nav-1-tab'
@@ -1506,7 +1506,7 @@
 
 
 
-
+/*
         fabric.StaticCanvas.prototype.getObjectByName = function (name) {
             if (!name || typeof name === 'undefined') {
                 return [];
@@ -1647,6 +1647,31 @@
                 console.log([undoStack, redoStack])
             }
         }
+*/
+var undoStack = [], redoStack = [];
+
+canvas.on('object:modified', function(e) {
+    var modifiedObject = e.target.toObject();
+    undoStack.push(modifiedObject);
+});
+
+function undo() {
+    if (undoStack.length > 0) {
+        var lastObject = undoStack.pop();
+        redoStack.push(lastObject);
+        canvas.remove(lastObject);
+        canvas.renderAll();
+    }
+}
+
+function redo() {
+    if (redoStack.length > 0) {
+        var lastObject = redoStack.pop();
+        undoStack.push(lastObject);
+        canvas.add(lastObject);
+        canvas.renderAll();
+    }
+}
 
     </script>
 </body>
