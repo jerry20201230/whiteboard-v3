@@ -752,7 +752,7 @@
                     },
                     body: JSON.stringify(e)
                 })
-                    .then(res=>location.reload())
+                    .then(res=>location.href="/?"+e)
                     
                    
             } else {
@@ -1470,7 +1470,7 @@
 
         function _ui(type, par, data) {
             if (type == "switch_account") {
-                window.logout({ next: location.pathname + location.search })
+                window.logout({ next: location.pathname.replace("/","?") + location.search.replace("?","|") })
             }
         }
 
