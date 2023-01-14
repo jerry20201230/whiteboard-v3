@@ -930,8 +930,9 @@
                     })
                         .then(res => res.json())
                         .then(data => {
+                            console.log(data)
                             if (data.par.code == 404) {
-                                $("#loading-failed-text-container").html(`<p>請檢查文件ID</p><div class="text-bg-dark p-3" style="border-radius:5px;width:fit-content">${fileID}</div>`)
+                                $("#loading-failed-text-container").html(`文件ID:<span class="text-bg-dark" style="width:fit-content"> ${fileID}</span>`)
                             }
                             $("#loading-status").attr("class", "text-danger").text(data.par.text)
 
