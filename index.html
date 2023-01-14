@@ -161,23 +161,23 @@
     margin-bottom: 10px;">
             <div id="top-left-tool-bar">
                 <div class="btn-group" role="group">
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="儲存">
+                    <button class="btn btn-secondary btn-sm " type="button">
                         <i class="bi bi-file-earmark-post"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="上一步"
+                    <button class="btn btn-secondary btn-sm " type="button" 
                         onclick="undo()">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" data-bs-toggle="tooltip" data-bs-title="下一步"
+                    <button class="btn btn-secondary btn-sm " type="button" 
                         onclick="redo()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip"
-                        data-bs-title="共用" onclick="_data('share')">
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
+                         onclick="_data('share')">
                         <i class="bi bi-person-add"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" data-bs-toggle="tooltip"
-                        data-bs-title="分享" onclick="_data('share_with_code')">
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
+                        onclick="_data('share_with_code')">
                         <i class="bi bi-share"></i>
                     </button>
                 </div>
@@ -1110,6 +1110,7 @@
                         left: 0,
                         top: 0,
                         name: 'object-' + canvas.counter,
+                        
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1504,14 +1505,14 @@
 
 
 
-        fabric.StaticCanvas.prototype.getObjectByName = function (name) {
+        /*fabric.StaticCanvas.prototype.getObjectByName = function (name) {
             if (!name || typeof name === 'undefined') {
                 return [];
             }
             return this._objects.filter(function (o) {
                 return o.name === name;
             });
-        }
+        }*/
 
         /*     canvas.counter = 0;
              var newleft = 0;
@@ -1579,19 +1580,6 @@
                 }
             })
             .on(
-            'path:created', function (e) {
-                var block = e.target;
-                if (block) {
-                    props.oldStage = {
-                        left: block.left,
-                        top: block.top,
-                        width: block.width,
-                        height: block.height,
-                        scaleX: block.scaleX,
-                        scaleY: block.scaleY,
-                    }
-                }
-            }).on(
                 'object:modified', function (e) {
                     var block = e.target;
                     if (block) {
