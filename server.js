@@ -61,9 +61,13 @@ app.post("/account/check", (req, res) => {
   }
 })
 app.post("/account/logout", (req, res) => {
-  res.send(JSON.stringify({ "code": "success", "login": false }))
-  req.session.destroy();
 
+  req.session.destroy();
+  if(req.body.next){
+    res.sendFile(__dirname+"/login.html?next="+req.body.next)
+  }else{
+    res.send(JSON.stringify({ "code": "success", "login": false }))
+  }
 })
 app.get("/file",(req,res)=>{
   res.sendFile(__dirname+"/index.html")

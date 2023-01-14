@@ -743,7 +743,43 @@
                 title: '登出',
                 body: `正在準備登出...<br>`
             })
+
+            if(e){
             fetch("/account/logout", {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(e)
+            })
+                .then(res => res.json())
+                .then(r => {
+                    if (r.code === "success") {
+
+                        location.reload()
+                    } else {
+                        $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
+                        BS_Toast.show({
+                            icon: 'bi-box-arrow-right',
+                            iconClass: '',
+                            title: '登出',
+                            body: `正在準備登出...<br>`,
+                            toastClass: "bg-danger"
+                        })
+                    }
+                })
+                .catch(error => {
+                    $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show();
+                    BS_Toast.show({
+                        icon: 'bi-box-arrow-right',
+                        iconClass: '',
+                        title: '發生錯誤',
+                        body: `無法登出<br>`,
+                        toastClass: "bg-danger"
+                    })
+                })
+            }else{
+                fetch("/account/logout", {
                 method: "POST",
                 headers: {
                     'Content-Type': 'application/json'
@@ -776,6 +812,7 @@
                         toastClass: "bg-danger"
                     })
                 })
+            }
         }
 
 
@@ -936,19 +973,19 @@
                                 $("#loading-failed-text-container").html(`文件ID: <span class="text-bg-dark" style="width:fit-content">${fileID}</span>`)
                                 $("#loading-status").attr("class", "text-danger").text(data.par.text)
                                 if(data.par.user == "@all_know_link_user"){
-                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary">切換帳號</a>`)
+                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }else{
-                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary">切換帳號</a>`)
+                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
                             }
                             else {
                                 _Project = data.par.file[0]
                                 $("#loading-status").text("要開啟檔案嗎?")
-                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file[0].filename}<br>擁有者:${data.par.file[0].owner_nickname} (${data.par.file[0].owner_id})<br>最後修改時間:${data.par.file[0].last_edit_date.replace("|", " ")}<br><div class"d-flex"><button class="btn btn-primary" onclick="_data('load_from_json',_Project.data);$('#loading-layer').remove();$('.file-name').text(_Project.filename)">開啟</button>&nbsp;&nbsp;<button class="btn btn-secondary" onclick="location.href = '/'">取消</button></div>`)
+                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file[0].filename}<br>擁有者:${data.par.file[0].owner_nickname} (${data.par.file[0].owner_id})<br>最後修改時間:${data.par.file[0].last_edit_date.replace("|", " ")}<br><div class"d-flex"><button class="btn btn-primary" onclick="_data('load_from_json',{data:_Project.data,filename:_Project.filename});$('#loading-layer').remove();$('.file-name').text(_Project.filename)">開啟</button>&nbsp;&nbsp;<button class="btn btn-secondary" onclick="location.href = '/'">取消</button></div>`)
                                 if(data.par.user == "@all_know_link_user"){
-                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary">切換帳號</a>`)
+                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }else{
-                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary">切換帳號</a>`)
+                                    $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
                                 
                                 $("#loading-layer>center").css("margin-top", "33vh")
@@ -1405,16 +1442,23 @@
                     })
                 }
             }else if(type == "load_from_json"){
-                console.log(JSON.parse(par))
-                canvas.loadFromJSON(JSON.parse(par))
+                console.log(JSON.parse(par.data))
+                canvas.loadFromJSON(JSON.parse(par.data))
                 canvas.renderAll()
+                BS_Toast.show({
+                icon: 'bi-file-earmark',
+                iconClass: 'text-success',
+                title: '已開啟檔案',
+                body: `已經開啟檔案:<br>${par.filename}`,
+                toastClass: "text-bg-danger"
+            })
             }
         }
 
 
         function _ui(type, par, data) {
-            if (type == "") {
-
+            if (type == "switch_account") {
+                window.logout({next:location.pathname+location.search})
             }
         }
 
