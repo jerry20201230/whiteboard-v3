@@ -1527,7 +1527,7 @@
              })*/
 
 
-/*
+
 
         canvas.counter = 0;
         var newleft = 0;
@@ -1565,7 +1565,21 @@
         var mods = 0;
         var props = {};
         canvas.on(
-            'object:created', function (e) {
+            'object:added', function (e) {
+                var block = e.target;
+                if (block) {
+                    props.oldStage = {
+                        left: block.left,
+                        top: block.top,
+                        width: block.width,
+                        height: block.height,
+                        scaleX: block.scaleX,
+                        scaleY: block.scaleY,
+                    }
+                }
+            })
+            .on(
+            'path:created', function (e) {
                 var block = e.target;
                 if (block) {
                     props.oldStage = {
@@ -1659,7 +1673,7 @@
                 console.log([undoStack, redoStack])
             }
         }
-*/
+
     </script>
 </body>
 
