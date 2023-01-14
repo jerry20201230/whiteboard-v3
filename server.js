@@ -89,7 +89,7 @@ app.post("/file/check",(req,res)=>{
       if (results.length !== 0 && results.length<2) { 
 
 
-        for(i=0;i<JSON.parse(results[0].share_with.user).length;i++){
+        for(i=0;i<JSON.parse(results[0]).share_with.user.length;i++){
           if(results[0].share_with.user[i] == uid && results[0].share_with.role[i] !== "disabled"){
             res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } })); res.end();connection.release(); return; 
 
