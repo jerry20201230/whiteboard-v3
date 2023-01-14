@@ -90,16 +90,16 @@ app.post("/file/check",(req,res)=>{
 
         for(i=0;i<JSON.parse(results[0].share_with).user.length;i++){
           if(JSON.parse(results[0].share_with).user[i] == uid && JSON.parse(results[0].share_with).role[i] !== "disabled"){
-            res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } })); res.end();connection.release(); return; 
+            res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results,"user":req.session } })); res.end();connection.release(); return; 
 
           }
         }
-      res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","file":results } }));
+      res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","file":results,"user":req.session } }));
       res.end();connection.release(); return
         //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
 
       }else{
-        res.send(JSON.stringify({ "code": "failed", "par": {"code":404, "text": "找不到檔案" } })); res.end();connection.release(); return; 
+        res.send(JSON.stringify({ "code": "failed", "par": {"code":404, "text": "找不到檔案","user":req.session } })); res.end();connection.release(); return; 
       }
     })
   })
