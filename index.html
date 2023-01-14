@@ -679,7 +679,9 @@
         const socket = io();
 
         const canvas = new fabric.Canvas('canvas', {
-            isDrawingMode: true
+            isDrawingMode: true,
+            selection:true
+            
         });
 
         var ActiveTab = 'nav-1-tab'
