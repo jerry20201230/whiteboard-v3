@@ -1470,7 +1470,7 @@
 
         function _ui(type, par, data) {
             if (type == "switch_account") {
-                window.logout({ next: location.pathname.replace("/","?") + location.search.replace("?","|") })
+                window.logout({ next: location.pathname+ location.search })
             }
         }
 
