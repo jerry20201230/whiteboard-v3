@@ -770,7 +770,7 @@
                     .then(r => {
                         if (r.code === "success") {
 
-                            location.reload()
+                            location.href = "/"
                         } else {
                             $("#user-logout-alert").text("發生錯誤，暫時無法將你登出").show()
                             BS_Toast.show({
@@ -1505,29 +1505,14 @@
 
 
 
-        /*fabric.StaticCanvas.prototype.getObjectByName = function (name) {
+        fabric.StaticCanvas.prototype.getObjectByName = function (name) {
             if (!name || typeof name === 'undefined') {
                 return [];
             }
             return this._objects.filter(function (o) {
                 return o.name === name;
             });
-        }*/
-
-        /*     canvas.counter = 0;
-             var newleft = 0;
-      
-             var undoStack = [];
-             var redoStack = [];
-             var isUndoRedoing = false
-             canvas.on("object:added",e=>{
-     
-             })
-             canvas.on("object:modified",e=>{
-     
-             })*/
-
-
+        }
 
 
         canvas.counter = 0;
@@ -1565,7 +1550,7 @@
         var state = [];
         var mods = 0;
         var props = {};
-        canvas.on(
+    /*canvas.on(
             'object:added', function (e) {
                 var block = e.target;
                 if (block) {
@@ -1601,7 +1586,7 @@
                     }
                 });
 
-
+*/
 
         undo = function undo() {
             if (undoStack.length) {
