@@ -937,8 +937,9 @@
                                 $("#loading-status").attr("class", "text-danger").text(data.par.text)                            
                             }
                             else{
+                                
                                 $("#loading-status").text("要開啟檔案嗎?")
-                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file.filename}<br>擁有者:${data.par.file.owner_nickname} (${data.par.file.owner_id}<br>最後修改時間:${data.par.file.last_edit.replace("|"," ")})`)        
+                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file.filename}<br>擁有者:${data.par.file.owner_nickname} (${data.par.file.owner_id}<br>最後修改時間:${data.par.file.last_edit_date.replace("|"," ")})<br><div class"d-flex"><button class="btn btn-primary">開啟</button>&nbsp;&nbsp;<button class="btn btn-secondary">取消</button></div>`)        
 
                             }
 
