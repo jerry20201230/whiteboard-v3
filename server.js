@@ -63,46 +63,48 @@ app.post("/account/check", (req, res) => {
 app.post("/account/logout", (req, res) => {
 
   req.session.destroy();
-  if(req.body.next){
-    res.sendFile(__dirname+"/login.html?next="+req.body.next)
-  }else{
+  if (req.body.next) {
+    res.sendFile(__dirname + "/login.html")
+    req.session.switching_account = true
+    req.session.next_path = req.body.next
+  } else {
     res.send(JSON.stringify({ "code": "success", "login": false }))
   }
 })
-app.get("/file",(req,res)=>{
-  res.sendFile(__dirname+"/index.html")
+app.get("/file", (req, res) => {
+  res.sendFile(__dirname + "/index.html")
 })
 
 app.get(/js|css|html|/, (req, res) => {
   res.sendFile(__dirname + __filename)
 })
-app.get(/icon|.png/,(req,res)=>{
-  res.sendFile(__dirname +__filename)
+app.get(/icon|.png/, (req, res) => {
+  res.sendFile(__dirname + __filename)
 })
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
 })
-app.post("/file/check",(req,res)=>{
-  var uid = req.session.loggedin? req.session.username:"@all_know_link_user";
+app.post("/file/check", (req, res) => {
+  var uid = req.session.loggedin ? req.session.username : "@all_know_link_user";
   sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
     connection.query('SELECT * FROM drawData WHERE fileID = ?', req.body.fileID, function (err, results, fields) {
 
       if (err) throw err
-      if (results.length !== 0 && results.length<2) {
+      if (results.length !== 0 && results.length < 2) {
 
-        for(i=0;i<JSON.parse(results[0].share_with).user.length;i++){
-          if(JSON.parse(results[0].share_with).user[i] == uid ||JSON.parse(results[0].share_with).user[i] == "@all_know_link_user"  && JSON.parse(results[0].share_with).role[i] !== "disabled"){
-            res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results,"user":uid } })); res.end();connection.release(); return; 
+        for (i = 0; i < JSON.parse(results[0].share_with).user.length; i++) {
+          if (JSON.parse(results[0].share_with).user[i] == uid || JSON.parse(results[0].share_with).user[i] == "@all_know_link_user" && JSON.parse(results[0].share_with).role[i] !== "disabled") {
+            res.send(JSON.stringify({ "code": "success", "par": { "code": 200, "text": "找到檔案", "file": results, "user": uid } })); res.end(); connection.release(); return;
 
           }
         }
-      res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","user":uid } }));
-      res.end();connection.release(); return
+        res.send(JSON.stringify({ "code": "failed", "par": { "code": 403, "text": "無法存取檔案", "user": uid } }));
+        res.end(); connection.release(); return
         //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
 
-      }else{
-        res.send(JSON.stringify({ "code": "failed", "par": {"code":404, "text": "找不到檔案","user":uid } })); res.end();connection.release(); return; 
+      } else {
+        res.send(JSON.stringify({ "code": "failed", "par": { "code": 404, "text": "找不到檔案", "user": uid } })); res.end(); connection.release(); return;
       }
     })
   })
@@ -175,8 +177,13 @@ app.post('/account/login', function (request, response) {
           request.session.loggedin = true;
           request.session.username = username;
           request.session.nickname = results[0].user_nickname
+          if (request.session.switching_account) {
 
-          response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
+            request.session.switching_account = false
+            response.redirect(__dirname+request.session.next_path)
+          } else {
+            response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
+          }
         } else {
           response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
         }
@@ -221,7 +228,7 @@ app.post("/account/signup/checkid", (req, res) => {
   })
 
 })
-app.post("/share/getcode",(req,res)=>{
+app.post("/share/getcode", (req, res) => {
 
 })
 
