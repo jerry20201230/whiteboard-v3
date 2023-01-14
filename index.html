@@ -939,9 +939,13 @@
                             else {
                                 _Project = data.file[0]
                                 $("#loading-status").text("要開啟檔案嗎?")
-                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file[0].filename}<br>擁有者:${data.par.file[0].owner_nickname} (${data.par.file[0].owner_id})<br>最後修改時間:${data.par.file[0].last_edit_date.replace("|", " ")}<br><div class"d-flex"><button class="btn btn-primary" onclick="_data('load_from_json',_Project.data)">開啟</button>&nbsp;&nbsp;<button class="btn btn-secondary">取消</button></div>`)
+                                $("#loading-failed-text-container").html(`檔案名稱:${data.par.file[0].filename}<br>擁有者:${data.par.file[0].owner_nickname} (${data.par.file[0].owner_id})<br>最後修改時間:${data.par.file[0].last_edit_date.replace("|", " ")}<br><div class"d-flex"><button class="btn btn-primary" onclick="_data('load_from_json',_Project.data);$('#loading-layer').remove();$('.file-name').text(_Project.filename)">開啟</button>&nbsp;&nbsp;<button class="btn btn-secondary" onclick="location.href = '/'">取消</button></div>`)
+                                if(data.par.user == "@all_know_link_user"){
+                                    $("#loading-failed-text-container").append("目前登入的身分: 尚未登入")
+                                }else{
+                                    $("#loading-failed-text-container").append("目前登入的身分: "+data.par.user)
+                                }
                                 
-                                $("#loading-failed-text-container").append()
                                 $("#loading-layer>center").css("margin-top", "33vh")
 
                             }
@@ -1395,6 +1399,9 @@
                         url: "/share/getcode"
                     })
                 }
+            }else if(type == "load_from_json"){
+                canvas.loadFromJSON(data)
+                canvas.renderAll()
             }
         }
 
