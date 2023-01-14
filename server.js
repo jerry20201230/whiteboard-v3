@@ -65,45 +65,45 @@ app.post("/account/logout", (req, res) => {
   req.session.destroy();
 
 })
-app.get("/file",(req,res)=>{
-  res.sendFile(__dirname+"/index.html")
+app.get("/file", (req, res) => {
+  res.sendFile(__dirname + "/index.html")
 })
 
 app.get(/js|css|html|/, (req, res) => {
   res.sendFile(__dirname + __filename)
 })
-app.get(/icon|.png/,(req,res)=>{
-  res.sendFile(__dirname +__filename)
+app.get(/icon|.png/, (req, res) => {
+  res.sendFile(__dirname + __filename)
 })
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
 })
-app.post("/file/check",(req,res)=>{
-  var uid = req.session.loggedin? req.session.username:"@all_know_link_user";
+app.post("/file/check", (req, res) => {
+  var uid = req.session.loggedin ? req.session.username : "@all_know_link_user";
 
   sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
     connection.query('SELECT * FROM drawData WHERE fileID = ?', req.body.fileID, function (err, results, fields) {
 
       if (err) throw err
-      if (results.length !== 0 && results.length<2) { 
+      if (results.length !== 0 && results.length < 2) {
+        res.send(JSON.stringify({ "code": "success", "par": { "code": 200, "text": "找到檔案", "file": results } }));
+        res.end(); connection.release(); return;
+        // for(i=0;i<JSON.parse(results[0].share_with).user.length;i++){
+        //  if(results[0].share_with.user[i] == uid && results[0].share_with.role[i] !== "disabled"){
+        //    res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } })); res.end();connection.release(); return; 
 
+        //  }
+      //}
+      // res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","file":results } }));
 
-        for(i=0;i<JSON.parse(results[0].share_with).user.length;i++){
-          if(results[0].share_with.user[i] == uid && results[0].share_with.role[i] !== "disabled"){
-            res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } })); res.end();connection.release(); return; 
+      //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
 
-          }
-        }
-      res.send(JSON.stringify({ "code": "failed", "par": {"code":403, "text": "無法存取檔案","file":results } }));
-      res.end();connection.release(); return
-        //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
-
-      }else{
-        res.send(JSON.stringify({ "code": "failed", "par": {"code":404, "text": "找不到檔案" } })); res.end();connection.release(); return; 
-      }
+    }else {
+      res.send(JSON.stringify({ "code": "failed", "par": { "code": 404, "text": "找不到檔案" } })); res.end(); connection.release(); return;
+    }
     })
-  })
+})
 })
 
 app.post("/account/signup"), (req, res) => {
@@ -219,7 +219,7 @@ app.post("/account/signup/checkid", (req, res) => {
   })
 
 })
-app.post("/share/getcode",(req,res)=>{
+app.post("/share/getcode", (req, res) => {
 
 })
 
