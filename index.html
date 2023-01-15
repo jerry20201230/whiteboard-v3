@@ -1637,7 +1637,13 @@ function save_state() {
         undo_list.push(activeObject.toObject());
     }
 }
-
+canvas.on("object:modified",(e)=>{
+    var activeObject = e.target
+    if (activeObject) {
+        // Save the active object to undo list
+        undo_list.push(activeObject.toObject());
+    }
+})
 function undo() {
     if (undo_list.length > 0) {
         // Get the last object from undo list
