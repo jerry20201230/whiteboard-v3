@@ -1648,22 +1648,22 @@
             }
         }
 */// 初始化堆疊
-var undoStack = [];
-var redoStack = [];
+var _undoStack = [];
+var _redoStack = [];
 
 // 每次修改物件時，將其狀態存儲在堆疊中
 canvas.on('object:modified', function(e) {
     var object = e.target;
     console.log(e.target)
-    undoStack.push(object.toObject());
-    redoStack = [];
+    _undoStack.push(object.toObject());
+    _redoStack = [];
 });
 
 // 復原操作
 function undo() {
-    if (undoStack.length > 0) {
-        var object = undoStack.pop();
-        redoStack.push(object);
+    if (_undoStack.length > 0) {
+        var object = _undoStack.pop();
+        _redoStack.push(object);
         console.log(object)
         canvas.remove(object);
         canvas.renderAll();
@@ -1672,9 +1672,9 @@ function undo() {
 
 // 重做操作
 function redo() {
-    if (redoStack.length > 0) {
-        var object = redoStack.pop();
-        undoStack.push(object);
+    if (_redoStack.length > 0) {
+        var object = _redoStack.pop();
+        _undoStack.push(object);
         canvas.add(object);
         canvas.renderAll();
     }
