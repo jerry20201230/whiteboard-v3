@@ -1647,7 +1647,15 @@
                 var lastObject = undo_list.pop();
                 redo_list.push(lastObject);
                 // Remove the object from canvas
-                canvas.remove(lastObject);
+                var selGroup = new fabric.ActiveSelection(lastObject, {
+                    canvas: canvas
+                });
+                if (selGroup) {
+
+                    selGroup.forEachObject(function (obj) {
+                        canvas.remove((obj));
+                    });
+                }
                 canvas.renderAll();
                 console.log("ii")
             }
@@ -1668,7 +1676,6 @@
                     selGroup.forEachObject(function (obj) {
                         canvas.add((obj));
                     });
-
                 }
 
               //  canvas.add(new fabric.Object(lastObject));
