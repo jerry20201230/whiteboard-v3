@@ -61,8 +61,6 @@ app.post("/account/check", (req, res) => {
   }
 })
 app.post("/account/logout", (req, res) => {
-
-
   if (req.body.next) {
     res.sendFile(__dirname + "/login.html")
     req.session.switching_account = true

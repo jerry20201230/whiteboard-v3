@@ -127,7 +127,7 @@
     height: 100vh;
     background-color:var(--bs-light)">
         <center style="margin-top:40vh">
-            <img src="/lib/icon-active.png" style="max-width: 3em;" alt="" srcset="">
+            <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
             <br>
             <p></p>
             <h3 id="loading-status">資料讀取中</h3>
@@ -176,10 +176,10 @@
                          onclick="_data('share')">
                         <i class="bi bi-person-add"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
+                    <!--<button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
                         onclick="_data('share_with_code')">
                         <i class="bi bi-share"></i>
-                    </button>
+                    </button>-->
                 </div>
             </div>
             <div style="text-align: center;"><span class="text-danger file-unsaved-mark"></span><span
@@ -742,14 +742,10 @@
         }
 
         window.logout = function (e) {
-            BS_Toast.show({
-                icon: 'bi-box-arrow-right',
-                iconClass: '',
-                title: '登出',
-                body: `正在準備登出...<br>`
-            })
+
 
             if (e) {
+
                 fetch("/account/logout", {
                     method: "POST",
                     headers: {
@@ -761,6 +757,12 @@
                     
                    
             } else {
+                BS_Toast.show({
+                icon: 'bi-box-arrow-right',
+                iconClass: '',
+                title: '登出',
+                body: `正在準備登出...<br>`
+            })
                 fetch("/account/logout", {
                     method: "POST",
                     headers: {
@@ -791,7 +793,7 @@
                             iconClass: '',
                             title: '發生錯誤',
                             body: `無法登出<br>`,
-                            toastClass: "bg-danger"
+                            toastClass: "text-2bg-danger"
                         })
                     })
             }
@@ -1353,11 +1355,12 @@
                     PopupAlert({
                         title: "共用",
                         body: `
+                        <div class="d-flex">
                             <div class="input-group" style="width:fit-content !important;flex-grow:1;">
                                 <span class="input-group-text">@</span>
                                 <input class="form-control" placeholder="使用者ID..." id="share-uid-input" oninput='$("#share-invalid-feedback").hide();$("#share-uid-input").removeClass("is-invalid")'>
                             </div>
-                            
+                        </div>
                             <span class="select-none">&nbsp;</span>
                             <select class="form-select" style="width:fit-content !important;" id="share-type-select">
                                 <option value="editor">編輯者</option>
@@ -1506,7 +1509,6 @@
 
 
 
-/*
         fabric.StaticCanvas.prototype.getObjectByName = function (name) {
             if (!name || typeof name === 'undefined') {
                 return [];
@@ -1556,28 +1558,14 @@
             'object:added', function (e) {
                 var block = e.target;
                 if (block) {
-                    props.oldStage = {
-                        left: block.left,
-                        top: block.top,
-                        width: block.width,
-                        height: block.height,
-                        scaleX: block.scaleX,
-                        scaleY: block.scaleY,
-                    }
+                    props.oldStage = block
                 }
             })
             .on(
                 'object:modified', function (e) {
                     var block = e.target;
                     if (block) {
-                        props.newStage = {
-                            left: block.left,
-                            top: block.top,
-                            width: block.width,
-                            height: block.height,
-                            scaleX: block.scaleX,
-                            scaleY: block.scaleY,
-                        }
+                        props.newStage = block
                         undoStack.push({
                             objectName: block.name,
                             type: 'modified',
@@ -1647,7 +1635,8 @@
                 console.log([undoStack, redoStack])
             }
         }
-*/// 初始化堆疊
+
+/*// 初始化堆疊
 var _undoStack = [];
 var _redoStack = [];
 
@@ -1679,7 +1668,7 @@ function redo() {
         canvas.renderAll();
     }
 }
-
+*/
 
     </script>
 </body>
