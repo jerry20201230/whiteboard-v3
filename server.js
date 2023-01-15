@@ -112,6 +112,22 @@ app.post("/file/check", (req, res) => {
   })
 })
 
+
+app.post("/file/save",(req,res)=>{
+
+  console.log(req.body)
+
+  
+  if(req.body.fileID){ //如果檔案已經存在
+
+  }else{
+
+  }
+})
+
+
+
+
 app.post("/account/signup"), (req, res) => {
   //判斷ID存在與否
   console.log(req.body)
@@ -179,13 +195,9 @@ app.post('/account/login', function (request, response) {
           request.session.loggedin = true;
           request.session.username = username;
           request.session.nickname = results[0].user_nickname
-          if (request.session.switching_account) {
 
-            request.session.switching_account = false
-            response.redirect(__dirname+request.session.next_path)
-          } else {
-            response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
-          }
+          response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
+          
         } else {
           response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
         }

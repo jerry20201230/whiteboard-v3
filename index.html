@@ -1647,31 +1647,37 @@
                 console.log([undoStack, redoStack])
             }
         }
-*/
-var undoStack = [], redoStack = [];
+*/// 初始化堆疊
+var undoStack = [];
+var redoStack = [];
 
+// 每次修改物件時，將其狀態存儲在堆疊中
 canvas.on('object:modified', function(e) {
-    var modifiedObject = e.target.toObject();
-    undoStack.push(modifiedObject);
+    var object = e.target;
+    undoStack.push(object.toObject());
+    redoStack = [];
 });
 
+// 復原操作
 function undo() {
     if (undoStack.length > 0) {
-        var lastObject = undoStack.pop();
-        redoStack.push(lastObject);
-        canvas.remove(lastObject);
+        var object = undoStack.pop();
+        redoStack.push(object);
+        canvas.remove(object);
         canvas.renderAll();
     }
 }
 
+// 重做操作
 function redo() {
     if (redoStack.length > 0) {
-        var lastObject = redoStack.pop();
-        undoStack.push(lastObject);
-        canvas.add(lastObject);
+        var object = redoStack.pop();
+        undoStack.push(object);
+        canvas.add(object);
         canvas.renderAll();
     }
 }
+
 
     </script>
 </body>
