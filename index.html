@@ -164,13 +164,16 @@
                     <button class="btn btn-secondary btn-sm " type="button">
                         <i class="bi bi-file-earmark-post"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" onclick="undo()">
+                    <button class="btn btn-secondary btn-sm " type="button" 
+                        onclick="undo()">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" onclick="redo()">
+                    <button class="btn btn-secondary btn-sm " type="button" 
+                        onclick="redo()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" onclick="_data('share')">
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
+                         onclick="_data('share')">
                         <i class="bi bi-person-add"></i>
                     </button>
                     <!--<button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
@@ -677,7 +680,7 @@
 
         const canvas = new fabric.Canvas('canvas', {
             isDrawingMode: true,
-            selection: true
+            selection:true
 
         });
 
@@ -750,16 +753,16 @@
                     },
                     body: JSON.stringify(e)
                 })
-                    .then(res => location.href = "/?next=" + e.next)
-
-
+                    .then(res=>location.href="/?next="+e.next)
+                    
+                   
             } else {
                 BS_Toast.show({
-                    icon: 'bi-box-arrow-right',
-                    iconClass: '',
-                    title: '登出',
-                    body: `正在準備登出...<br>`
-                })
+                icon: 'bi-box-arrow-right',
+                iconClass: '',
+                title: '登出',
+                body: `正在準備登出...<br>`
+            })
                 fetch("/account/logout", {
                     method: "POST",
                     headers: {
@@ -944,25 +947,25 @@
                     .then(res => res.json())
                     .then(data => {
                         console.log(data)
-
-                        $(".user-nickname").text(data.nickname)
-                        $(".user-id").text(data.account)
-                        $("#person-option-button").removeAttr("disabled")
-                        if (data.account === "@admin" && data.login) {
-                            $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
-                        } else if (data.account === "@guest" && data.login || data.account === "尚未登入") {
-                            $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
-                            $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
-                            $(".share-work-button").text("無法共用")
-                            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                                return new bootstrap.Tooltip(tooltipTriggerEl)
-                            })
-                        } else {
-                            $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
-                        }
-                        _User = data;
-
+                        
+                            $(".user-nickname").text(data.nickname)
+                            $(".user-id").text(data.account)
+                            $("#person-option-button").removeAttr("disabled")
+                            if (data.account === "@admin" && data.login) {
+                                $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
+                            } else if (data.account === "@guest"  && data.login || data.account === "尚未登入") {
+                                $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                                $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
+                                $(".share-work-button").text("無法共用")
+                                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                    return new bootstrap.Tooltip(tooltipTriggerEl)
+                                })
+                            } else {
+                                $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
+                            }
+                            _User = data;
+    
                     })
 
 
@@ -1029,11 +1032,11 @@
             } else if (obj == "paste") {
                 _clipboard.clone(function (clonedObj) {
                     canvas.discardActiveObject();
-
+                    canvas.counter++
                     clonedObj.set({
                         left: clonedObj.left + 10,
                         top: clonedObj.top + 10,
-
+                        name: 'object-' + canvas.counter,
                         evented: true,
                     });
                     if (clonedObj.type === 'activeSelection') {
@@ -1050,29 +1053,14 @@
                     _clipboard.top += 10;
                     _clipboard.left += 10;
                     canvas.setActiveObject(clonedObj);
-                    save_state()
                     canvas.requestRenderAll();
                 })
             } else if (obj == "circle") {
 
                 var shape = new fabric.Ellipse({
 
-
+                    name: 'object-' + canvas.counter,
                     rx: 50, ry: 50,
-                    width: 100,
-                    height: 100,
-                    fill: $("#color-picker-1").attr("data-current-color")
-                })
-                canvas.add(shape)
-                save_state()
-
-
-                redoStack = [];
-            } else if (obj == "square") {
-
-                var shape = new fabric.Rect({
-
-
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
@@ -1082,20 +1070,41 @@
                     type: 'added',
                     object: shape
                 })
+                canvas.counter++;
+
+                redoStack = [];
+            } else if (obj == "square") {
+
+                var shape = new fabric.Rect({
+
+                    name: 'object-' + canvas.counter,
+                    width: 100,
+                    height: 100,
+                    fill: $("#color-picker-1").attr("data-current-color")
+                })
+                canvas.add(shape)
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
+                canvas.counter++;
 
                 redoStack = [];
             }
             else if (obj == "triangle") {
                 var shape = new fabric.Triangle({
-
+                    name: 'object-' + canvas.counter,
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
 
                 canvas.add(shape)
-                save_state()
-
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
+                canvas.counter++;
 
                 redoStack = [];
             }
@@ -1104,8 +1113,8 @@
                     var shape = new fabric.IText("按兩下以編輯文字", {
                         left: 0,
                         top: 0,
-
-
+                        name: 'object-' + canvas.counter,
+                        
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1116,7 +1125,7 @@
                     var shape = new fabric.IText(par, {
                         left: 0,
                         top: 0,
-
+                        name: 'object-' + canvas.counter,
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1127,8 +1136,11 @@
 
 
                 canvas.add(shape)
-                save_state()
-
+                undoStack.push({
+                    type: 'added',
+                    object: shape
+                })
+                canvas.counter++;
                 redoStack = [];
             }
             else if (obj == "delete") {
@@ -1496,193 +1508,167 @@
         }
 
 
-        /*
-                fabric.StaticCanvas.prototype.getObjectByName = function (name) {
-                    if (!name || typeof name === 'undefined') {
-                        return [];
-                    }
-                    return this._objects.filter(function (o) {
-                        return o.name === name;
-                    });
+
+        fabric.StaticCanvas.prototype.getObjectByName = function (name) {
+            if (!name || typeof name === 'undefined') {
+                return [];
+            }
+            return this._objects.filter(function (o) {
+                return o.name === name;
+            });
+        }
+
+
+        canvas.counter = 0;
+        var newleft = 0;
+        //canvas.selection = false;
+        var undoStack = [];
+        var redoStack = [];
+        addrect = function addrect(top, left, width, height, fill) {
+            var rect = new fabric.Rect({
+                top: document.getElementById("fabriccanvas").height,
+                name: 'rectangle ' + canvas.counter,
+                left: 0 + newleft,
+                width: 100,
+                height: 100,
+                fill: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6),
+                //fix attributes applied for all rects
+                opacity: 0.75,
+                lockRotation: true,
+                originX: 'left',
+                originY: 'bottom',
+                cornerSize: 15,
+                hasRotatingPoint: false,
+                perPixelTargetFind: true,
+                minScaleLimit: 1
+            })
+            canvas.add(rect);
+            undoStack.push({
+                type: 'added',
+                object: rect
+            })
+            canvas.counter++;
+            newleft += 100;
+            redoStack = [];
+        }
+        var state = [];
+        var mods = 0;
+        var props = {};
+    canvas.on(
+            'object:added', function (e) {
+                var block = e.target;
+                if (block) {
+                    props.oldStage = block
                 }
-        
-        
-                canvas.counter = 0;
-                var newleft = 0;
-                //canvas.selection = false;
-                var undoStack = [];
-                var redoStack = [];
-                addrect = function addrect(top, left, width, height, fill) {
-                    var rect = new fabric.Rect({
-                        top: document.getElementById("fabriccanvas").height,
-                        name: 'rectangle ' + canvas.counter,
-                        left: 0 + newleft,
-                        width: 100,
-                        height: 100,
-                        fill: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6),
-                        //fix attributes applied for all rects
-                        opacity: 0.75,
-                        lockRotation: true,
-                        originX: 'left',
-                        originY: 'bottom',
-                        cornerSize: 15,
-                        hasRotatingPoint: false,
-                        perPixelTargetFind: true,
-                        minScaleLimit: 1
-                    })
-                    canvas.add(rect);
-                    undoStack.push({
-                        type: 'added',
-                        object: rect
-                    })
-                    canvas.counter++;
-                    newleft += 100;
-                    redoStack = [];
-                }
-                var state = [];
-                var mods = 0;
-                var props = {};
-            canvas.on(
-                    'object:added', function (e) {
-                        var block = e.target;
-                        if (block) {
-                            props.oldStage = block
-                        }
-                    })
-                    .on(
-                        'object:modified', function (e) {
-                            var block = e.target;
-                            if (block) {
-                                props.newStage = block
-                                undoStack.push({
-                                    objectName: block.name,
-                                    type: 'modified',
-                                    oldStage: props.oldStage,
-                                    newStage: props.newStage
-                                });
-                                props = {};
-                            }
+            })
+            .on(
+                'object:modified', function (e) {
+                    var block = e.target;
+                    if (block) {
+                        props.newStage = block
+                        undoStack.push({
+                            objectName: block.name,
+                            type: 'modified',
+                            oldStage: props.oldStage,
+                            newStage: props.newStage
                         });
-        
-        
-                undo = function undo() {
-                    if (undoStack.length) {
-                        console.log("[UNDO]")
-                        console.log([undoStack, redoStack])
-                        var undoData = undoStack.pop();
-                        if (undoData && undoData.type) {
-                            switch (undoData.type) {
-                                case 'added':
-                                    var objectByName = canvas.getObjectByName(undoData.object.name);
-                                    if (objectByName.length) {
-                                        canvas.remove(objectByName[0]);
-        
-                                    }
-                                    break;
-                                case 'modified':
-                                    var objectByName = canvas.getObjectByName(undoData.objectName);
-                                    if (objectByName.length) {
-                                        for (var key in undoData.oldStage) {
-                                            objectByName[0].set(key, undoData.oldStage[key]);
-                                        }
-                                    }
-                                    break;
-                            }
-                            canvas.renderAll();
-                        }
-                        redoStack.push(undoData);
-                        console.log([undoStack, redoStack])
+                        props = {};
                     }
-                }
-        
-                redo = function redo() {
-                    if (redoStack.length) {
-                        console.log("[REDO]")
-                        console.log([undoStack, redoStack])
-                        var redoData = redoStack.pop();
-                        if (redoData && redoData.type) {
-                            switch (redoData.type) {
-                                case 'added':
-                                    if (redoData.object) {
-                                        canvas.add(redoData.object);
-        
-                                    }
-                                    break;
-                                case 'modified':
-                                    var objectByName = canvas.getObjectByName(redoData.objectName);
-                                    if (objectByName.length) {
-                                        for (var key in redoData.newStage) {
-                                            objectByName[0].set(key, redoData.newStage[key]);
-                                        }
-                                    }
-                                    break;
+                });
+
+
+        undo = function undo() {
+            if (undoStack.length) {
+                console.log("[UNDO]")
+                console.log([undoStack, redoStack])
+                var undoData = undoStack.pop();
+                if (undoData && undoData.type) {
+                    switch (undoData.type) {
+                        case 'added':
+                            var objectByName = canvas.getObjectByName(undoData.object.name);
+                            if (objectByName.length) {
+                                canvas.remove(objectByName[0]);
+
                             }
-                            canvas.renderAll();
-                        }
-                        undoStack.push(redoData);
-                        console.log([undoStack, redoStack])
+                            break;
+                        case 'modified':
+                            var objectByName = canvas.getObjectByName(undoData.objectName);
+                            if (objectByName.length) {
+                                for (var key in undoData.oldStage) {
+                                    objectByName[0].set(key, undoData.oldStage[key]);
+                                }
+                            }
+                            break;
                     }
+                    canvas.renderAll();
                 }
-        */
-        var undo_list = [];
-        var redo_list = [];
-
-        function save_state() {
-            var activeObject = canvas.getActiveObject();
-            if (activeObject) {
-                // Save the active object to undo list
-                undo_list.push(activeObject);
-            }
-        }
-        canvas.on("object:modified", (e) => {
-            var activeObject = e.target
-            if (activeObject) {
-                // Save the active object to undo list
-                undo_list.push(activeObject);
-            }
-        })
-        function undo() {
-            if (undo_list.length > 0) {
-                // Get the last object from undo list
-                var lastObject = undo_list.pop();
-                redo_list.push(lastObject);
-                // Remove the object from canvas
-                var selGroup = new fabric.ActiveSelection(lastObject, {
-                    canvas: canvas
-                });
-                if (selGroup) {
-
-                    selGroup.forEach(obd => {
-                        canvas.remove((obj));
-                    });
-                }
-                canvas.renderAll();
-                console.log("ii")
+                redoStack.push(undoData);
+                console.log([undoStack, redoStack])
             }
         }
 
-        function redo() {
-            if (redo_list.length > 0) {
-                // Get the last object from redo list
-                var lastObject = redo_list.pop();
-                undo_list.push(lastObject);
-                // Add the object back to canvas
+        redo = function redo() {
+            if (redoStack.length) {
+                console.log("[REDO]")
+                console.log([undoStack, redoStack])
+                var redoData = redoStack.pop();
+                if (redoData && redoData.type) {
+                    switch (redoData.type) {
+                        case 'added':
+                            if (redoData.object) {
+                                canvas.add(redoData.object);
 
-                var selGroup = new fabric.ActiveSelection(lastObject, {
-                    canvas: canvas
-                });
-                if (selGroup) {
-                    selGroup.forEach(obd => {
-                        canvas.add((obj));
-                    });
+                            }
+                            break;
+                        case 'modified':
+                            var objectByName = canvas.getObjectByName(redoData.objectName);
+                            if (objectByName.length) {
+                                for (var key in redoData.newStage) {
+                                    objectByName[0].set(key, redoData.newStage[key]);
+                                }
+                            }
+                            break;
+                    }
+                    canvas.renderAll();
                 }
-
-              //  canvas.add(new fabric.Object(lastObject));
-                canvas.renderAll();
-                console.log("ll")
+                undoStack.push(redoData);
+                console.log([undoStack, redoStack])
             }
         }
 
+/*// 初始化堆疊
+var _undoStack = [];
+var _redoStack = [];
+
+// 每次修改物件時，將其狀態存儲在堆疊中
+canvas.on('object:modified', function(e) {
+    var object = e.target;
+    console.log(e.target)
+    _undoStack.push(object.toObject());
+    _redoStack = [];
+});
+
+// 復原操作
+function undo() {
+    if (_undoStack.length > 0) {
+        var object = _undoStack.pop();
+        _redoStack.push(object);
+        console.log(object)
+        canvas.remove(object);
+        canvas.renderAll();
+    }
+}
+
+// 重做操作
+function redo() {
+    if (_redoStack.length > 0) {
+        var object = _redoStack.pop();
+        _undoStack.push(object);
+        canvas.add(object);
+        canvas.renderAll();
+    }
+}
+*/
 
     </script>
 </body>
