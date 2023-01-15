@@ -1654,6 +1654,7 @@ var redoStack = [];
 // 每次修改物件時，將其狀態存儲在堆疊中
 canvas.on('object:modified', function(e) {
     var object = e.target;
+    console.log(e.target)
     undoStack.push(object.toObject());
     redoStack = [];
 });
@@ -1663,6 +1664,7 @@ function undo() {
     if (undoStack.length > 0) {
         var object = undoStack.pop();
         redoStack.push(object);
+        console.log(object)
         canvas.remove(object);
         canvas.renderAll();
     }
