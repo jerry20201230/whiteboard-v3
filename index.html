@@ -1032,11 +1032,11 @@
             } else if (obj == "paste") {
                 _clipboard.clone(function (clonedObj) {
                     canvas.discardActiveObject();
-                    canvas.counter++
+                  
                     clonedObj.set({
                         left: clonedObj.left + 10,
                         top: clonedObj.top + 10,
-                        name: 'object-' + canvas.counter,
+                      
                         evented: true,
                     });
                     if (clonedObj.type === 'activeSelection') {
@@ -1053,31 +1053,29 @@
                     _clipboard.top += 10;
                     _clipboard.left += 10;
                     canvas.setActiveObject(clonedObj);
+                    save_state()
                     canvas.requestRenderAll();
                 })
             } else if (obj == "circle") {
 
                 var shape = new fabric.Ellipse({
 
-                    name: 'object-' + canvas.counter,
+                  
                     rx: 50, ry: 50,
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+                save_state()
+              
 
                 redoStack = [];
             } else if (obj == "square") {
 
                 var shape = new fabric.Rect({
 
-                    name: 'object-' + canvas.counter,
+                  
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
@@ -1086,25 +1084,21 @@
                 undoStack.push({
                     type: 'added',
                     object: shape
-                })
-                canvas.counter++;
+                })   
 
                 redoStack = [];
             }
             else if (obj == "triangle") {
                 var shape = new fabric.Triangle({
-                    name: 'object-' + canvas.counter,
+                 
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
 
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+                save_state()
+              
 
                 redoStack = [];
             }
@@ -1113,7 +1107,7 @@
                     var shape = new fabric.IText("按兩下以編輯文字", {
                         left: 0,
                         top: 0,
-                        name: 'object-' + canvas.counter,
+            
                         
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
@@ -1125,7 +1119,7 @@
                     var shape = new fabric.IText(par, {
                         left: 0,
                         top: 0,
-                        name: 'object-' + canvas.counter,
+                   
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1136,11 +1130,8 @@
 
 
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+                save_state()
+          
                 redoStack = [];
             }
             else if (obj == "delete") {
@@ -1508,7 +1499,7 @@
         }
 
 
-
+/*
         fabric.StaticCanvas.prototype.getObjectByName = function (name) {
             if (!name || typeof name === 'undefined') {
                 return [];
@@ -1635,40 +1626,40 @@
                 console.log([undoStack, redoStack])
             }
         }
-
-/*// 初始化堆疊
-var _undoStack = [];
-var _redoStack = [];
-
-// 每次修改物件時，將其狀態存儲在堆疊中
-canvas.on('object:modified', function(e) {
-    var object = e.target;
-    console.log(e.target)
-    _undoStack.push(object.toObject());
-    _redoStack = [];
-});
-
-// 復原操作
-function undo() {
-    if (_undoStack.length > 0) {
-        var object = _undoStack.pop();
-        _redoStack.push(object);
-        console.log(object)
-        canvas.remove(object);
-        canvas.renderAll();
-    }
-}
-
-// 重做操作
-function redo() {
-    if (_redoStack.length > 0) {
-        var object = _redoStack.pop();
-        _undoStack.push(object);
-        canvas.add(object);
-        canvas.renderAll();
-    }
-}
 */
+        var undo_list = [];
+var redo_list = [];
+
+function save_state() {
+    var activeObject = canvas.getActiveObject();
+    if (activeObject) {
+        // Save the active object to undo list
+        undo_list.push(activeObject.toObject());
+    }
+}
+
+function undo() {
+    if (undo_list.length > 0) {
+        // Get the last object from undo list
+        var lastObject = undo_list.pop();
+        redo_list.push(lastObject);
+        // Remove the object from canvas
+        canvas.remove(lastObject);
+        canvas.renderAll();
+    }
+}
+
+function redo() {
+    if (redo_list.length > 0) {
+        // Get the last object from redo list
+        var lastObject = redo_list.pop();
+        undo_list.push(lastObject);
+        // Add the object back to canvas
+        canvas.add(new fabric.Object(lastObject));
+        canvas.renderAll();
+    }
+}
+
 
     </script>
 </body>
