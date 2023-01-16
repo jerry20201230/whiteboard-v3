@@ -1032,7 +1032,7 @@
             } else if (obj == "paste") {
                 _clipboard.clone(function (clonedObj) {
                     canvas.discardActiveObject();
-                    canvas.counter++
+                     
                     clonedObj.set({
                         left: clonedObj.left + 10,
                         top: clonedObj.top + 10,
@@ -1066,11 +1066,8 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+ 
+                 ;
 
                 redoStack = [];
             } else if (obj == "square") {
@@ -1083,11 +1080,8 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+ 
+                 ;
 
                 redoStack = [];
             }
@@ -1100,11 +1094,8 @@
                 })
 
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+ 
+                 ;
 
                 redoStack = [];
             }
@@ -1136,11 +1127,8 @@
 
 
                 canvas.add(shape)
-                undoStack.push({
-                    type: 'added',
-                    object: shape
-                })
-                canvas.counter++;
+ 
+                 ;
                 redoStack = [];
             }
             else if (obj == "delete") {
@@ -1518,7 +1506,7 @@
             });
         }
 
-
+/*
         canvas.counter = 0;
         var newleft = 0;
         //canvas.selection = false;
@@ -1547,7 +1535,7 @@
                 type: 'added',
                 object: rect
             })
-            canvas.counter++;
+             ;
             newleft += 100;
             redoStack = [];
         }
@@ -1635,7 +1623,7 @@
                 console.log([undoStack, redoStack])
             }
         }
-
+*/
 /*// 初始化堆疊
 var _undoStack = [];
 var _redoStack = [];
@@ -1670,6 +1658,50 @@ function redo() {
 }
 */
 
+const undo_history = [];
+const redo_history = [];
+
+undo_history.push(JSON.stringify(canvas));
+
+canvas.on("object:added", function () {
+  if (lockHistory) return;
+  console.log("object:added");
+  undo_history.push(JSON.stringify(canvas));
+  redo_history.length = 0;
+  console.log(undo_history.length);
+});
+
+canvas.on("object:modified", function () {
+  if (lockHistory) return;
+  console.log("object:modified");
+  undo_history.push(JSON.stringify(canvas));
+  redo_history.length = 0;
+  console.log(undo_history.length);
+});
+
+function undo() {
+  if (undo_history.length > 0) {
+    lockHistory = true;
+    if (undo_history.length > 1) redo_history.push(undo_history.pop()); //最初の白紙はredoに入れない
+    const content = undo_history[undo_history.length - 1];
+    canvas.loadFromJSON(content, function () {
+      canvas.renderAll();
+      lockHistory = false;
+    });
+  }
+}
+
+function redo() {
+  if (redo_history.length > 0) {
+    lockHistory = true;
+    const content = redo_history.pop();
+    undo_history.push(content);
+    canvas.loadFromJSON(content, function () {
+      canvas.renderAll();
+      lockHistory = false;
+    });
+  }
+}
     </script>
 </body>
 
