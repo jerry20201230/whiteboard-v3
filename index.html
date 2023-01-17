@@ -1013,7 +1013,7 @@
 
                                 $("#loading-layer>center").css("margin-top", "30vh")
 
-                                $("#loading-layer").delay(2000).remove()
+                                $("#loading-layer").delay(2000).fadeOut(600).remove()
                             }
 
                         })
@@ -1353,7 +1353,7 @@
                                 <span class="input-group-text">@</span>
                                 <input class="form-control" placeholder="使用者ID..." id="share-uid-input" oninput='$("#share-invalid-feedback").hide();$("#share-uid-input").removeClass("is-invalid")'>
                             </div>
-                        </div>
+                        
                             <span class="select-none">&nbsp;</span>
                             <select class="form-select" style="width:fit-content !important;" id="share-type-select">
                                 <option value="editor">編輯者</option>
@@ -1363,6 +1363,7 @@
                             <span class="select-none">&nbsp;</span>
                             <button class="btn btn-primary" onclick="_data('share','check')">新增</button>
                         <div class="invalid-feedback" id="share-invalid-feedback"></div>
+                        </div>
                         <hr>
                         <h6>管理存取權</h6>
                         <span>點選下方項目，即可在上方更改權限</span>
