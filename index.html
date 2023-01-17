@@ -125,15 +125,19 @@
     z-index: 1050;
     width: 100vw;
     height: 100vh;
-    background-color:var(--bs-light)">
-        <center style="margin-top:40vh">
+    background-color:var(--bs-light);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;">
+      
             <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
-            <br>
+         
             <p></p>
             <h3 id="loading-status">資料讀取中</h3>
             <p></p>
             <div id="loading-failed-text-container"></div>
-        </center>
+     
     </div>
 
     <div id="app">
@@ -989,12 +993,20 @@
                             console.log(data)
 
                             if (data.par.code !== 200) {
-                                $("#loading-failed-text-container").html(`文件ID: <span class="text-bg-dark" style="width:fit-content">${fileID}</span>`)
+                                $("#loading-failed-text-container").html(`
+                                
+                                文件ID: <span class="text-bg-dark" style="width:fit-content">${fileID}</span>`)
                                 $("#loading-status").attr("class", "text-danger").text(data.par.text)
                                 if (data.par.user == "@all_know_link_user") {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: 尚未登入 <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 } else {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
+                                }
+
+                                if(data.par.code === 404){
+                                    $("#loading-failed-text-container").append(`<p>解決方法:<br><ol><li>檢查連結與文件ID</li></ol></p>`)
+                                }else if(data.par.code === 403){
+                                    $("#loading-failed-text-container").append(`<p>解決方法:<br><ol><li>使用有存取權限的帳號</li><li>與文件擁有者聯絡</li></ol></p>`)
                                 }
                             }
                             else {
@@ -1010,8 +1022,6 @@
                                 } else {
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
-
-                                $("#loading-layer>center").css("margin-top", "30vh")
 
                                 $("#loading-layer").delay(2000).fadeOut(600).remove()
                             }
@@ -1363,7 +1373,7 @@
                             <span class="select-none">&nbsp;</span>
                             <button class="btn btn-primary" onclick="_data('share','check')">新增</button>
                         <div class="invalid-feedback" id="share-invalid-feedback"></div>
-                        </div>
+                            </div>
                         <hr>
                         <h6>管理存取權</h6>
                         <span>點選下方項目，即可在上方更改權限</span>
