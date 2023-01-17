@@ -129,7 +129,8 @@
     display: flex;
     align-items: center;
     flex-direction: column;
-    justify-content: center;">
+    justify-content: center;
+    text-align: center;">
       
             <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
          
@@ -1003,11 +1004,7 @@
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
 
-                                if(data.par.code === 404){
-                                    $("#loading-failed-text-container").append(`<p>解決方法:<br><ol><li>檢查連結與文件ID</li></ol></p>`)
-                                }else if(data.par.code === 403){
-                                    $("#loading-failed-text-container").append(`<p>解決方法:<br><ol><li>使用有存取權限的帳號</li><li>與文件擁有者聯絡</li></ol></p>`)
-                                }
+                              
                             }
                             else {
                                 _Project = data.par.file[0]
