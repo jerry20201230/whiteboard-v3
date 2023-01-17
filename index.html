@@ -1002,7 +1002,7 @@
                                 $("#loading-status").text("正在開啟檔案: "+_Project.filename)
 
                                 _data('load_from_json',{data:_Project.data,filename:_Project.filename});
-                                $('#loading-layer').remove();
+                      
                                 $('.file-name').text(_Project.filename)
 
                                 if (data.par.user == "@all_know_link_user") {
@@ -1013,7 +1013,7 @@
 
                                 $("#loading-layer>center").css("margin-top", "30vh")
 
-                                $("#loading-layer").delay(2000).hide()
+                                $("#loading-layer").delay(2000).remove()
                             }
 
                         })
