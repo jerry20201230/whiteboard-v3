@@ -131,14 +131,14 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;">
-      
-            <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
-         
-            <p></p>
-            <h3 id="loading-status">資料讀取中</h3>
-            <p></p>
-            <div id="loading-failed-text-container"></div>
-     
+
+        <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
+
+        <p></p>
+        <h3 id="loading-status">資料讀取中</h3>
+        <p></p>
+        <div id="loading-failed-text-container"></div>
+
     </div>
 
     <div id="app">
@@ -169,16 +169,13 @@
                     <button class="btn btn-secondary btn-sm " type="button">
                         <i class="bi bi-file-earmark-post"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" 
-                        onclick="undo()">
+                    <button class="btn btn-secondary btn-sm " type="button" onclick="undo()">
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm " type="button" 
-                        onclick="redo()">
+                    <button class="btn btn-secondary btn-sm " type="button" onclick="redo()">
                         <i class="bi bi-arrow-clockwise"></i>
                     </button>
-                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
-                         onclick="_data('share')">
+                    <button class="btn btn-secondary btn-sm not-allow-guest" type="button" onclick="_data('share')">
                         <i class="bi bi-person-add"></i>
                     </button>
                     <!--<button class="btn btn-secondary btn-sm not-allow-guest" type="button" 
@@ -685,7 +682,7 @@
 
         const canvas = new fabric.Canvas('canvas', {
             isDrawingMode: true,
-            selection:true
+            selection: true
 
         });
 
@@ -758,16 +755,16 @@
                     },
                     body: JSON.stringify(e)
                 })
-                    .then(res=>location.href="/?next="+e.next)
-                    
-                   
+                    .then(res => location.href = "/?next=" + e.next)
+
+
             } else {
                 BS_Toast.show({
-                icon: 'bi-box-arrow-right',
-                iconClass: '',
-                title: '登出',
-                body: `正在準備登出...<br>`
-            })
+                    icon: 'bi-box-arrow-right',
+                    iconClass: '',
+                    title: '登出',
+                    body: `正在準備登出...<br>`
+                })
                 fetch("/account/logout", {
                     method: "POST",
                     headers: {
@@ -798,7 +795,7 @@
                             iconClass: '',
                             title: '發生錯誤',
                             body: `無法登出<br>`,
-                            toastClass: "text-2bg-danger"
+                            toastClass: "text-bg-danger"
                         })
                     })
             }
@@ -952,25 +949,25 @@
                     .then(res => res.json())
                     .then(data => {
                         console.log(data)
-                        
-                            $(".user-nickname").text(data.nickname)
-                            $(".user-id").text(data.account)
-                            $("#person-option-button").removeAttr("disabled")
-                            if (data.account === "@admin" && data.login) {
-                                $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
-                            } else if (data.account === "@guest"  && data.login || data.account === "尚未登入") {
-                                $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
-                                $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
-                                $(".share-work-button").text("無法共用")
-                                var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-                                var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-                                    return new bootstrap.Tooltip(tooltipTriggerEl)
-                                })
-                            } else {
-                                $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
-                            }
-                            _User = data;
-    
+
+                        $(".user-nickname").text(data.nickname)
+                        $(".user-id").text(data.account)
+                        $("#person-option-button").removeAttr("disabled")
+                        if (data.account === "@admin" && data.login) {
+                            $(".person-icon").html(`<i class="bi bi-person-fill-gear"></i>`)
+                        } else if (data.account === "@guest" && data.login || data.account === "尚未登入") {
+                            $(".person-icon").html(`<i class="bi bi-person-fill-lock"></i>`)
+                            $(".not-allow-guest").attr("disabled", true).attr("data-bs-toggle", "tooltip").attr("data-bs-title", "訪客無法使用此功能")
+                            $(".share-work-button").text("無法共用")
+                            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+                            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                                return new bootstrap.Tooltip(tooltipTriggerEl)
+                            })
+                        } else {
+                            $(".person-icon").html(`<i class="bi bi-person-fill"></i>`)
+                        }
+                        _User = data;
+
                     })
 
 
@@ -1004,14 +1001,14 @@
                                     $("#loading-failed-text-container").append(`<br>目前登入的身分: ${data.par.user} <a href="#" class="bi bi-arrow-left-right link-primary" onclick="_ui('switch_account')">切換帳號</a>`)
                                 }
 
-                              
+
                             }
                             else {
                                 _Project = data.par.file[0]
-                                $("#loading-status").text("正在開啟檔案: "+_Project.filename)
+                                $("#loading-status").text("正在開啟檔案: " + _Project.filename)
 
-                                _data('load_from_json',{data:_Project.data,filename:_Project.filename});
-                      
+                                _data('load_from_json', { data: _Project.data, filename: _Project.filename });
+
                                 $('.file-name').text(_Project.filename)
 
                                 if (data.par.user == "@all_know_link_user") {
@@ -1044,7 +1041,7 @@
             } else if (obj == "paste") {
                 _clipboard.clone(function (clonedObj) {
                     canvas.discardActiveObject();
-                     
+
                     clonedObj.set({
                         left: clonedObj.left + 10,
                         top: clonedObj.top + 10,
@@ -1078,8 +1075,8 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
- 
-                 ;
+
+                    ;
 
                 redoStack = [];
             } else if (obj == "square") {
@@ -1092,8 +1089,8 @@
                     fill: $("#color-picker-1").attr("data-current-color")
                 })
                 canvas.add(shape)
- 
-                 ;
+
+                    ;
 
                 redoStack = [];
             }
@@ -1106,8 +1103,8 @@
                 })
 
                 canvas.add(shape)
- 
-                 ;
+
+                    ;
 
                 redoStack = [];
             }
@@ -1117,7 +1114,7 @@
                         left: 0,
                         top: 0,
                         name: 'object-' + canvas.counter,
-                        
+
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1139,8 +1136,8 @@
 
 
                 canvas.add(shape)
- 
-                 ;
+
+                    ;
                 redoStack = [];
             }
             else if (obj == "delete") {
@@ -1305,7 +1302,7 @@
             }
             else if (type == "new") {
                 if (par !== "callback") {
-                    if (_User.account !== "@guest") {
+                    if (_User.account !== "@guest" && _User.account !== "@all_know_link_user") {
                         PopupAlert({
 
                             title: "新建專案",
@@ -1328,8 +1325,8 @@
                 } else {
                     //do with file name
                     console.log(data)
-                    if (data.includes("/") || data.includes(":") || data.includes("*") || data.includes("?") || data.includes('"') || data.includes("<") || data.includes(">") || data.includes("|")) {
-                        if (_User.account !== "@guest") {
+                    if (data.includes("/") || data.includes(":") || data.includes("*") || data.includes("?") || data.includes('"') || data.includes("<") || data.includes(">") || data.includes("|") || data === "") {
+                        if (_User.account !== "@guest" && _User.account !== "@all_know_link_user") {
                             PopupAlert({
                                 title: "新建專案",
                                 body: `<div class="alert alert-danger">檔案名稱 ${data} 無效，請重新輸入</div>重新輸入檔案名稱:<br><input type="text" class="form-control" placeholder="檔案名稱" id="create-file-name-input" value="${data}"><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div><script>if (_User.account == "@guest") {$("#inlineRadio2").attr("disabled")}<\/script>`,
@@ -1345,7 +1342,35 @@
                             })
                         }
                     } else {
-                        $(".file-name").text(data)
+                        var temp;
+                        if (document.getElementById("inlineRadio1").checked) {
+                            temp = "(本機檔案)"
+                        } else if (document.getElementById("inlineRadio2").checked && _User.account !== "@guest") {
+                            fetch("/file/create", {
+                                method: "POST",
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({file:"new",user:_User})
+                            })
+                            .then(res=>res.json())
+                            .then(data=>{
+                                if(data.code === "success"){
+                                    temp = "(雲端檔案)"
+                                    _Project.fileID = data.par.id
+                                }else{
+                                    temp = "(本機檔案)"
+                                    //toast
+                                }
+                            })
+                            .catch(error=>{
+                                console.log(error)
+                                //toast
+                                temp = "本機檔案"
+                            })
+        
+                        }
+                        $(".file-name").text(data + " " + temp)
                     }
                 }
             }
@@ -1519,202 +1544,202 @@
             });
         }
 
-/*
-        canvas.counter = 0;
-        var newleft = 0;
-        //canvas.selection = false;
-        var undoStack = [];
-        var redoStack = [];
-        addrect = function addrect(top, left, width, height, fill) {
-            var rect = new fabric.Rect({
-                top: document.getElementById("fabriccanvas").height,
-                name: 'rectangle ' + canvas.counter,
-                left: 0 + newleft,
-                width: 100,
-                height: 100,
-                fill: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6),
-                //fix attributes applied for all rects
-                opacity: 0.75,
-                lockRotation: true,
-                originX: 'left',
-                originY: 'bottom',
-                cornerSize: 15,
-                hasRotatingPoint: false,
-                perPixelTargetFind: true,
-                minScaleLimit: 1
-            })
-            canvas.add(rect);
-            undoStack.push({
-                type: 'added',
-                object: rect
-            })
-             ;
-            newleft += 100;
-            redoStack = [];
-        }
-        var state = [];
-        var mods = 0;
-        var props = {};
-    canvas.on(
-            'object:added', function (e) {
-                var block = e.target;
-                if (block) {
-                    props.oldStage = block
+        /*
+                canvas.counter = 0;
+                var newleft = 0;
+                //canvas.selection = false;
+                var undoStack = [];
+                var redoStack = [];
+                addrect = function addrect(top, left, width, height, fill) {
+                    var rect = new fabric.Rect({
+                        top: document.getElementById("fabriccanvas").height,
+                        name: 'rectangle ' + canvas.counter,
+                        left: 0 + newleft,
+                        width: 100,
+                        height: 100,
+                        fill: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6),
+                        //fix attributes applied for all rects
+                        opacity: 0.75,
+                        lockRotation: true,
+                        originX: 'left',
+                        originY: 'bottom',
+                        cornerSize: 15,
+                        hasRotatingPoint: false,
+                        perPixelTargetFind: true,
+                        minScaleLimit: 1
+                    })
+                    canvas.add(rect);
+                    undoStack.push({
+                        type: 'added',
+                        object: rect
+                    })
+                     ;
+                    newleft += 100;
+                    redoStack = [];
                 }
-            })
-            .on(
-                'object:modified', function (e) {
-                    var block = e.target;
-                    if (block) {
-                        props.newStage = block
-                        undoStack.push({
-                            objectName: block.name,
-                            type: 'modified',
-                            oldStage: props.oldStage,
-                            newStage: props.newStage
+                var state = [];
+                var mods = 0;
+                var props = {};
+            canvas.on(
+                    'object:added', function (e) {
+                        var block = e.target;
+                        if (block) {
+                            props.oldStage = block
+                        }
+                    })
+                    .on(
+                        'object:modified', function (e) {
+                            var block = e.target;
+                            if (block) {
+                                props.newStage = block
+                                undoStack.push({
+                                    objectName: block.name,
+                                    type: 'modified',
+                                    oldStage: props.oldStage,
+                                    newStage: props.newStage
+                                });
+                                props = {};
+                            }
                         });
-                        props = {};
+        
+        
+                undo = function undo() {
+                    if (undoStack.length) {
+                        console.log("[UNDO]")
+                        console.log([undoStack, redoStack])
+                        var undoData = undoStack.pop();
+                        if (undoData && undoData.type) {
+                            switch (undoData.type) {
+                                case 'added':
+                                    var objectByName = canvas.getObjectByName(undoData.object.name);
+                                    if (objectByName.length) {
+                                        canvas.remove(objectByName[0]);
+        
+                                    }
+                                    break;
+                                case 'modified':
+                                    var objectByName = canvas.getObjectByName(undoData.objectName);
+                                    if (objectByName.length) {
+                                        for (var key in undoData.oldStage) {
+                                            objectByName[0].set(key, undoData.oldStage[key]);
+                                        }
+                                    }
+                                    break;
+                            }
+                            canvas.renderAll();
+                        }
+                        redoStack.push(undoData);
+                        console.log([undoStack, redoStack])
                     }
+                }
+        
+                redo = function redo() {
+                    if (redoStack.length) {
+                        console.log("[REDO]")
+                        console.log([undoStack, redoStack])
+                        var redoData = redoStack.pop();
+                        if (redoData && redoData.type) {
+                            switch (redoData.type) {
+                                case 'added':
+                                    if (redoData.object) {
+                                        canvas.add(redoData.object);
+        
+                                    }
+                                    break;
+                                case 'modified':
+                                    var objectByName = canvas.getObjectByName(redoData.objectName);
+                                    if (objectByName.length) {
+                                        for (var key in redoData.newStage) {
+                                            objectByName[0].set(key, redoData.newStage[key]);
+                                        }
+                                    }
+                                    break;
+                            }
+                            canvas.renderAll();
+                        }
+                        undoStack.push(redoData);
+                        console.log([undoStack, redoStack])
+                    }
+                }
+        */
+        /*// 初始化堆疊
+        var _undoStack = [];
+        var _redoStack = [];
+        
+        // 每次修改物件時，將其狀態存儲在堆疊中
+        canvas.on('object:modified', function(e) {
+            var object = e.target;
+            console.log(e.target)
+            _undoStack.push(object.toObject());
+            _redoStack = [];
+        });
+        
+        // 復原操作
+        function undo() {
+            if (_undoStack.length > 0) {
+                var object = _undoStack.pop();
+                _redoStack.push(object);
+                console.log(object)
+                canvas.remove(object);
+                canvas.renderAll();
+            }
+        }
+        
+        // 重做操作
+        function redo() {
+            if (_redoStack.length > 0) {
+                var object = _redoStack.pop();
+                _undoStack.push(object);
+                canvas.add(object);
+                canvas.renderAll();
+            }
+        }
+        */
+        var lockHistory = false;
+        const undo_history = [];
+        const redo_history = [];
+
+        undo_history.push(JSON.stringify(canvas));
+
+        canvas.on("object:added", function () {
+            if (lockHistory) return;
+            console.log("object:added");
+            undo_history.push(JSON.stringify(canvas));
+            redo_history.length = 0;
+            console.log(undo_history.length);
+        });
+
+        canvas.on("object:modified", function () {
+            if (lockHistory) return;
+            console.log("object:modified");
+            undo_history.push(JSON.stringify(canvas));
+            redo_history.length = 0;
+            console.log(undo_history.length);
+        });
+
+        function undo() {
+            if (undo_history.length > 0) {
+                lockHistory = true;
+                if (undo_history.length > 1) redo_history.push(undo_history.pop()); //最初の白紙はredoに入れない
+                const content = undo_history[undo_history.length - 1];
+                canvas.loadFromJSON(content, function () {
+                    canvas.renderAll();
+                    lockHistory = false;
                 });
-
-
-        undo = function undo() {
-            if (undoStack.length) {
-                console.log("[UNDO]")
-                console.log([undoStack, redoStack])
-                var undoData = undoStack.pop();
-                if (undoData && undoData.type) {
-                    switch (undoData.type) {
-                        case 'added':
-                            var objectByName = canvas.getObjectByName(undoData.object.name);
-                            if (objectByName.length) {
-                                canvas.remove(objectByName[0]);
-
-                            }
-                            break;
-                        case 'modified':
-                            var objectByName = canvas.getObjectByName(undoData.objectName);
-                            if (objectByName.length) {
-                                for (var key in undoData.oldStage) {
-                                    objectByName[0].set(key, undoData.oldStage[key]);
-                                }
-                            }
-                            break;
-                    }
-                    canvas.renderAll();
-                }
-                redoStack.push(undoData);
-                console.log([undoStack, redoStack])
             }
         }
 
-        redo = function redo() {
-            if (redoStack.length) {
-                console.log("[REDO]")
-                console.log([undoStack, redoStack])
-                var redoData = redoStack.pop();
-                if (redoData && redoData.type) {
-                    switch (redoData.type) {
-                        case 'added':
-                            if (redoData.object) {
-                                canvas.add(redoData.object);
-
-                            }
-                            break;
-                        case 'modified':
-                            var objectByName = canvas.getObjectByName(redoData.objectName);
-                            if (objectByName.length) {
-                                for (var key in redoData.newStage) {
-                                    objectByName[0].set(key, redoData.newStage[key]);
-                                }
-                            }
-                            break;
-                    }
+        function redo() {
+            if (redo_history.length > 0) {
+                lockHistory = true;
+                const content = redo_history.pop();
+                undo_history.push(content);
+                canvas.loadFromJSON(content, function () {
                     canvas.renderAll();
-                }
-                undoStack.push(redoData);
-                console.log([undoStack, redoStack])
+                    lockHistory = false;
+                });
             }
         }
-*/
-/*// 初始化堆疊
-var _undoStack = [];
-var _redoStack = [];
-
-// 每次修改物件時，將其狀態存儲在堆疊中
-canvas.on('object:modified', function(e) {
-    var object = e.target;
-    console.log(e.target)
-    _undoStack.push(object.toObject());
-    _redoStack = [];
-});
-
-// 復原操作
-function undo() {
-    if (_undoStack.length > 0) {
-        var object = _undoStack.pop();
-        _redoStack.push(object);
-        console.log(object)
-        canvas.remove(object);
-        canvas.renderAll();
-    }
-}
-
-// 重做操作
-function redo() {
-    if (_redoStack.length > 0) {
-        var object = _redoStack.pop();
-        _undoStack.push(object);
-        canvas.add(object);
-        canvas.renderAll();
-    }
-}
-*/
-var lockHistory = false;
-const undo_history = [];
-const redo_history = [];
-
-undo_history.push(JSON.stringify(canvas));
-
-canvas.on("object:added", function () {
-  if (lockHistory) return;
-  console.log("object:added");
-  undo_history.push(JSON.stringify(canvas));
-  redo_history.length = 0;
-  console.log(undo_history.length);
-});
-
-canvas.on("object:modified", function () {
-  if (lockHistory) return;
-  console.log("object:modified");
-  undo_history.push(JSON.stringify(canvas));
-  redo_history.length = 0;
-  console.log(undo_history.length);
-});
-
-function undo() {
-  if (undo_history.length > 0) {
-    lockHistory = true;
-    if (undo_history.length > 1) redo_history.push(undo_history.pop()); //最初の白紙はredoに入れない
-    const content = undo_history[undo_history.length - 1];
-    canvas.loadFromJSON(content, function () {
-      canvas.renderAll();
-      lockHistory = false;
-    });
-  }
-}
-
-function redo() {
-  if (redo_history.length > 0) {
-    lockHistory = true;
-    const content = redo_history.pop();
-    undo_history.push(content);
-    canvas.loadFromJSON(content, function () {
-      canvas.renderAll();
-      lockHistory = false;
-    });
-  }
-}
     </script>
 </body>
 
