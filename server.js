@@ -57,7 +57,7 @@ app.post("/account/check", (req, res) => {
     console.log({ "code": "success", "login": true, "account": req.session.username, "nickname": req.session.nickname })
     res.send(JSON.stringify({ "code": "success", "login": true, "account": req.session.username, "nickname": req.session.nickname }))
   } else {
-    res.send(JSON.stringify({ "code": "success", "login": false, "account": "尚未登入", "nickname":"尚未登入的使用者" }))
+    res.send(JSON.stringify({ "code": "success", "login": false, "account": "尚未登入", "nickname": "尚未登入的使用者" }))
   }
 })
 app.post("/account/logout", (req, res) => {
@@ -94,37 +94,55 @@ app.post("/file/check", (req, res) => {
       if (results.length !== 0 && results.length < 2) {
 
         for (i = 0; i < JSON.parse(results[0].share_with).user.length; i++) {
-          if (JSON.parse(results[0].share_with).user[i] == uid || JSON.parse(results[0].share_with).user[i] == "@all_know_link_user" && JSON.parse(results[0].share_with).role[i] !== "disabled") {
-            res.send(JSON.stringify({ "code": "success", "par": { "code": 200, "text": "找到1筆資料", "file": results, "user": uid } })); res.end(); connection.release(); return;
-
+          if (JSON.parse(results[0].share_with).user[i] == uid || JSON.parse(results[0].share_with).user[i] == "@all_know_link_user") {
+            if (!JSON.parse(results[0].share_with).role[i] !== "disabled"){
+              res.send(JSON.stringify({ "code": "success", "par": { "code": 200, "text": "找到1筆資料", "file": results, "user": uid } })); res.end(); connection.release(); return;
+            } else {
+            res.send(JSON.stringify({ "code": "failed", "par": { "code": 403, "text": "無法存取檔案", "user": uid } }));
+            res.end(); connection.release(); return
           }
         }
-        res.send(JSON.stringify({ "code": "failed", "par": { "code": 403, "text": "無法存取檔案", "user": uid } }));
-        res.end(); connection.release(); return
-        //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
-
-      } else {
-        res.send(JSON.stringify({ "code": "failed", "par": { "code": 404, "text": "找不到檔案", "user": uid } })); res.end(); connection.release(); return;
       }
+      res.send(JSON.stringify({ "code": "failed", "par": { "code": 403, "text": "無法存取檔案", "user": uid } }));
+      res.end(); connection.release(); return
+      //res.send(JSON.stringify({ "code": "success", "par": {"code":200, "text": "找到檔案","file":results } }));; 
+
+    } else {
+      res.send(JSON.stringify({ "code": "failed", "par": { "code": 404, "text": "找不到檔案", "user": uid } })); res.end(); connection.release(); return;
+    }
     })
-  })
+})
 })
 
 
-app.post("/file/save",(req,res)=>{
+app.post("/file/save", (req, res) => {
 
   console.log(req.body)
 
-  
-  if(req.body.fileID){ //如果檔案已經存在
 
-  }else{
+  if (req.body.fileID) { //如果檔案已經存在
+
+  } else {
 
   }
 })
 
-app.post("/file/create",(req,res)=>{
-  
+app.post("/file/create", (req, res) => {
+  var num = getRandomInt(100000, 999999),
+    result = 1;
+  while (result == 0) {
+    sql_Connect.getConnection(function (err, connection) {
+      if (err) throw err
+      connection.query('SELECT * FROM userData WHERE user_id = ?', "@user-" + num, function (err, results, fields) {
+
+        if (err) throw err
+        if (results.length == 0) { result = 0 }
+        else { num = getRandomInt(100000, 999999) }
+        connection.release();
+      })
+    })
+  }
+  res.send(JSON.stringify({ "code": "success", "par": { "uid": "user-" + num } }))
 })
 
 
@@ -197,7 +215,7 @@ app.post('/account/login', function (request, response) {
           request.session.nickname = results[0].user_nickname
 
           response.send(JSON.stringify({ 'code': 'success', 'par': { 'user': username } }));
-          
+
         } else {
           response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
         }
