@@ -784,7 +784,7 @@
                                 iconClass: '',
                                 title: '登出',
                                 body: `正在準備登出...<br>`,
-                                toastClass: "bg-danger"
+                                toastClass: "text-bg-danger"
                             })
                         }
                     })
@@ -1076,7 +1076,7 @@
                 })
                 canvas.add(shape)
 
-                    ;
+
 
                 redoStack = [];
             } else if (obj == "square") {
@@ -1090,7 +1090,7 @@
                 })
                 canvas.add(shape)
 
-                    ;
+
 
                 redoStack = [];
             }
@@ -1104,7 +1104,7 @@
 
                 canvas.add(shape)
 
-                    ;
+
 
                 redoStack = [];
             }
@@ -1351,24 +1351,31 @@
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({file:"new",user:_User})
+                                body: JSON.stringify({ file: "new", user: _User })
                             })
-                            .then(res=>res.json())
-                            .then(data=>{
-                                if(data.code === "success"){
-                                    temp = "(雲端檔案)"
-                                    _Project.fileID = data.par.id
-                                }else{
-                                    temp = "(本機檔案)"
+                                .then(res => res.json())
+                                .then(data => {
+                                    if (data.code === "success") {
+                                        temp = "(雲端檔案)"
+                                        _Project.fileID = data.par.id
+                                    } else {
+                                        temp = "(本機檔案)"
+
+                                        BS_Toast.show({
+                                            icon: 'bi-x-fill',
+                                            iconClass: 'text-danger',
+                                            title: '設定發生錯誤',
+                                            body: `將檔案上傳到雲端時發生錯誤`,
+                                            toastClass: "text-bg-danger"
+                                        })
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log(error)
                                     //toast
-                                }
-                            })
-                            .catch(error=>{
-                                console.log(error)
-                                //toast
-                                temp = "本機檔案"
-                            })
-        
+                                    temp = "本機檔案"
+                                })
+
                         }
                         $(".file-name").text(data + " " + temp)
                     }
