@@ -19,9 +19,10 @@
     <style>
         .login-dialog,
         .full-screen-dialog {
-            background-color: rgb(239, 239, 239);
+            backdrop-filter: blur(10px);
+            background: rgba(216, 216, 216, 0.355);
             border-radius: 5px;
-            border: 1px solid rgb(104, 104, 104);
+           
             position: absolute;
             top: 50%;
             left: 50%;
@@ -57,12 +58,19 @@
         .select-none {
             user-select: none;
         }
+
+        #bg-img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: -99;
+        }
     </style>
 
 </head>
 
-<body onload="window.setup()">
-
+<body onload="window.setup()" >
+    <img src="/lib/background.png" id="bg-img">
 
     <div id="login-dialog" class="login-dialog">
         <h1>登入</h1>
@@ -96,9 +104,6 @@
 
         </p>
     </div>
-
-
-
 
     <div id="sign-up-dialog" class="login-dialog" style="display: none;">
         <h1>註冊</h1>
@@ -143,11 +148,11 @@
             <span class="select-none">&nbsp;</span>
             <button class="btn btn-link skip_login_btn">訪客登入</button>
         </p>
+
     </div>
+    <div style="position: fixed; bottom:0;width: 100%;padding: 2px;padding-left: 5px;">
+      <span class="text-light text-opacity-25">背景圖片由<a href="https://openai.com/dall-e-2/" target="_blank" class="">DALL·E 2</a>生成</span>
     </div>
-
-
-
 
 
     <div class="modal fade " id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
@@ -298,11 +303,11 @@
                                 status = "login"
 
                             } else {
-                                if(!$.UrlParam("next")){
-                                location.href = "/"
-                            }else{
-                                location.href = "/file"+$.UrlParam("next")
-                            }
+                                if (!$.UrlParam("next")) {
+                                    location.href = "/"
+                                } else {
+                                    location.href = "/file" + $.UrlParam("next")
+                                }
                             }
                         })
 
@@ -363,12 +368,12 @@
                             status = "login"
 
                         } else {
-                            if(!$.UrlParam("next")){
+                            if (!$.UrlParam("next")) {
                                 location.href = "/"
-                            }else{
-                                location.href = "/file"+$.UrlParam("next")
+                            } else {
+                                location.href = "/file" + $.UrlParam("next")
                             }
-                            
+
                         }
                     })
 
@@ -394,69 +399,69 @@
                 if ($("#user_account").val() == "") {
                     $("#login_user_account_alert").html("*請填寫此欄位*").show();
                     $("#user_account").addClass("is-invalid")
-                } else if (event.which == 13 && status == "signup"){
+                } else if (event.which == 13 && status == "signup") {
                     if ($("#sign_up_user_password").val() !== $("#sign_up_user_password_2").val()) {
-                $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入").show()
-            }
-            else if (IfStrIsBlank($("#sign_up_user_password").val()) || $("#sign_up_user_password").val().split("").length > 30 || $("#sign_up_user_password").val().split("").length < 6) {
-                $("#signup_error_alert").text("密碼需在6到30字之間，建議包含特殊符號以提升安全性").show()
-            }
-            else {
-                $("#sign_up_user_account").attr("disabled", true)
-                $("#sign_up_user_password").attr("disabled", true)
-                $("#sign_up_user_password_2").attr("disabled", true)
-                $("#signup_user_nickname").attr("disabled", true)
-                $(".skip_login_btn").attr("disabled", true)
-                $("#signup_btn").attr("disabled", true).html("正在註冊 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
+                        $("#signup_error_alert").text("兩次輸入的密碼不同，請重新輸入").show()
+                    }
+                    else if (IfStrIsBlank($("#sign_up_user_password").val()) || $("#sign_up_user_password").val().split("").length > 30 || $("#sign_up_user_password").val().split("").length < 6) {
+                        $("#signup_error_alert").text("密碼需在6到30字之間，建議包含特殊符號以提升安全性").show()
+                    }
+                    else {
+                        $("#sign_up_user_account").attr("disabled", true)
+                        $("#sign_up_user_password").attr("disabled", true)
+                        $("#sign_up_user_password_2").attr("disabled", true)
+                        $("#signup_user_nickname").attr("disabled", true)
+                        $(".skip_login_btn").attr("disabled", true)
+                        $("#signup_btn").attr("disabled", true).html("正在註冊 " + `<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>`)
 
-                fetch("/account/signup", {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        action: "signup",
-                        uid: $("#sign_up_user_account").val(),
-                        pass: $("#sign_up_user_password").val(),
-                        nickname: $("#signup_user_nickname").val()
-                    })
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        console.log(data)
-                        if (data.code === "failed") {
-                            $("#signup_error_alert").text(data.par.text).show();
-                            $("#sign_up_user_account").removeAttr("disabled")
-                            $("#sign_up_user_password").removeAttr("disabled")
-                            $("#sign_up_user_password_2").removeAttr("disabled")
-                            $("#signup_user_nickname").removeAttr("disabled")
-                            $(".skip_login_btn").removeAttr("disabled")
-                            $("#signup_btn").removeAttr("disabled").html("註冊")
+                        fetch("/account/signup", {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                action: "signup",
+                                uid: $("#sign_up_user_account").val(),
+                                pass: $("#sign_up_user_password").val(),
+                                nickname: $("#signup_user_nickname").val()
+                            })
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data)
+                                if (data.code === "failed") {
+                                    $("#signup_error_alert").text(data.par.text).show();
+                                    $("#sign_up_user_account").removeAttr("disabled")
+                                    $("#sign_up_user_password").removeAttr("disabled")
+                                    $("#sign_up_user_password_2").removeAttr("disabled")
+                                    $("#signup_user_nickname").removeAttr("disabled")
+                                    $(".skip_login_btn").removeAttr("disabled")
+                                    $("#signup_btn").removeAttr("disabled").html("註冊")
 
-                        } else {
-                            $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
-                            $(".skip_login_btn").removeAttr("disabled")
-                            $("#signup_btn").html("註冊")
-                            $("#sign_up_user_account").val("")
-                            $("#sign_up_user_password").val("")
-                            $("#sign_up_user_password_2").val("")
-                            $("#signup_user_nickname").val("")
+                                } else {
+                                    $("#signup_error_alert").removeClass("alert-danger").addClass("alert-success").text(data.par.text).show()
+                                    $(".skip_login_btn").removeAttr("disabled")
+                                    $("#signup_btn").html("註冊")
+                                    $("#sign_up_user_account").val("")
+                                    $("#sign_up_user_password").val("")
+                                    $("#sign_up_user_password_2").val("")
+                                    $("#signup_user_nickname").val("")
 
 
-                        }
-                    })
-                    .catch(error => {
-                        console.log(error)
-                        $("#signup_error_alert").text("發生錯誤，暫時無法註冊你的帳號").show()
-                        $("#sign_up_user_account").removeAttr("disabled")
-                        $("#sign_up_user_password").removeAttr("disabled")
-                        $("#sign_up_user_password_2").removeAttr("disabled")
-                        $("#signup_user_nickname").removeAttr("disabled")
-                        $(".skip_login_btn").removeAttr("disabled")
-                        $("#signup_btn").removeAttr("disabled").html("註冊")
+                                }
+                            })
+                            .catch(error => {
+                                console.log(error)
+                                $("#signup_error_alert").text("發生錯誤，暫時無法註冊你的帳號").show()
+                                $("#sign_up_user_account").removeAttr("disabled")
+                                $("#sign_up_user_password").removeAttr("disabled")
+                                $("#sign_up_user_password_2").removeAttr("disabled")
+                                $("#signup_user_nickname").removeAttr("disabled")
+                                $(".skip_login_btn").removeAttr("disabled")
+                                $("#signup_btn").removeAttr("disabled").html("註冊")
 
-                    })
-            }
+                            })
+                    }
                 }
             }
 
@@ -503,11 +508,11 @@
                         $("#login_btn").removeAttr("disabled").html("登入")
 
                     } else {
-                        if(!$.UrlParam("next")){
-                                location.href = "/"
-                            }else{
-                                location.href = "/file"+$.UrlParam("next")
-                            }
+                        if (!$.UrlParam("next")) {
+                            location.href = "/"
+                        } else {
+                            location.href = "/file" + $.UrlParam("next")
+                        }
                     }
                 });
         }
@@ -700,6 +705,47 @@
                 BS_Toast.toast_id++
             }
         }
+
+
+
+
+        $(function () {
+
+resize_tab();
+});
+
+$(window).resize(function () {
+resize_tab();
+}).resize();
+
+function resize_tab() {
+
+var viewportWidth = $(window).innerWidth();
+var viewportHeight = $(window).innerHeight();
+
+var width = $('#bg-img').width();
+var height = $('#bg-img').height();
+
+
+if ((viewportWidth / viewportHeight) > (width / height)) {
+
+    $('#bg-img').css({
+        'width': '100%',
+        'height': 'auto',
+        'margin-left': 0 - width / 2,
+        'margin-top': 0 - height / 2
+    });
+
+
+} else {
+    $('#bg-img').css({
+        'width': 'auto',
+        'height': '100%',
+        'margin-left': 0 - width / 2,
+        'margin-top': 0 - height / 2
+    });
+}
+}
     </script>
 
 </body>
