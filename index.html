@@ -1358,6 +1358,13 @@
                                     if (data.code === "success") {
                                         temp = "(雲端檔案)"
                                         _Project.fileID = data.par.id
+                                        BS_Toast.show({
+                                            icon: 'bi-check-fill',
+                                            iconClass: 'text-success',
+                                            title: '成功新增檔案',
+                                            body: `已經將檔案上傳到雲端，ID是:<br>${_Project.fileID}`,
+                                            toastClass: "text-bg-danger"
+                                        })
                                     } else {
                                         temp = "(本機檔案)"
 
