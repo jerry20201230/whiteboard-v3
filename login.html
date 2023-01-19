@@ -22,7 +22,7 @@
             backdrop-filter: blur(10px);
             background: rgba(216, 216, 216, 0.355);
             border-radius: 5px;
-           
+
             position: absolute;
             top: 50%;
             left: 50%;
@@ -69,8 +69,8 @@
 
 </head>
 
-<body onload="window.setup()" >
-    <img src="/lib/background.png" id="bg-img">
+<body onload="window.setup()">
+    <img src="/lib/background.png" id="bg-img" draggable="false" class="select-none">
 
     <div id="login-dialog" class="login-dialog">
         <h1>登入</h1>
@@ -151,7 +151,8 @@
 
     </div>
     <div style="position: fixed; bottom:0;width: 100%;padding: 2px;padding-left: 5px;">
-      <span class="text-light text-opacity-25">背景圖片由<a href="https://openai.com/dall-e-2/" target="_blank" class="">DALL·E 2</a>生成</span>
+        <span class="text-light text-opacity-50">背景圖片由<a href="https://openai.com/dall-e-2/" target="_blank"
+                class="">DALL·E 2</a>生成</span>
     </div>
 
 
@@ -712,41 +713,41 @@
 
         $(function () {
 
-resize_tab();
-});
+            resize_tab();
+        });
 
-$(window).resize(function () {
-resize_tab();
-}).resize();
+        $(window).resize(function () {
+            resize_tab();
+        }).resize();
 
-function resize_tab() {
+        function resize_tab() {
 
-var viewportWidth = $(window).innerWidth();
-var viewportHeight = $(window).innerHeight();
+            var viewportWidth = $(window).innerWidth();
+            var viewportHeight = $(window).innerHeight();
 
-var width = $('#bg-img').width();
-var height = $('#bg-img').height();
-
-
-if ((viewportWidth / viewportHeight) > (width / height)) {
-
-    $('#bg-img').css({
-        'width': '100%',
-        'height': 'auto',
-        'margin-left': 0 - width / 2,
-        'margin-top': 0 - height / 2
-    });
+            var width = $('#bg-img').width();
+            var height = $('#bg-img').height();
 
 
-} else {
-    $('#bg-img').css({
-        'width': 'auto',
-        'height': '100%',
-        'margin-left': 0 - width / 2,
-        'margin-top': 0 - height / 2
-    });
-}
-}
+            if ((viewportWidth / viewportHeight) > (width / height)) {
+
+                $('#bg-img').css({
+                    'width': '100%',
+                    'height': 'auto',
+                    'margin-left': 0 - width / 2,
+                    'margin-top': 0 - height / 2
+                });
+
+
+            } else {
+                $('#bg-img').css({
+                    'width': 'auto',
+                    'height': '100%',
+                    'margin-left': 0 - width / 2,
+                    'margin-top': 0 - height / 2
+                });
+            }
+        }
     </script>
 
 </body>
