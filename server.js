@@ -114,6 +114,17 @@ app.post("/file/check", (req, res) => {
   })
 })
 
+app.post("/file/get/example",(req,res)=>{
+  sql_Connect.getConnection(function (err, connection) {
+    if (err) throw err
+    connection.query('SELECT * FROM drawData WHERE data_type = ?', "example", function (err, results, fields) {
+
+      if (err) throw err
+      res.send({code:"success",par:{data:results}})
+      connection.release();
+    })
+  })
+})
 
 app.post("/file/save", (req, res) => {
 
@@ -149,7 +160,7 @@ app.post("/file/create", (req, res) => {
       if (err) throw err
       connection.query(
         `INSERT INTO drawData(owner_nickname,owner_id,data,data_type,fileID,share_with,filename,summary)
-         VALUES("${req.body.user.account}","${req.session.username}","${{}}","normal","${num}","${{"user":[req.session.username],"role":["editor"]}}","${req.body.file.name}","描述這個文件...")`, function (err, results, fields) {
+         VALUES("${req.body.user.account}","${req.session.username}","{}","normal","${num}","{"user":[${req.session.username}],"role":["editor"]}","${req.body.file.name}","描述這個文件...")`, function (err, results, fields) {
 
         if (err) throw err
 

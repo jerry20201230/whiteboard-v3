@@ -1352,7 +1352,7 @@
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({ file: {"name":data}, user: _User })
+                                body: JSON.stringify({ file: {"name":data}, user: _User ,time:getTime("date")+"|"+getTime("time")})
                             })
                                 .then(res => res.json())
                                 .then(data => {
