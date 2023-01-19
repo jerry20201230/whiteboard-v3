@@ -1478,7 +1478,7 @@
                     }
                     else if (par == "update") {
                         $("#share-uid-input").val(data) 
-                        $("#share-type-select").val($(`[data-user-id=${data}]`).attr("data-share"))
+                        $("#share-type-select").val($(`div[data-user-id=${data}]`).attr("data-share"))
                         
 
                     }
