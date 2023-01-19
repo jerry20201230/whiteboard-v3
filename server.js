@@ -146,6 +146,20 @@ app.post("/file/create", (req, res) => {
       })
     }
     res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
+    sql_Connect.getConnection(function (err, connection) {
+      if (err) throw err
+      connection.query(
+        `INSERT INTO drawData(owner_nickname,owner_id,data,data_type,fileID,share_with,filename,summary)
+         VALUES("${req.body.user.account}","${req.session.username}","${{}}","normal","${num}","${{"user":[req.session.username],"role":["editor"]}}","${req.body.file.name}","描述這個文件...")`, function (err, results, fields) {
+
+        if (err) throw err
+
+        connection.release();
+      })
+      res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
+      res.end(); // end the response
+
+    })
   }
   res.end()
 })

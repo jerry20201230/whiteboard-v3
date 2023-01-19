@@ -1345,18 +1345,21 @@
                         var temp;
                         if (document.getElementById("inlineRadio1").checked) {
                             temp = "(本機檔案)"
+                            $(".file-name").text(data + " " + temp)
                         } else if (document.getElementById("inlineRadio2").checked && _User.account !== "@guest") {
                             fetch("/file/create", {
                                 method: "POST",
                                 headers: {
                                     'Content-Type': 'application/json'
                                 },
-                                body: JSON.stringify({ file: "new", user: _User })
+                                body: JSON.stringify({ file: {"name":data}, user: _User })
                             })
                                 .then(res => res.json())
                                 .then(data => {
                                     if (data.code === "success") {
                                         temp = "(雲端檔案)"
+
+                                        $(".file-name").text(data + " " + temp)
                                         _Project.fileID = data.par.id
                                         BS_Toast.show({
                                             icon: 'bi-check-circle-fill',
@@ -1367,7 +1370,7 @@
                                         })
                                     } else {
                                         temp = "(本機檔案)"
-
+                                        $(".file-name").text(data + " " + temp)
                                         BS_Toast.show({
                                             icon: 'bi-x-fill',
                                             iconClass: 'text-danger',
@@ -1381,7 +1384,7 @@
                                     console.log(error)
                                     
                                     temp = "本機檔案"
-
+                                    $(".file-name").text(data + " " + temp)
                                     BS_Toast.show({
                                         icon: 'bi-x-fill',
                                         iconClass: 'text-danger',
@@ -1392,7 +1395,7 @@
                                 })
 
                         }
-                        $(".file-name").text(data + " " + temp)
+                      
                     }
                 }
             }
