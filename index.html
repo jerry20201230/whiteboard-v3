@@ -1365,7 +1365,7 @@
                                             icon: 'bi-check-circle-fill',
                                             iconClass: 'text-success',
                                             title: '成功新增檔案',
-                                            body: `已經將檔案上傳到雲端，ID是:<br>${_Project.fileID}`,
+                                            body: `已經將檔案上傳到雲端，ID是:${_Project.fileID}`,
                                             toastClass: "text-bg-success"
                                         })
                                     } else {
@@ -1427,15 +1427,11 @@
                         <div style="overflow-y:scroll;max-height:150px" id="share-info">
                             
 
-                            <div class="alert alert-primary" data-user-id="@all_know_link_user" data-share="viewer" onclick="_data('share','update')">
+                            <div class="alert alert-primary" data-user-id="@all_know_link_user" data-share="viewer" onclick="_data('share','update','@all_know_link_user')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-link" viewBox="0 0 16 16"><path d="M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-4H9c-.086 0-.17.01-.25.031A2 2 0 0 1 7 10.5H4a2 2 0 1 1 0-4h1.535c.218-.376.495-.714.82-1z"/><path d="M9 5.5a3 3 0 0 0-2.83 4h1.098A2 2 0 0 1 9 6.5h3a2 2 0 1 1 0 4h-1.535a4.02 4.02 0 0 1-.82 1H12a3 3 0 1 0 0-6H9z"/></svg>
                                 <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>所有知道連結的使用者&nbsp;&nbsp;[檢視者]
                             </div>
                              
-                            <div class="alert alert-primary" data-user-id="@all_logined_user" data-share="viewer">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
-                                <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>所有已經登入的使用者&nbsp;&nbsp;[檢視者]
-                            </div>
                         </div>
 `,
                         escCallBack: "dismiss",
@@ -1456,7 +1452,7 @@
                             if ($("#share-type-select").val() == "editor") {
                                 $("#share-info").append(`
                         
-                        <div class="alert alert-success" >
+                        <div class="alert alert-success"  data-user-id="@${$("#share-uid-input").val()}" data-share="editor" onclick="_data('share','update','@${$("#share-uid-input").val()}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
                                 <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>@${$("#share-uid-input").val()}&nbsp;&nbsp;[編輯者]
                         </div>
@@ -1464,7 +1460,7 @@
                             } else if ($("#share-type-select").val() == "viewer") {
                                 $("#share-info").append(`
                         
-                        <div class="alert alert-primary" >
+                        <div class="alert alert-primary"  data-user-id="@${$("#share-uid-input").val()}" data-share="viewer" onclick="_data('share','update','@${$("#share-uid-input").val()}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
                                 <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>@${$("#share-uid-input").val()}&nbsp;&nbsp;[檢視者]
                         </div>
@@ -1472,7 +1468,7 @@
                             } else {
                                 $("#share-info").append(`
                         
-                        <div class="alert alert-danger" >
+                        <div class="alert alert-danger"  data-user-id="@${$("#share-uid-input").val()}" data-share="disabled" onclick="_data('share','update','@${$("#share-uid-input").val()}')">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16"><path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/><path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/></svg> 
                                 <span class="select-none">&nbsp;</span><span class="select-none">&nbsp;</span>@${$("#share-uid-input").val()}&nbsp;&nbsp;[禁止存取]
                         </div>
@@ -1481,7 +1477,9 @@
                         }
                     }
                     else if (par == "update") {
-
+                        $("#share-uid-input").val(data) 
+                        $("#share-type-select").val($(`[data-user-id=${data}]`).attr("data-share"))
+                        
 
                     }
                     else if (par == "submit") {
