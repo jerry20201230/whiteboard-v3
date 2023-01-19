@@ -153,12 +153,14 @@ app.post("/file/create", (req, res) => {
 
         if (err) throw err
 
-        res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
         connection.release();
       })
      
     })
+    res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
+
   }
+  
   res.end()
 })
 
