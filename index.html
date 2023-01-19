@@ -509,21 +509,21 @@
                     type="button" role="tab" aria-controls="v-pills-1" aria-selected="true">
                     <h4 class="m-0">
                         <i class="bi bi-file-earmark"></i>
-                        常用
+                        <span class="describe-nav-text">常用</span>
                     </h4>
                 </button>
                 <button class="nav-link" id="v-pills-3-tab" data-bs-toggle="pill" data-bs-target="#v-pills-3"
                     type="button" role="tab" aria-controls="v-pills-3" aria-selected="false">
                     <h4 class="m-0">
                         <i class="bi bi-person-circle"></i>
-                        帳號
+                        <span class="describe-nav-text">帳號</span>
                     </h4>
                 </button>
                 <button class="nav-link" id="v-pills-2-tab" data-bs-toggle="pill" data-bs-target="#v-pills-2"
                     type="button" role="tab" aria-controls="v-pills-2" aria-selected="false">
                     <h4 class="m-0">
                         <i class="bi bi-gear"></i>
-                        設定
+                        <span class="describe-nav-text">設定</span>
                     </h4>
                 </button>
 
@@ -1045,7 +1045,7 @@
                     clonedObj.set({
                         left: clonedObj.left + 10,
                         top: clonedObj.top + 10,
-                        name: 'object-' + canvas.counter,
+                       
                         evented: true,
                     });
                     if (clonedObj.type === 'activeSelection') {
@@ -1068,7 +1068,7 @@
 
                 var shape = new fabric.Ellipse({
 
-                    name: 'object-' + canvas.counter,
+                  
                     rx: 50, ry: 50,
                     width: 100,
                     height: 100,
@@ -1083,7 +1083,7 @@
 
                 var shape = new fabric.Rect({
 
-                    name: 'object-' + canvas.counter,
+                  
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
@@ -1096,7 +1096,7 @@
             }
             else if (obj == "triangle") {
                 var shape = new fabric.Triangle({
-                    name: 'object-' + canvas.counter,
+                  
                     width: 100,
                     height: 100,
                     fill: $("#color-picker-1").attr("data-current-color")
@@ -1113,7 +1113,7 @@
                     var shape = new fabric.IText("按兩下以編輯文字", {
                         left: 0,
                         top: 0,
-                        name: 'object-' + canvas.counter,
+                      
 
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
@@ -1125,7 +1125,7 @@
                     var shape = new fabric.IText(par, {
                         left: 0,
                         top: 0,
-                        name: 'object-' + canvas.counter,
+                      
                         fill: $("#color-picker-1").attr("data-current-color"),
                         fontWeight: document.getElementById("canvas-text-bold").checked ? "bold" : "normal",
                         underline: document.getElementById("canvas-text-underline").checked ? true : false,
@@ -1558,168 +1558,19 @@
             })
         }
 
-
-
-        fabric.StaticCanvas.prototype.getObjectByName = function (name) {
-            if (!name || typeof name === 'undefined') {
-                return [];
-            }
-            return this._objects.filter(function (o) {
-                return o.name === name;
-            });
-        }
-
-        /*
-                canvas.counter = 0;
-                var newleft = 0;
-                //canvas.selection = false;
-                var undoStack = [];
-                var redoStack = [];
-                addrect = function addrect(top, left, width, height, fill) {
-                    var rect = new fabric.Rect({
-                        top: document.getElementById("fabriccanvas").height,
-                        name: 'rectangle ' + canvas.counter,
-                        left: 0 + newleft,
-                        width: 100,
-                        height: 100,
-                        fill: '#' + (0x1000000 + (Math.random()) * 0xffffff).toString(16).substr(1, 6),
-                        //fix attributes applied for all rects
-                        opacity: 0.75,
-                        lockRotation: true,
-                        originX: 'left',
-                        originY: 'bottom',
-                        cornerSize: 15,
-                        hasRotatingPoint: false,
-                        perPixelTargetFind: true,
-                        minScaleLimit: 1
-                    })
-                    canvas.add(rect);
-                    undoStack.push({
-                        type: 'added',
-                        object: rect
-                    })
-                     ;
-                    newleft += 100;
-                    redoStack = [];
+        window.onresize = function(e){
+            if(window.innerWidth <= 500){
+                $(".describe-nav-text").remove()
+            }else{
+                if($("#v-pills-1-tab>h4>.describe-nav-text").length==0){
+                    $("#v-pills-1-tab>h4").append(` <span class="describe-nav-text">常用</span>`)
+                    $("#v-pills-3-tab>h4").append(` <span class="describe-nav-text">帳號</span>`)
+                    $("#v-pills-2-tab>h4").append(` <span class="describe-nav-text">設定</span>`)
                 }
-                var state = [];
-                var mods = 0;
-                var props = {};
-            canvas.on(
-                    'object:added', function (e) {
-                        var block = e.target;
-                        if (block) {
-                            props.oldStage = block
-                        }
-                    })
-                    .on(
-                        'object:modified', function (e) {
-                            var block = e.target;
-                            if (block) {
-                                props.newStage = block
-                                undoStack.push({
-                                    objectName: block.name,
-                                    type: 'modified',
-                                    oldStage: props.oldStage,
-                                    newStage: props.newStage
-                                });
-                                props = {};
-                            }
-                        });
-        
-        
-                undo = function undo() {
-                    if (undoStack.length) {
-                        console.log("[UNDO]")
-                        console.log([undoStack, redoStack])
-                        var undoData = undoStack.pop();
-                        if (undoData && undoData.type) {
-                            switch (undoData.type) {
-                                case 'added':
-                                    var objectByName = canvas.getObjectByName(undoData.object.name);
-                                    if (objectByName.length) {
-                                        canvas.remove(objectByName[0]);
-        
-                                    }
-                                    break;
-                                case 'modified':
-                                    var objectByName = canvas.getObjectByName(undoData.objectName);
-                                    if (objectByName.length) {
-                                        for (var key in undoData.oldStage) {
-                                            objectByName[0].set(key, undoData.oldStage[key]);
-                                        }
-                                    }
-                                    break;
-                            }
-                            canvas.renderAll();
-                        }
-                        redoStack.push(undoData);
-                        console.log([undoStack, redoStack])
-                    }
-                }
-        
-                redo = function redo() {
-                    if (redoStack.length) {
-                        console.log("[REDO]")
-                        console.log([undoStack, redoStack])
-                        var redoData = redoStack.pop();
-                        if (redoData && redoData.type) {
-                            switch (redoData.type) {
-                                case 'added':
-                                    if (redoData.object) {
-                                        canvas.add(redoData.object);
-        
-                                    }
-                                    break;
-                                case 'modified':
-                                    var objectByName = canvas.getObjectByName(redoData.objectName);
-                                    if (objectByName.length) {
-                                        for (var key in redoData.newStage) {
-                                            objectByName[0].set(key, redoData.newStage[key]);
-                                        }
-                                    }
-                                    break;
-                            }
-                            canvas.renderAll();
-                        }
-                        undoStack.push(redoData);
-                        console.log([undoStack, redoStack])
-                    }
-                }
-        */
-        /*// 初始化堆疊
-        var _undoStack = [];
-        var _redoStack = [];
-        
-        // 每次修改物件時，將其狀態存儲在堆疊中
-        canvas.on('object:modified', function(e) {
-            var object = e.target;
-            console.log(e.target)
-            _undoStack.push(object.toObject());
-            _redoStack = [];
-        });
-        
-        // 復原操作
-        function undo() {
-            if (_undoStack.length > 0) {
-                var object = _undoStack.pop();
-                _redoStack.push(object);
-                console.log(object)
-                canvas.remove(object);
-                canvas.renderAll();
             }
         }
-        
-        // 重做操作
-        function redo() {
-            if (_redoStack.length > 0) {
-                var object = _redoStack.pop();
-                _undoStack.push(object);
-                canvas.add(object);
-                canvas.renderAll();
-            }
-        }
-        */
+
+
         var lockHistory = false;
         const undo_history = [];
         const redo_history = [];

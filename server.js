@@ -145,7 +145,6 @@ app.post("/file/create", (req, res) => {
         })
       })
     }
-    res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
     sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
       connection.query(
@@ -154,11 +153,10 @@ app.post("/file/create", (req, res) => {
 
         if (err) throw err
 
+        res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
         connection.release();
       })
-      res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
-      res.end(); // end the response
-
+     
     })
   }
   res.end()
