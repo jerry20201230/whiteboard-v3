@@ -70,7 +70,33 @@
 </head>
 
 <body onload="window.setup()">
-   <div id="background"></div>
+
+    <div id="loading-layer" style="    
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100vw;
+    height: 100vh;
+    background-color:var(--bs-light);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;">
+
+        <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
+
+        <p></p>
+        <h3 id="loading-status">資料讀取中</h3>
+        <p></p>
+        <div id="loading-failed-text-container"></div>
+
+    </div>
+
+
+
+    <div id="background"></div>
     <div id="login-dialog" class="login-dialog">
         <h1>登入</h1>
         <p>登入以使用白板的所有功能<br>
@@ -150,8 +176,9 @@
 
     </div>
     <div style="position: fixed; bottom:0;width: 100%;padding: 2px;padding-left: 5px;">
-        <span class="text-light text-opacity-50"><span  id="bg-text">日出和雲海</span><br>背景圖片由
-        <a href="https://openai.com/dall-e-2/" target="_blank" class="badge text-bg-light text-opacity-50">DALL·E 2</a>生成</span>
+        <span class="text-light text-opacity-50"><span id="bg-text">日出和雲海</span><br>背景圖片由
+            <a href="https://openai.com/dall-e-2/" target="_blank" class="badge text-bg-light text-opacity-50">DALL·E
+                2</a>生成</span>
     </div>
 
 
@@ -241,7 +268,7 @@
 
         window.setup = function () {
             choose_img()
-         
+
             if ($.UrlParam("signuped") == "true") {
                 BS_Toast.show({
                     icon: 'bi-person-fill',
@@ -717,24 +744,26 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         function choose_img(params) {
-            var describe = ["日出","湖面","星空","星空","海岸","森林"]
-            var whiteText =  [false,false,true,true,false,false]
-            var index = getRandomInt(1,6)
-            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab()">`)
-            if(whiteText[index-1] === true){
-                $(".login-dialog").css("color","var(--bs-light)")
+            var describe = ["日出", "湖面", "星空", "星空", "海岸", "森林"]
+            var whiteText = [false, false, true, true, false, false]
+            var index = getRandomInt(1, 6)
+            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()">`)
+            if (whiteText[index - 1] === true) {
+                $(".login-dialog").css("color", "var(--bs-light)")
             }
-            $("#bg-text").text(describe[index-1])
+            $("#bg-text").text(describe[index - 1])
             resize_tab()
             resize_tab()
         }
 
 
 
-        $(window).resize(function () {
+        /*$(window).resize(function () {
             resize_tab();
-        }).resize();
-
+        }).resize();*/
+        window.onresize = function (e) {
+            resize_tab();
+        }
         function resize_tab() {
 
             var viewportWidth = $(window).innerWidth();
