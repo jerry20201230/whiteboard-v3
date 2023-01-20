@@ -744,9 +744,9 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         function choose_img(params) {
-            var describe = ["日出", "湖面", "星空", "星空", "海岸", "森林"]
-            var whiteText = [false, false, true, true, false, false]
-            var index = getRandomInt(1, 6)
+            var describe = ["日出", "湖面", "星空", "星空", "海岸", "森林","星系"]
+            var whiteText = [false, false, true, true, false, false,true]
+            var index = getRandomInt(1, 7)
             $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()">`)
             if (whiteText[index - 1] === true) {
                 $(".login-dialog").css("color", "var(--bs-light)")
@@ -763,6 +763,8 @@
         }).resize();*/
         window.onresize = function (e) {
             resize_tab();
+            resize_tab()
+            
         }
         function resize_tab() {
 
