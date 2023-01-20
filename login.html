@@ -70,8 +70,7 @@
 </head>
 
 <body onload="window.setup()">
-    <img src="/lib/background.png" id="bg-img" draggable="false" class="select-none">
-
+   <div id="background"></div>
     <div id="login-dialog" class="login-dialog">
         <h1>登入</h1>
         <p>登入以使用白板的所有功能<br>
@@ -100,7 +99,7 @@
             <span class="select-none">&nbsp;</span>
             <button class="btn btn-secondary toggle-btn">註冊</button>
             <span class="select-none">&nbsp;</span>
-            <button class="btn btn-link skip_login_btn">訪客登入</button>
+            <button class="btn btn-light skip_login_btn">訪客登入</button>
 
         </p>
     </div>
@@ -146,13 +145,13 @@
             <span class="select-none">&nbsp;</span>
             <button class="btn btn-secondary toggle-btn">登入</button>
             <span class="select-none">&nbsp;</span>
-            <button class="btn btn-link skip_login_btn">訪客登入</button>
+            <button class="btn btn-light skip_login_btn">訪客登入</button>
         </p>
 
     </div>
     <div style="position: fixed; bottom:0;width: 100%;padding: 2px;padding-left: 5px;">
-        <span class="text-light text-opacity-50">日出和雲海<br>背景圖片由<a href="https://openai.com/dall-e-2/" target="_blank"
-                class="">DALL·E 2</a>生成</span>
+        <span class="text-light text-opacity-50"><span  id="bg-text">日出和雲海</span><br>背景圖片由
+        <a href="https://openai.com/dall-e-2/" target="_blank" class="badge text-bg-light text-opacity-50">DALL·E 2</a>生成</span>
     </div>
 
 
@@ -241,7 +240,8 @@
 
 
         window.setup = function () {
-            resize_tab();
+            choose_img()
+         
             if ($.UrlParam("signuped") == "true") {
                 BS_Toast.show({
                     icon: 'bi-person-fill',
@@ -711,10 +711,24 @@
 
 
 
-        $(function () {
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        function choose_img(params) {
+            var describe = ["日出","湖面","星空","星空","海岸","森林"]
+            var whiteText =  [false,false,true,true,false,false]
+            var index = getRandomInt(1,6)
+            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab()">`)
+            if(whiteText[index-1] === true){
+                $(".login-dialog").css("color","var(--bs-light)")
+            }
+            $("#bg-text").text(describe[index-1])
 
-            resize_tab();
-        });
+        }
+
+
 
         $(window).resize(function () {
             resize_tab();
