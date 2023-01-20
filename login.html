@@ -753,11 +753,11 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-        var describe = ["日出", "湖岸", "星空", "星空", "山巒", "森林", "星系"]
+        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系","極光"]
         var currentImg;
         function choose_img(params) {
 
-            var whiteText = [false, true, true, true, false, false, true]
+            var whiteText = [false, true, true, true, false, false, true,false]
             if (!$.UrlParam("image")) {
                 var index = getRandomInt(1, 7)
                 $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
@@ -770,7 +770,7 @@
                 currentImg = index
             } else {
 
-                if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 8) {
+                if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 9) {
 
                     var index = Number($.UrlParam("image"))
                     $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
@@ -782,7 +782,7 @@
                     resize_tab()
                     currentImg = index
                 } else {
-                    var index = getRandomInt(1, 7)
+                    var index = getRandomInt(1, 8)
                     $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                     if (whiteText[index - 1] === true) {
                         $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
@@ -839,7 +839,8 @@
             PopupAlert({
                 title: "關於背景圖片",
                 body: `<h3>${describe[currentImg - 1]}</h3>
-                由<a href="https://openai.com/dall-e-2/" target="_blank">DALL·E 2</a>生成</span>`,
+                由<a href="https://openai.com/dall-e-2/" target="_blank">DALL·E 2</a>生成</span><br>
+                完整圖片<a href="https://whiteboard.up.railway.app/lib/background/background-${currentImg}.png" target="_blank">請點我</a>`,
                 escCallBack: "x",
                 enterCallBack: "dismiss"
             })
