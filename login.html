@@ -175,7 +175,9 @@
         </p>
 
     </div>
-    <div style="position: fixed; bottom:0;width: 100%;padding: 2px;padding-left: 5px;">
+    <div 
+    style="backdrop-filter: blur(10px);border-radius: 5px;
+    background: rgba(216, 216, 216, 0.1);position: fixed; bottom:0;width: fit-content;padding: 5px;padding-left: 5px; ">
         <span class="text-light text-opacity-50"><span id="bg-text">日出和雲海</span><br>圖片由
             <a href="https://openai.com/dall-e-2/" target="_blank" class="mb-1 badge text-bg-light text-opacity-25 bg-opacity-25" style="text-decoration: none;">DALL·E 2</a>
             生成</span>
@@ -751,10 +753,10 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
         function choose_img(params) {
-            var describe = ["日出", "湖面", "星空", "星空", "海岸", "森林", "星系"]
+            var describe = ["日出", "湖岸", "星空", "星空", "山巒", "森林", "星系"]
             var whiteText = [false, false, true, true, false, false, true]
             var index = getRandomInt(1, 7)
-            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()">`)
+            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
             if (whiteText[index - 1] === true) {
                 $(".login-dialog").css("color", "var(--bs-light)")
             }
@@ -800,6 +802,11 @@
                     'margin-top': 0 - height / 2
                 });
             }
+        }
+
+
+        window.onerror = function(){
+            $("#loading-status").attr("class", "text-danger").text("發生錯誤，請刷新頁面")
         }
     </script>
 
