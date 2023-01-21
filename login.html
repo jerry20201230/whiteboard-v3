@@ -817,7 +817,7 @@
             resize_tab()
             resize_tab()
             currentImg = index
-            imginfo()
+       
         }
 
         /*$(window).resize(function () {
@@ -859,10 +859,13 @@
         function imginfo(params) {
             PopupAlert({
                 title: "關於背景圖片",
-                body: `<h3>${describe[currentImg - 1]}</h3>
+                body: `
+                <h3>${describe[currentImg - 1]}</h3>
+                <h6>背景#${currentImg}</h6>
+                <hr>
                 由<a href="https://openai.com/dall-e-2/" target="_blank">DALL·E 2</a>生成</span><br>
-                完整圖片<a href="https://whiteboard.up.railway.app/lib/background/background-${currentImg}.png" target="_blank">請點我</a><br>
-                <button class="btn btn-sm btn-primary" data-bs-dismiss="modal" onclick="changeImg()">換一張背景圖片</button>`,
+                <a href="https://whiteboard.up.railway.app/lib/background/background-${currentImg}.png" target="_blank">查看完整圖片</a>
+                <!--<button class="btn btn-sm btn-primary" data-bs-dismiss="modal" onclick="changeImg()">換一張背景圖片</button>-->`,
                 escCallBack: "x",
                 enterCallBack: "dismiss"
             })
