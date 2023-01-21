@@ -1325,10 +1325,11 @@
                                 console.log(e.target.result)
                                 // $("#textarea").val(e.target.result);
                             }
-                           
+                           console.log(input.files[i]) 
+                           console.log(_reader.readAsDataURL(input.files[i]))
                         }
-                        console.log(input.files[i])
-                        console.log(_reader.readAsDataURL(input.files[i]))
+                        
+                       
                         $("#upload-file-name").text(input.files[i].name)
 
                     }
