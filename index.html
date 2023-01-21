@@ -1331,7 +1331,8 @@
                                 canvas.setHeight(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalHeight);
                                 canvas.setWidth(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalWidth);
                                 canvas.clear();
-                                undo_history = redo_history = []
+                                undo_history = []
+                                redo_history = [] 
                                 $(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).remove()
                                 fabric.Image.fromURL(e.target.result, (img) => {
                                     var oImg = img.set({
@@ -1618,9 +1619,9 @@
         }
 
 
-        var lockHistory = false;
-        const undo_history = [];
-        const redo_history = [];
+        var lockHistory = false,
+            undo_history = [],
+            redo_history = [];
 
         undo_history.push(JSON.stringify(canvas));
 
