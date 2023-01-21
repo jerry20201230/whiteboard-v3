@@ -753,13 +753,13 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系","極光"]
+        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系", "極光"]
         var currentImg;
         function choose_img(params) {
 
-            var whiteText = [false, true, true, true, false, false, true,false]
+            var whiteText = [false, true, true, true, false, false, true, false]
             if (!$.UrlParam("image")) {
-                var index = getRandomInt(1, 7)
+                var index = getRandomInt(1, 8)
                 $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                 if (whiteText[index - 1] === true) {
                     $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
@@ -797,7 +797,27 @@
 
         }
 
+        function changeImg(params) {
 
+            var whiteText = [false, true, true, true, false, false, true, false]
+            var index = currentImg++
+            if(currentImg+1>8){
+                var index = getRandomInt(1, 7)
+            }else{
+                var index = currentImg++
+            }
+            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+            if (whiteText[index - 1] === true) {
+                $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
+            }else{
+                $(".login-dialog").css("color", "#000").removeClass("text-opacity-75")
+            }
+            $("#bg-text").text(describe[index - 1])
+            resize_tab()
+            resize_tab()
+            currentImg = index
+            imginfo()
+        }
 
         /*$(window).resize(function () {
             resize_tab();
@@ -840,7 +860,8 @@
                 title: "關於背景圖片",
                 body: `<h3>${describe[currentImg - 1]}</h3>
                 由<a href="https://openai.com/dall-e-2/" target="_blank">DALL·E 2</a>生成</span><br>
-                完整圖片<a href="https://whiteboard.up.railway.app/lib/background/background-${currentImg}.png" target="_blank">請點我</a>`,
+                完整圖片<a href="https://whiteboard.up.railway.app/lib/background/background-${currentImg}.png" target="_blank">請點我</a><br>
+                <button class="btn btn-sm btn-primary" data-bs-dismiss="modal" onclick="changeImg()">換一張背景圖片</button>`,
                 escCallBack: "x",
                 enterCallBack: "dismiss"
             })
