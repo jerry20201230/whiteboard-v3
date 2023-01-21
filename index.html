@@ -1320,14 +1320,15 @@
                     var input = data
                     if (input.files && input.files.length >= 0) {
                         for (i = 0; i < input.files.length; i++) {
-                            var _reader = new FileReader();
-
-                            $("#upload-preview").val(e.target.result)
-                            console.log(e.target.result)
-
+                            var _reader = new FileReader()
+                            _reader.onload = function (e) {
+                                console.log(e.target.result)
+                                // $("#textarea").val(e.target.result);
+                            }
+                           
                         }
                         console.log(input.files[i])
-                        _reader.readAsDataURL(input.files[i]);
+                        console.log(_reader.readAsDataURL(input.files[i]))
                         $("#upload-file-name").text(input.files[i].name)
 
                     }
