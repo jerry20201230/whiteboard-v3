@@ -753,13 +753,14 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系", "極光"]
+        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系", "極光","湖泊","瀑布"] 
+        var whiteText = [false, true, true, true, false, false, true, false,false,false]
         var currentImg;
         function choose_img(params) {
 
-            var whiteText = [false, true, true, true, false, false, true, false]
+           
             if (!$.UrlParam("image")) {
-                var index = getRandomInt(1, 8)
+                var index = getRandomInt(1, 10)
                 $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                 if (whiteText[index - 1] === true) {
                     $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
@@ -770,7 +771,7 @@
                 currentImg = index
             } else {
 
-                if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 9) {
+                if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 11) {
 
                     var index = Number($.UrlParam("image"))
                     $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
@@ -782,7 +783,7 @@
                     resize_tab()
                     currentImg = index
                 } else {
-                    var index = getRandomInt(1, 8)
+                    var index = getRandomInt(1, 10)
                     $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                     if (whiteText[index - 1] === true) {
                         $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
@@ -799,14 +800,14 @@
 
         function changeImg(params) {
 
-            var whiteText = [false, true, true, true, false, false, true, false]
+     
             var index = currentImg++
-            if(currentImg+1>8){
-                var index = getRandomInt(1, 7)
+            if(currentImg+1>11){
+                var index = getRandomInt(1, 10)
             }else{
                 var index = currentImg++
             }
-            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" style="display:none" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$(this).show()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
             if (whiteText[index - 1] === true) {
                 $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
             }else{
