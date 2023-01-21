@@ -1326,10 +1326,11 @@
                             var _reader = new FileReader()
                             _reader.onload = function (e) {
                                 console.log(e.target.result)
-                                $("#image-catch").attr("data-count",Number($("#image-catch").attr("data-count")) + 1)
+                                $("#image-catch").attr("data-count", Number($("#image-catch").attr("data-count")) + 1)
                                 $("#image-catch").append(`<img src="${e.target.result}" id="catched-image-${Number($("#image-catch").attr("data-count"))}" />`)
-                                canvas.width = document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalWidth
-                                canvas.height = document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalHeight
+                                canvas.setHeight(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalHeight);
+                                canvas.setWidth(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalWidth);
+
                                 $(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).remove()
                                 fabric.Image.fromURL(e.target.result, (img) => {
                                     var oImg = img.set({
