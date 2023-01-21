@@ -641,6 +641,7 @@
         </div>
     </div>
 
+    <div hidden id="image-catch" data-count="0"></div>
     <div id="toast" class="position-fixed bottom-0 end-0 p-3 toast-container"></div>
     <script src="/socket.io/socket.io.js"></script>
 
@@ -1325,12 +1326,23 @@
                             var _reader = new FileReader()
                             _reader.onload = function (e) {
                                 console.log(e.target.result)
-                              
+                                $("#image-catch").attr("data-count",Number($("#image-catch").attr("data-count")) + 1)
+                                $("#image-catch").append(`<img src="${e.target.result}" id="catched-image-${Number($("#image-catch").attr("data-count"))}" />`)
+                                canvas.width = document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalWidth
+                                canvas.height = document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalHeight
+                                $(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).remove()
+                                fabric.Image.fromURL(e.target.result, (img) => {
+                                    var oImg = img.set({
+                                        left: 0,
+                                        top: 0
+                                    })
+                                    canvas.add(oImg) // 加進 canvas
+                                })
                             }
-                           console.log(input.files[i]) 
-                           $("#upload-file-name").text(input.files[i].name)
-                           _reader.readAsDataURL(input.files[i])
-                         
+                            console.log(input.files[i])
+                            $("#upload-file-name").text(input.files[i].name)
+                            _reader.readAsDataURL(input.files[i])
+
                         }
                     }
                 }

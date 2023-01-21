@@ -114,13 +114,13 @@ app.post("/file/check", (req, res) => {
   })
 })
 
-app.post("/file/get/example",(req,res)=>{
+app.post("/file/get/example", (req, res) => {
   sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
     connection.query('SELECT * FROM drawData WHERE data_type = ?', "example", function (err, results, fields) {
 
       if (err) throw err
-      res.send({code:"success",par:{data:results}})
+      res.send({ code: "success", par: { data: results } })
       connection.release();
     })
   })
@@ -166,12 +166,12 @@ app.post("/file/create", (req, res) => {
 
         connection.release();
       })
-     
+
     })
     res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
 
   }
-  
+
   res.end()
 })
 
@@ -353,13 +353,10 @@ function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 function IfStrIsBlank(str) {
-  let _arr = str.split(" "),
-    _s;
+  let _arr = str.split(" ")
   for (i = 0; i < _arr.length; i++) {
 
     if (_arr[i] !== " " && _arr[i] !== "") {
-
-
       return false
     }
   }
