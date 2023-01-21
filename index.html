@@ -1292,7 +1292,7 @@
                 if (!par) {
                     PopupAlert({
                         title: "上傳專案",
-                        body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>上傳檔案<br><input type="file" id="upload-file-input" style="display:none" onchange="_data('upload','change',this)"><label for="upload-file-input" class="btn btn-primary">選擇檔案</label>&nbsp;<span id="upload-file-name"></span><div id="upload-file-preview"></div><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>`,
+                        body: `<div class="alert alert-warning">注意:若未儲存目前專案，變更將會<span class="text-danger">遺失</span></div>上傳檔案<br><input type="file" accept="image/*" id="upload-file-input" style="display:none" onchange="_data('upload','change',this)"><label for="upload-file-input" class="btn btn-primary">選擇檔案</label>&nbsp;<span id="upload-file-name"></span><div id="upload-file-preview"></div><br> <div class="accordion" id="create-accordion"><div class="accordion-item"><h2 class="accordion-header" id="headingOne"><button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#create-collapse" aria-expanded="true" aria-controls="create-collapse">進階選項</button></h2><div id="create-collapse" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#create-accordion"><div class="accordion-body">選擇檔案存儲位置:<br><div class="form-check form-check-inline"><input class="form-check-input" checked type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"><label class="form-check-label" for="inlineRadio1">本機</label></div><div class="form-check form-check-inline"><input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"><label class="form-check-label" for="inlineRadio2">雲端</label></div></div></div></div></div>`,
                         escCallBack: "dismiss",
                         enterCallBack: `_data('upload','callback',document.querySelector('#upload-file-input'))`
                     })
@@ -1306,7 +1306,7 @@
 
                             reader.onload = function (e) {
                                 console.log(e.target.result)
-                                $("#upload-file-preview").html(`<img src="${e.target.result}" />`)
+                                $("#upload-file-preview").html(`<img src="${e.target.result}" width=200 />`)
 
                             }
                             $("#upload-file-name").text(input.files[i].name)
@@ -1324,8 +1324,7 @@
                             var _reader = new FileReader()
                             _reader.onload = function (e) {
                                 console.log(e.target.result)
-                                $("#upload-file-preview").html(`<img src="${e.target.result}" />`)
-                                // $("#textarea").val(e.target.result);
+                              
                             }
                            console.log(input.files[i]) 
                            $("#upload-file-name").text(input.files[i].name)
