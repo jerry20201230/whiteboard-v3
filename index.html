@@ -1311,6 +1311,7 @@
                             }
                             $("#upload-file-name").text(input.files[i].name)
                             console.log(input.files[i].name);
+                            reader.readAsDataURL(input.files[i])
 
                         }
                     } else {
