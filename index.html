@@ -1330,7 +1330,8 @@
                                 $("#image-catch").append(`<img src="${e.target.result}" id="catched-image-${Number($("#image-catch").attr("data-count"))}" />`)
                                 canvas.setHeight(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalHeight);
                                 canvas.setWidth(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalWidth);
-
+                                canvas.clear();
+                                undo_history = redo_history = []
                                 $(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).remove()
                                 fabric.Image.fromURL(e.target.result, (img) => {
                                     var oImg = img.set({
