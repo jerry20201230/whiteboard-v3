@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>畫板 - 即時線上協作</title>
     <link id="browser-icon" rel="shortcut icon" type="image/png" href="/lib/icon-active.png" />
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.2/css/bootstrap.css'
         integrity='sha512-+QrNe4Kul4TNKwDK+EJM71C9z5I9I/iYLEIJPYTfmXouMSU8tkayWYnOsAKjDAaOOH21+MS747IPTYcD+2euuQ=='
         crossorigin='anonymous' />
@@ -132,10 +132,13 @@
     justify-content: center;
     text-align: center;">
 
-        <img src="/lib/icon-active.png" style="max-width: 3em;" alt="白板-logo">
+        <div style="user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"
+            class="animate__animated animate__fadeInUp">
+            <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">白</span>
+        </div>
 
         <p></p>
-        <h3 id="loading-status">資料讀取中</h3>
+        <h3 id="loading-status" class="animate__animated animate__fadeInUp">資料讀取中</h3>
         <p></p>
         <div id="loading-failed-text-container"></div>
 
@@ -1332,7 +1335,7 @@
                                 canvas.setWidth(document.querySelector(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).naturalWidth);
                                 canvas.clear();
                                 undo_history = []
-                                redo_history = [] 
+                                redo_history = []
                                 $(`#catched-image-${Number($("#image-catch").attr("data-count"))}`).remove()
                                 fabric.Image.fromURL(e.target.result, (img) => {
                                     var oImg = img.set({
