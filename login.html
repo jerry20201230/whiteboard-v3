@@ -66,6 +66,22 @@
             left: 50%;
             z-index: -99;
         }
+        .progress-bar.indeterminate {
+            position: relative;
+            animation: progress-indeterminate 3s linear infinite;
+        }
+
+        @keyframes progress-indeterminate {
+            from {
+                left: -25%;
+                width: 25%;
+            }
+
+            to {
+                left: 100%;
+                width: 45%;
+            }
+        }
     </style>
 
 </head>
@@ -93,6 +109,11 @@
         <p></p>
         <h3 id="loading-status">資料讀取中</h3>
         <p></p>
+        <div class="progress animate__animated animate__fadeInUp" style="max-width: 250px; position: relative;width: 25%;height: 1%;">
+            <div class="progress-bar progress-bar-striped indeterminate">
+            </div>
+
+        </div>
         <div id="loading-failed-text-container"></div>
 
     </div>
