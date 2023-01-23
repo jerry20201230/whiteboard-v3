@@ -113,6 +113,23 @@
         #app {
             margin: 8px
         }
+
+        .progress-bar.indeterminate {
+            position: relative;
+            animation: progress-indeterminate 3s linear infinite;
+        }
+
+        @keyframes progress-indeterminate {
+            from {
+                left: -25%;
+                width: 25%;
+            }
+
+            to {
+                left: 100%;
+                width: 45%;
+            }
+        }
     </style>
 </head>
 
@@ -132,14 +149,19 @@
     justify-content: center;
     text-align: center;">
 
-        <div style="user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"
+        <div style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"
             class="animate__animated animate__fadeInUp">
             <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">白</span>
         </div>
 
         <p></p>
         <h3 id="loading-status" class="animate__animated animate__fadeInUp">資料讀取中</h3>
-        <p></p>
+        
+            <div class="progress animate__animated animate__fadeInUp" style="max-width: 250px; position: relative;width: 25%;height: 1%;">
+                <div class="progress-bar progress-bar-striped indeterminate">
+                </div>
+            </div>
+      
         <div id="loading-failed-text-container"></div>
 
     </div>

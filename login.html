@@ -86,7 +86,7 @@
     justify-content: center;
     text-align: center;">
 
-<div style="user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"  class="animate__animated animate__fadeInUp">
+<div style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"  class="animate__animated animate__fadeInUp">
     <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">白</span>
   </div>
 
@@ -771,6 +771,9 @@
                 $("#bg-text").text(describe[index - 1])
                 resize_tab()
                 resize_tab()
+                if(window.innerWidth<720){
+                    resize_tab()
+                }
                 currentImg = index
             } else {
 
@@ -784,6 +787,9 @@
                     $("#bg-text").text(describe[index - 1])
                     resize_tab()
                     resize_tab()
+                    if(window.innerWidth<720){
+                    resize_tab()
+                }
                     currentImg = index
                 } else {
                     var index = getRandomInt(1, 10)
@@ -794,6 +800,9 @@
                     $("#bg-text").text(describe[index - 1])
                     resize_tab()
                     resize_tab()
+                    if(window.innerWidth<720){
+                    resize_tab()
+                }
                     currentImg = index
                 }
             }
@@ -819,6 +828,9 @@
             $("#bg-text").text(describe[index - 1])
             resize_tab()
             resize_tab()
+            if(window.innerWidth<720){
+                    resize_tab()
+                }
             currentImg = index
        
         }
