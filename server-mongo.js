@@ -5,22 +5,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const port = process.env.PORT || 3000;
-const mysql = require('mysql2');
 const session = require('express-session');
 const path = require("path")
-
-var sql_Connect = mysql.createPool({
-  host: process.env.MYSQLHOST,
-  user: process.env.MYSQLUSER,
-  password: process.env.MYSQLPASSWORD,
-  port: process.env.MYSQLPORT,
-  database: process.env.MYSQLDATABASE,
-
-  // 無可用連線時是否等待pool連線釋放(預設為true)
-  waitForConnections: true,
-  // 連線池可建立的總連線數上限(預設最多為10個連線數)
-  connectionLimit: 15
-});
+const MongoClient = require('mongodb').MongoClient;
+var url = process.env.MONGODB_URI;
 
 
 app.use(session({
@@ -115,15 +103,17 @@ app.post("/file/check", (req, res) => {
 })
 
 app.post("/file/get/example", (req, res) => {
-  sql_Connect.getConnection(function (err, connection) {
-    if (err) throw err
-    connection.query('SELECT * FROM drawData WHERE data_type = ?', "example", function (err, results, fields) {
 
-      if (err) throw err
-      res.send({ code: "success", par: { data: results } })
-      connection.release();
-    })
-  })
+  MongoClient.connect(url, function (err, db) {
+
+    if (err) throw err;
+    //Write databse Insert/Update/Query code here..
+
+    db.collection('DrawData', function (err, collection) {
+
+    });
+    db.close(); //關閉連線
+  });
 })
 
 app.post("/file/save", (req, res) => {
@@ -145,7 +135,7 @@ app.post("/file/create", (req, res) => {
     var num = getRandomInt(100000, 999999),
       result = 1;
     while (result == 0) {
-      sql_Connect.getConnection(function (err, connection) {
+      /*sql_Connect.getConnection(function (err, connection) {
         if (err) throw err
         connection.query('SELECT * FROM drawData WHERE fileID = ?', num, function (err, results, fields) {
 
@@ -154,9 +144,9 @@ app.post("/file/create", (req, res) => {
           else { num = getRandomInt(100000, 999999) }
           connection.release();
         })
-      })
+      })*/
     }
-    sql_Connect.getConnection(function (err, connection) {
+    /*sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
       connection.query(
         `INSERT INTO drawData(owner_nickname,owner_id,data,data_type,fileID,share_with,filename,summary)
@@ -167,7 +157,7 @@ app.post("/file/create", (req, res) => {
         connection.release();
       })
 
-    })
+    })*/
     res.send(JSON.stringify({ "code": "success", "par": { "id": num } }))
 
   }
@@ -193,16 +183,16 @@ app.post("/account/signup"), (req, res) => {
     res.end(); // end the response
     return;
   }
-  sql_Connect.getConnection(function (err, connection) {
-    if (err) throw err
+    /*sql_Connect.getConnection(function (err, connection) {
+  if (err) throw err
     connection.query('SELECT * FROM userData WHERE user_id = ?', '@' + req.body.uid, function (err, results, fields) {
 
       if (err) throw err
       if (results.length !== 0) { res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; }
       connection.release();
     })
-  })
-  sql_Connect.getConnection(function (err, connection) {
+  })*/
+  /*sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
     connection.query(
       `INSERT INTO userData(user_id,user_nickname,user_password)
@@ -215,7 +205,17 @@ app.post("/account/signup"), (req, res) => {
     res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
     res.end(); // end the response
 
-  })
+  })*/
+  MongoClient.connect(url, function (err, db) {
+
+    if (err) throw err;
+    //Write databse Insert/Update/Query code here..
+
+    db.collection('DrawData', function (err, collection) {
+
+    });
+    db.close(); //關閉連線
+  });
 }
 app.post('/account/login', function (request, response) {
   // Capture the input fields
@@ -231,7 +231,7 @@ app.post('/account/login', function (request, response) {
 
   // Ensure the input fields exists and are not empty
   if (username && password) {
-    sql_Connect.getConnection(function (err, connection) {
+    /*sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
       connection.query('SELECT * FROM userData WHERE user_id = ? AND user_password = ?', [username, password], function (error, results, fields) {
         // If there is an issue with the query, output the error
@@ -253,7 +253,7 @@ app.post('/account/login', function (request, response) {
         response.end();
         connection.release();
       })
-    })
+    })*/
   } else {
     response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
     response.end();
@@ -263,7 +263,7 @@ app.post("/account/signup/getid", (req, res) => {
   var num = getRandomInt(100000, 999999),
     result = 1;
   while (result == 0) {
-    sql_Connect.getConnection(function (err, connection) {
+    /*sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
       connection.query('SELECT * FROM userData WHERE user_id = ?', "@user-" + num, function (err, results, fields) {
 
@@ -272,12 +272,12 @@ app.post("/account/signup/getid", (req, res) => {
         else { num = getRandomInt(100000, 999999) }
         connection.release();
       })
-    })
+    })*/
   }
   res.send(JSON.stringify({ "code": "success", "par": { "uid": "user-" + num } }))
 })
 app.post("/account/signup/checkid", (req, res) => {
-  sql_Connect.getConnection(function (err, connection) {
+  /*sql_Connect.getConnection(function (err, connection) {
     if (err) throw err
     connection.query('SELECT * FROM userData WHERE user_id = ?', req.body.uid, function (err, results, fields) {
 
@@ -287,7 +287,7 @@ app.post("/account/signup/checkid", (req, res) => {
 
     })
     connection.release();
-  })
+  })*/
 
 })
 app.post("/share/getcode", (req, res) => {
@@ -317,7 +317,7 @@ app.post("*", (req, res) => {
       res.end(); // end the response
       return;
     }
-    sql_Connect.getConnection(function (err, connection) {
+    /*sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
       connection.query('SELECT * FROM userData WHERE user_id = ?', '@' + req.body.uid, function (err, results, fields) {
 
@@ -325,8 +325,30 @@ app.post("*", (req, res) => {
         if (results.length !== 0) { res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; }
         connection.release();
       })
-    })
-    sql_Connect.getConnection(function (err, connection) {
+    })*/
+
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+      if (err) throw err;
+      console.log("Connected successfully to server");
+      var db = client.db("Data");
+      var collection = db.collection('UserData');
+
+      var result_arr = []
+      collection.find({user_id:"@"+req.body.uid}).forEach(function(item){
+        result_arr.push(item)
+      })
+      console.log(result_arr)
+      if(result_arr.length !== 0){
+        //註冊失敗 + callback
+        res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; 
+      }
+    });
+
+
+
+
+
+    /*sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
       connection.query(
         `INSERT INTO userData(user_id,user_nickname,user_password)
@@ -339,7 +361,7 @@ app.post("*", (req, res) => {
       res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
       res.end(); // end the response
 
-    })
+    })*/
   }
 })
 
@@ -372,7 +394,7 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
 
- 
+
   /* socket.on("CanvasUpdate", (e) => {
 
      socket.broadcast.emit("CanvasUpdate", e)

@@ -102,7 +102,7 @@
     justify-content: center;
     text-align: center;">
 
-<div style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"  class="animate__animated animate__fadeInUp">
+<div id="loading-logo" style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"  class="animate__animated animate__fadeInUp">
     <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">白</span>
   </div>
 
@@ -245,9 +245,17 @@
         crossorigin='anonymous'></script>
 
     <script>
-        var status = "login";
+        var status = "login",
+            loading_finish = [false,false];
 
+            document.querySelector("#loading-logo").addEventListener("animationend",loadingChange(0))
 
+        function loadingChange(n) {
+            loading_finish[n] = true;
+            if(loadingChange[1] === loadingChange[0] === true){
+                $("#loading-layer").remove()
+            }
+        }
         //{title,body,escCallBack,enterCallBack}
         function PopupAlert(par) {
             console.log(par)
@@ -785,7 +793,7 @@
            
             if (!$.UrlParam("image")) {
                 var index = getRandomInt(1, 10)
-                $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();loadingChange(1)" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                 if (whiteText[index - 1] === true) {
                     $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
                 }
@@ -801,7 +809,7 @@
                 if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 11) {
 
                     var index = Number($.UrlParam("image"))
-                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();loadingChange(1)" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                     if (whiteText[index - 1] === true) {
                         $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
                     }
@@ -814,7 +822,7 @@
                     currentImg = index
                 } else {
                     var index = getRandomInt(1, 10)
-                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$('#loading-layer').remove()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();loadingChange(1)" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                     if (whiteText[index - 1] === true) {
                         $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
                     }
