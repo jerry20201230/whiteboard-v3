@@ -66,6 +66,7 @@
             left: 50%;
             z-index: -99;
         }
+
         .progress-bar.indeterminate {
             position: relative;
             animation: progress-indeterminate 3s linear infinite;
@@ -102,14 +103,17 @@
     justify-content: center;
     text-align: center;">
 
-<div id="loading-logo" style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"  class="animate__animated animate__fadeInUp">
-    <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">白</span>
-  </div>
+        <div id="loading-logo"
+            style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"
+            class="animate__animated animate__fadeInUp">
+            <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">白</span>
+        </div>
 
         <p></p>
         <h3 id="loading-status">資料讀取中</h3>
         <p></p>
-        <div class="progress animate__animated animate__fadeInUp" style="max-width: 250px; position: relative;width: 25%;height: 1%;">
+        <div class="progress animate__animated animate__fadeInUp"
+            style="max-width: 250px; position: relative;width: 25%;height: 1%;">
             <div class="progress-bar progress-bar-striped indeterminate">
             </div>
 
@@ -245,16 +249,9 @@
         crossorigin='anonymous'></script>
 
     <script>
-        var status = "login",
-            loading_finish = [false,false];
-
-            document.querySelector("#loading-logo").addEventListener("animationend",loadingChange(0))
-
-        function loadingChange(n) {
-            loading_finish[n] = true;
-            if(loadingChange[1] === loadingChange[0] === true){
-                $("#loading-layer").remove()
-            }
+        var status = "login";
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
         }
         //{title,body,escCallBack,enterCallBack}
         function PopupAlert(par) {
@@ -785,53 +782,55 @@
             max = Math.floor(max);
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
-        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系", "極光","湖泊","瀑布"] 
-        var whiteText = [false, true, true, true, false, false, true, false,false,false]
+        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系", "極光", "湖泊", "瀑布"]
+        var whiteText = [false, true, true, true, false, false, true, false, false, false]
         var currentImg;
         function choose_img(params) {
 
-           
+
             if (!$.UrlParam("image")) {
                 var index = getRandomInt(1, 10)
-                $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();loadingChange(1)" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();delay(1000).then(() => $('#loading-layer').remove());
+                    " onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                
                 if (whiteText[index - 1] === true) {
                     $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
                 }
                 $("#bg-text").text(describe[index - 1])
                 resize_tab()
                 resize_tab()
-                if(window.innerWidth<720){
+                if (window.innerWidth < 720) {
                     resize_tab()
                 }
                 currentImg = index
             } else {
-
+                               
                 if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 11) {
 
                     var index = Number($.UrlParam("image"))
-                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();loadingChange(1)" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab(); delay(1000).then(() => $('#loading-layer').remove())" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                     if (whiteText[index - 1] === true) {
                         $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
                     }
                     $("#bg-text").text(describe[index - 1])
                     resize_tab()
                     resize_tab()
-                    if(window.innerWidth<720){
-                    resize_tab()
-                }
+                    if (window.innerWidth < 720) {
+                        resize_tab()
+                    }
                     currentImg = index
                 } else {
                     var index = getRandomInt(1, 10)
-                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();loadingChange(1)" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab(); delay(1000).then(() => $('#loading-layer').remove())" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
                     if (whiteText[index - 1] === true) {
                         $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
                     }
                     $("#bg-text").text(describe[index - 1])
                     resize_tab()
                     resize_tab()
-                    if(window.innerWidth<720){
-                    resize_tab()
-                }
+                    if (window.innerWidth < 720) {
+                        resize_tab()
+                    }
                     currentImg = index
                 }
             }
@@ -841,27 +840,27 @@
 
         function changeImg(params) {
 
-     
+
             var index = currentImg++
-            if(currentImg+1>11){
+            if (currentImg + 1 > 11) {
                 var index = getRandomInt(1, 10)
-            }else{
+            } else {
                 var index = currentImg++
             }
             $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" style="display:none" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$(this).show()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
             if (whiteText[index - 1] === true) {
                 $(".login-dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
-            }else{
+            } else {
                 $(".login-dialog").css("color", "#000").removeClass("text-opacity-75")
             }
             $("#bg-text").text(describe[index - 1])
             resize_tab()
             resize_tab()
-            if(window.innerWidth<720){
-                    resize_tab()
-                }
+            if (window.innerWidth < 720) {
+                resize_tab()
+            }
             currentImg = index
-       
+
         }
 
         /*$(window).resize(function () {
@@ -917,6 +916,7 @@
 
 
         window.onerror = function () {
+            $(".progress").remove()
             $("#loading-status").attr("class", "text-danger").text("發生錯誤，請刷新頁面")
         }
     </script>
