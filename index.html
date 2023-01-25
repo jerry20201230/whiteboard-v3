@@ -114,22 +114,28 @@
             margin: 8px
         }
 
-        .progress-bar.indeterminate {
+        .progress-bar.indeterminate.indeterminate-1 {
             position: relative;
-            animation: progress-indeterminate 3s linear infinite;
+            border-radius: var(--bs-progress-border-radius);
+            animation: progress-indeterminate-1 3s linear infinite;
         }
 
-        @keyframes progress-indeterminate {
+        @keyframes progress-indeterminate-1 {
             from {
-                left: -25%;
+                left: -20%;
                 width: 25%;
             }
-
+            to {
+                left: 50%;
+                width: 35%;
+            }
             to {
                 left: 100%;
-                width: 45%;
+                width: 60%;
             }
         }
+
+
     </style>
 </head>
 
@@ -156,13 +162,12 @@
 
         <p></p>
         <h3 id="loading-status" class="animate__animated animate__fadeInUp">資料讀取中</h3>
-        
-            <div class="progress animate__animated animate__fadeInUp" style="max-width: 250px; position: relative;width: 25%;height: 1%;">
-                <div class="progress-bar progress-bar-striped indeterminate">
-                </div>
+        <div class="progress"
+            style="max-width: 250px; position: relative;width: 25%;height: 1%;">
+            <div class="progress-bar progress-bar-striped indeterminate indeterminate-1"></div>
+           
+        </div>
 
-            </div>
-      
         <div id="loading-failed-text-container"></div>
 
     </div>

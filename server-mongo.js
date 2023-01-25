@@ -335,7 +335,7 @@ app.post("/share/getcode", (req, res) => {
 
 
 app.get('*', (req, res) => {
-  res.status(404).sendFile(__dirname + '/lib/404.html')
+  res.status(404).sendFile(__dirname + '/404.html')
 })
 app.post("*", (req, res) => {
   console.log("post")
