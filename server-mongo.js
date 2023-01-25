@@ -254,6 +254,28 @@ app.post('/account/login', function (request, response) {
         connection.release();
       })
     })*/
+
+
+
+
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+      if (err) throw err;
+      console.log("Connected successfully to server");
+      var db = client.db("Data");
+      var collection = db.collection('UserData');
+
+      var result_arr = []
+      collection.find({user_id:"@"+req.body.uid}).forEach(function(item){
+        result_arr.push(item)
+      })
+      console.log(result_arr)
+      if(result_arr.length !== 0){
+        
+        res.send(JSON.stringify({ "code": "failed", "par": { "uid_used": true, "text": "這個ID已經被註冊過，請使用其他ID" } })); res.end(); return; 
+      }
+    });
+
+
   } else {
     response.send(JSON.stringify({ 'code': 'failed', 'par': { 'text': '帳號或密碼輸入錯誤，或是尚未註冊成功。' } }));
     response.end();
@@ -273,6 +295,23 @@ app.post("/account/signup/getid", (req, res) => {
         connection.release();
       })
     })*/
+    MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+      if (err) throw err;
+      console.log("Connected to mongoDB server");
+      var db = client.db("Data");
+      var collection = db.collection('UserData');
+
+      var result_arr = []
+      collection.find({user_id:"@"+req.body.uid}).forEach(function(item){
+        result_arr.push(item)
+      })
+      console.log(result_arr)
+
+      if (result_arr.length == 0) { result = 0 }
+      else { num = getRandomInt(100000, 999999) }
+    });
+
+
   }
   res.send(JSON.stringify({ "code": "success", "par": { "uid": "user-" + num } }))
 })
@@ -344,9 +383,22 @@ app.post("*", (req, res) => {
       }
     });
 
+  MongoClient.connect(url, { useNewUrlParser: true }, (err, client) => {
+      if (err) throw err;
+      console.log("Connected successfully to server");
+      var db = client.db("Data");
+      var collection = db.collection('UserData');
 
+      var data = {"user_id":"@" + req.body.uid,"user_nickname":req.body.nickname,"user_password":req.body.pass}
+      collection.insertOne(data, (err, res) => {
+        if (err) throw err;
+        console.log("new user data : @"+req.body.uid+ "inserted to database");
+        client.close();
+      });
+    });
 
-
+    res.send(JSON.stringify({ "code": "success", "par": { "uid_used": false, "text": `註冊成功，請記住你的ID(${req.body.uid})和密碼` } }))
+    res.end(); // end the response
 
     /*sql_Connect.getConnection(function (err, connection) {
       if (err) throw err
