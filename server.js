@@ -29,14 +29,14 @@ app.use(session({
   saveUninitialized: true
 }));
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+//app.use(express.urlencoded({ extended: true }));
 /*
 
-app.use(express.static('public'))
+
 */
 app.use('/lib', express.static(__dirname + '/lib'));
 
-app.use(express.static(path.join(__dirname, 'static')));
+app.use("/",express.static(path.join(__dirname, 'static')));
 
 app.get('/', (req, res) => {
 
@@ -76,14 +76,22 @@ app.get("/file", (req, res) => {
 })
 
 app.get(/js|css|html|/, (req, res) => {
-  res.sendFile(__dirname + __filename)
+  res.sendFile(__dirname + req.path)
 })
 app.get(/icon|.png/, (req, res) => {
-  res.sendFile(__dirname + __filename)
+  res.sendFile(__dirname + req.path)
 })
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
 })
+
+app.get('*', (req, res) => {
+ 
+  console.log(404)
+  res.status(404).sendFile(__dirname+"/404.html")
+})
+
+
 app.post("/file/check", (req, res) => {
   var uid = req.session.loggedin ? req.session.username : "@all_know_link_user";
   sql_Connect.getConnection(function (err, connection) {
@@ -295,9 +303,7 @@ app.post("/share/getcode", (req, res) => {
 })
 
 
-app.get('*', (req, res) => {
-  res.status(404).sendFile(__dirname + '/lib/404.html')
-})
+
 app.post("*", (req, res) => {
   console.log("post")
   if (req.body.action == "signup") {

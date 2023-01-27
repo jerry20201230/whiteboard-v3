@@ -24,7 +24,7 @@ app.use(express.static('public'))
 */
 app.use('/lib', express.static(__dirname + '/lib'));
 
-app.use(express.static(path.join(__dirname, 'static')));
+//app.use(express.static(path.join(__dirname, 'static')));
 
 app.get('/', (req, res) => {
 
@@ -64,10 +64,10 @@ app.get("/file", (req, res) => {
 })
 
 app.get(/js|css|html|/, (req, res) => {
-  res.sendFile(__dirname + __filename)
+  res.sendFile(__dirname + req.path)
 })
 app.get(/icon|.png/, (req, res) => {
-  res.sendFile(__dirname + __filename)
+  res.sendFile(__dirname + req.path)
 })
 app.get('/lib/health', (req, res) => {
   res.sendStatus(200)
