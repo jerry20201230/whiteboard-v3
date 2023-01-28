@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>會議 - 即時線上討論</title>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/css/bootstrap.min.css'
+        integrity='sha512-SbiR/eusphKoMVVXysTKG/7VseWii+Y3FdHrt0EpKgpToZeemhqHeZeLWLhJutz/2ut2Vw1uQEj2MbRF+TVBUA=='
+        crossorigin='anonymous' />
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.9.1/font/bootstrap-icons.css'
+        integrity='sha512-CaTMQoJ49k4vw9XO0VpTBpmMz8XpCWP5JhGmBvuBqCOaOHWENWO1CrVl09u4yp8yBVSID6smD4+gpzDJVQOPwQ=='
+        crossorigin='anonymous' />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+
+    <style>
+        #bg-img {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            z-index: -99;
+        }
+
+        #app {
+            margin: 8px
+        }
+
+        .dialog {
+            backdrop-filter: blur(10px);
+            background: rgba(216, 216, 216, 0.355);
+            border-radius: 5px;
+            box-shadow: 0px 0px 20px 5px rgb(216 216 216 / 50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            padding: 15px;
+            width: fit-content;
+
+            transform: translate(-50%, -50%);
+
+        }
+    </style>
+</head>
+
+<body onload="window.setup()">
+    <div id="app">
+        <div id="background"></div>
+        <noscript>
+            <div class="alert alert-danger" role="alert">
+                本程式需要JavaScript才能正確執行，請先開啟JavaScript!
+            </div>
+            <style>
+                nav,
+                button,
+                input,
+                canvas,
+                span,
+                #ui-bottom,
+                .tab-content {
+                    display: none;
+                }
+            </style>
+        </noscript>
+
+        <div class="dialog">
+            <h1>會議</h1>
+            <h4>選擇加入會議，或發起新會議</h4>
+            <div class="d-flex">
+                <div>
+                    <div class="d-flex">
+                        <input type="text" placeholder="輸入會議代碼或連結" id="" style="width: fit-content;"
+                            class="form-control me-1">
+
+                        <button class="btn btn-primary me-1">加入</button>
+                        <button class="btn btn-light">發起新會議</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div onclick="imginfo()" style="
+    box-shadow: 0px 0px 20px 5px rgba(255, 255, 255, 0.21);
+    backdrop-filter: blur(10px);border-radius: 5px;
+    background: rgba(216, 216, 216, 0.15);position: fixed; bottom:0;width: fit-content;padding: 5px; cursor: pointer;">
+        <span class="text-light text-opacity-50">
+            <i class="bi bi-info-circle"></i>
+        </span>
+    </div>
+
+
+    <div class="modal fade " id="Modal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="ModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable ">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        id="modal-close-btn"></button>
+                </div>
+                <div class="modal-body">
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="modal-esc-button">
+                        取消
+                    </button>
+                    <button type="button" class="btn btn-warning" data-bs-dismiss="modal" id="modal-enter-button">
+                        確定
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="toast" class="position-fixed bottom-0 end-0 p-3 toast-container"></div>
+
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.2.3/js/bootstrap.min.js'
+        integrity='sha512-1/RvZTcCDEUjY/CypiMz+iqqtaoQfAITmNSJY17Myp4Ms5mdxPS5UV7iOfdZoxcGhzFbOm6sntTKJppjvuhg4g=='
+        crossorigin='anonymous'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js'
+        integrity='sha512-STof4xm1wgkfm7heWqFJVn58Hm3EtS31XFaagaa8VMReCXAkQnJZ+jEy8PCC/iT18dFy95WcExNHFTqLyp72eQ=='
+        crossorigin='anonymous'></script>
+    <script>
+        window.setup = function () {
+            choose_img()
+            if (window.mobileAndTabletCheck()) {
+                resize_tab()
+            }
+        }
+        function IfStrIsBlank(str) {
+            let _arr = str.split(" "),
+                _s;
+            for (i = 0; i < _arr.length; i++) {
+
+                if (_arr[i] !== " " && _arr[i] !== "") {
+
+
+                    return false
+                }
+            }
+
+            return true
+        }
+        (function ($) {
+            $.UrlParam = function (name) {
+                //宣告正規表達式
+                var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+                /*
+                 * window.location.search 獲取URL ?之後的參數(包含問號)
+                 * substr(1) 獲取第一個字以後的字串(就是去除掉?號)
+                 * match(reg) 用正規表達式檢查是否符合要查詢的參數
+                */
+                var r = window.location.search.substr(1).match(reg);
+                //如果取出的參數存在則取出參數的值否則回穿null
+                if (r != null) return (r[2]); return null;
+            }
+        })(jQuery);
+
+        //date -> formated str (y/m/d)
+        //time -> formated str (h:m:s)
+        //pack -> {year,month,date,day,hour,minute,second}
+        function getTime(type) {
+            var DATE = new Date(),
+                year = DATE.getFullYear(),
+                mont = DATE.getMonth() + 1,
+                date = DATE.getDate(),
+                day = DATE.getDay(),
+                //--------------------//
+                hour = DATE.getHours(),
+                mins = DATE.getMinutes(),
+                secs = DATE.getSeconds();
+
+            if (type == "date") {
+                return `${year} / ${mont} / ${date}`
+            } else
+                if (type == "time") {
+                    return `${hour} : ${mins} : ${secs}`
+                } else
+                    if (type == "pack") {
+                        let par = {
+                            "year": year,
+                            "month": mont,
+                            "date": date,
+                            "day": day,
+                            "hour": hour > 10 ? hour : '0' + hour,
+                            "minute": mins > 10 ? mins : '0' + mins,
+                            "second": secs > 10 ? secs : '0' + secs
+                        }
+
+                        return par
+                    }
+        }
+        //{ icon,         iconClass,     title,  body  toastClass}
+        //  ^ex:bi-text  ^ex:text-success              ^ex:text-bg-primary
+        var BS_Toast = {
+            toast_id: 0,
+
+            show: function (data) {
+                let hour = getTime("pack").hour,
+                    mins = getTime("pack").minute;
+                $("#toast").append(` 
+            <div id='BS-Toast-${BS_Toast.toast_id}' class="toast ${data.toastClass}" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="toast-header" >
+                <i class='bi ${data.icon} ${data.iconClass}'></i>&nbsp;
+                <strong class="me-auto">${data.title}</strong>
+                <small>${hour}:${mins}</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+             </div>
+            <div class="toast-body">${data.body}</div>
+            </div>`)
+
+                var toastElList = document.querySelectorAll('.toast')
+                var toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl))
+                let Thistoast = new bootstrap.Toast(document.getElementById(`BS-Toast-${BS_Toast.toast_id}`))
+
+                Thistoast.show()
+
+                BS_Toast.toast_id++
+            }
+        }
+
+        function delay(time) {
+            return new Promise(resolve => setTimeout(resolve, time));
+        }
+        //{title,body,escCallBack,enterCallBack}
+        function PopupAlert(par) {
+            console.log(par)
+            let _Modal = new bootstrap.Modal(document.getElementById('Modal'));
+            $('.modal-title').html('');
+            $('.modal-body').html('');
+            $('#modal-esc-btn').removeAttr('onclick');
+            $('#modal-enter-btn').removeAttr('onclick');
+            $('#modal-esc-btn').removeAttr('disabled');
+            $('#modal-enter-btn').removeAttr('disabled');
+            $('#modal-enter-btn').show();
+            $('#modal-esc-btn').show();
+            $(".modal-backdrop").remove();
+            $("#modal-close-btn").show();
+
+            //------------------------------------------------//
+
+            $('.modal-title').html(par.title);
+            $('.modal-body').html(par.body);
+
+            if (par.escCallBack == 'dismiss') { $('#modal-esc-btn').show(); }
+            else if (par.escCallBack == 'x') { $('#modal-esc-button').hide(); }
+            else { $('#modal-esc-button').attr('onclick', par.escCallBack); }
+
+            if (par.enterCallBack == 'dismiss') { $('#modal-enter-btn').show(); }
+            else if (par.enterCallBack == 'x') { $('#modal-enter-button').hide(); }
+            else { $('#modal-enter-button').attr('onclick', par.enterCallBack); }
+
+
+
+            if (par.closeButtonStatue == undefined || par.closeButtonStatue == true) {
+                $("#modal-close-btn").show()
+
+            } else {
+
+                $("#modal-close-btn").hide()
+            }
+
+
+            _Modal.toggle();
+
+
+        }
+
+
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+        var describe = ["日出", "湖泊", "星空", "星空", "山峰", "森林", "星系", "極光", "湖泊", "瀑布"]
+        var whiteText = [false, true, true, true, false, false, true, false, false, false]
+        var currentImg;
+        function choose_img(params) {
+
+
+            if (!$.UrlParam("image")) {
+                var index = getRandomInt(1, 10)
+                $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();delay(1000).then(() => $('#loading-layer').remove());
+                    " onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+
+                if (whiteText[index - 1] === true) {
+                    $(".dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
+                }
+                $("#bg-text").text(describe[index - 1])
+                resize_tab()
+                resize_tab()
+                if (window.innerWidth < 720) {
+                    resize_tab()
+                }
+                currentImg = index
+            } else {
+
+                if (0 < Number($.UrlParam("image")) && Number($.UrlParam("image")) < 11) {
+
+                    var index = Number($.UrlParam("image"))
+                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab(); delay(1000).then(() => $('#loading-layer').remove())" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                    if (whiteText[index - 1] === true) {
+                        $(".dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
+                    }
+                    $("#bg-text").text(describe[index - 1])
+                    resize_tab()
+                    resize_tab()
+                    if (window.innerWidth < 720) {
+                        resize_tab()
+                    }
+                    currentImg = index
+                } else {
+                    var index = getRandomInt(1, 10)
+                    $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab(); delay(1000).then(() => $('#loading-layer').remove())" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+                    if (whiteText[index - 1] === true) {
+                        $(".dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
+                    }
+                    $("#bg-text").text(describe[index - 1])
+                    resize_tab()
+                    resize_tab()
+                    if (window.innerWidth < 720) {
+                        resize_tab()
+                    }
+                    currentImg = index
+                }
+            }
+
+
+        }
+
+        function changeImg(params) {
+
+
+            var index = currentImg++
+            if (currentImg + 1 > 11) {
+                var index = getRandomInt(1, 10)
+            } else {
+                var index = currentImg++
+            }
+            $("#background").html(`<img src="/lib/background/background-${index}.png" id="bg-img" style="display:none" draggable="false" class="select-none" alt="無法顯示背景圖片" onload="resize_tab();$(this).show()" onerror=" $('#loading-status').attr('class', 'text-danger').text('發生暫時性的錯誤，請刷新頁面')">`)
+            if (whiteText[index - 1] === true) {
+                $(".dialog").css("color", "var(--bs-light)").addClass("text-opacity-75")
+            } else {
+                $(".dialog").css("color", "#000").removeClass("text-opacity-75")
+            }
+            $("#bg-text").text(describe[index - 1])
+            resize_tab()
+            resize_tab()
+            if (window.innerWidth < 720) {
+                resize_tab()
+            }
+            currentImg = index
+
+        }
+
+        /*$(window).resize(function () {
+            resize_tab();
+        }).resize();*/
+        window.onresize = function (e) {
+            resize_tab();
+            resize_tab()
+
+        }
+        function resize_tab() {
+
+            var viewportWidth = $(window).innerWidth();
+            var viewportHeight = $(window).innerHeight();
+
+            var width = $('#bg-img').width();
+            var height = $('#bg-img').height();
+
+
+            if ((viewportWidth / viewportHeight) > (width / height)) {
+
+                $('#bg-img').css({
+                    'width': '100%',
+                    'height': 'auto',
+                    'margin-left': 0 - width / 2,
+                    'margin-top': 0 - height / 2
+                });
+
+
+            } else {
+                $('#bg-img').css({
+                    'width': 'auto',
+                    'height': '100%',
+                    'margin-left': 0 - width / 2,
+                    'margin-top': 0 - height / 2
+                });
+            }
+        }
+        function imginfo(params) {
+            PopupAlert({
+                title: "關於背景圖片",
+                body: `
+                <h3>${describe[currentImg - 1]}</h3>
+                <h6>背景#${currentImg}</h6>
+                <hr>
+                由<a href="https://openai.com/dall-e-2/" target="_blank">DALL·E 2</a>生成</span><br>
+                <a href="https://whiteboard.up.railway.app/lib/background/background-${currentImg}.png" target="_blank">查看完整圖片</a>
+                <!--<button class="btn btn-sm btn-primary" data-bs-dismiss="modal" onclick="changeImg()">換一張背景圖片</button>-->`,
+                escCallBack: "x",
+                enterCallBack: "dismiss"
+            })
+        }
+    </script>
+</body>
+
+</html>
