@@ -41,10 +41,71 @@
             transform: translate(-50%, -50%);
 
         }
+
+        .progress-bar.indeterminate {
+            position: relative;
+            border-radius: var(--bs-progress-border-radius);
+
+            animation: progress-indeterminate 3s linear infinite;
+        }
+
+        @keyframes progress-indeterminate {
+            from {
+                left: -20%;
+                width: 25%;
+            }
+
+            to {
+                left: 50%;
+                width: 35%;
+            }
+
+            to {
+                left: 100%;
+                width: 60%;
+            }
+        }
     </style>
 </head>
 
 <body onload="window.setup()">
+    <div id="loading-layer" style="    
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1050;
+    width: 100vw;
+    height: 100vh;
+    background-color:var(--bs-light);
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;">
+
+        <div id="loading-logo"
+            style="padding: 15px; user-select: none;display: flex;justify-content: center;align-items: center;border-radius: 5px; border: 1px solid #000; width: 15em; height: 15em; max-width: 50px; max-height: 50px;"
+            class="animate__animated animate__fadeInUp">
+            <span style="font-size: 35px; " class="animate__animated animate__fadeInUp">
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
+                    <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z"/>
+                    <path class="text-primary" d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4H2zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1zm9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0z"/>
+                  </svg>
+            </span>
+        </div>
+
+        <p></p>
+        <h3 id="loading-status">資料讀取中</h3>
+        <p></p>
+        <div class="progress animate__animated animate__fadeInUp"
+            style="max-width: 250px; position: relative;width: 25%;height: 1%;">
+            <div class="progress-bar progress-bar-striped indeterminate">
+            </div>
+
+        </div>
+        <div id="loading-failed-text-container"></div>
+
+    </div>
     <div id="app">
         <div id="background"></div>
         <noscript>
@@ -78,6 +139,8 @@
                     </div>
                 </div>
             </div>
+            <hr>
+            <a href="/meet/check" class="btn btn-secondary">測試硬體設備</button>
         </div>
 
     </div>

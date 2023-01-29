@@ -74,6 +74,9 @@ app.post("/account/logout", (req, res) => {
 app.get("/file", (req, res) => {
   res.sendFile(__dirname + "/index.html")
 })
+app.get("/meet", (req, res) => {
+  res.sendFile(__dirname + "/meet.html")
+})
 
 app.get(/js|css|html|/, (req, res) => {
   res.sendFile(__dirname + req.path)
